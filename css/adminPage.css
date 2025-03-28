@@ -1,0 +1,358 @@
+.name-card {
+  margin-left: 20px;
+}
+
+.name-card h1.applicant-name {
+  font-size: 28px;
+  margin: 15px 0px;
+}
+
+h2 {
+  margin-left: 20px;
+}
+
+main div.inner-box h4 {
+  margin: 0;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+main div.inner-box h5 {
+  margin: 0px 20px 0px;
+  padding: 3px 0px;
+  font-size: 15px;
+  color: gray;
+}
+
+main div.inner-box h6 {
+  display: inline-block;
+  margin: 0;
+  font-size: 15px;
+  color: red;
+}
+
+main div.inner-box button {
+  display: block;
+  background-color: #7213D0;
+  border: 1px solid black;
+  color: white;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 50px;
+  margin: 15px 0px;
+}
+
+main div.inner-box button:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+main div.inner-box .document-requirements {
+  margin: 0px 40px 35px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-container {
+  font-size: 15px;
+  padding: 0px 0px 0px 20px;
+}
+
+.checklist-box {
+  position: sticky;
+  top: 0px;
+  right: 0px;
+  float: right;
+  background-color: #7a20e0;
+  color: white;
+  padding: 20px 25px;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  width: max-content;
+  transition: height 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+
+/*Checklist*/
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+
+.chevron-icon {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.checklist {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.checklist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0px;
+  white-space: nowrap;
+}
+
+.checklist a {
+  text-decoration: none;
+  color: white;
+}
+
+.checklist a:hover {
+  text-decoration: underline;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 30px;
+}
+
+
+.checklist-box.minimized {
+  height: 50px;
+  padding: 10px 25px;
+}
+
+.checklist-box.minimized .checklist {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checklist-box.minimized .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 30px;
+}
+
+/*Submit Button*/
+
+.submit-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn {
+  background-color: #c7acee;
+  border: 2px solid #6a11cb;
+  color: #6c6c6c;
+  font-weight: bold;
+  padding: 8px 30px;
+  border-radius: 0px;
+  cursor: not-allowed;
+  transition: 0.3s ease;
+}
+
+/*Document-Upload*/
+.file-input {
+  display: none;
+}
+
+.upload-container {
+  margin: 15px 25px 0px;
+}
+
+/* Wrap for preview + approval buttons */
+.file-preview-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* File preview bar */
+.file-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 15px;
+  min-width: 300px;
+  max-width: 750px;
+  flex: 1;
+}
+
+.file-preview .file-name {
+  font-weight: bold;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-text {
+  color: blue;
+  cursor: pointer;
+}
+
+.remove-text {
+  color: red;
+  cursor: pointer;
+}
+
+.document-requirements-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.upload-debug {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+
+/*Approve and Reject thing*/
+/* Approval actions beside preview (not below) */
+.approval-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.reject-text {
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.approve-text {
+  color: green;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reject-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.approve-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+/* Success Pop-up Styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to bottom, #b57ee4, #a56ee0);
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+}
+
+.popup img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.popup h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+.popup p {
+  font-size: 14px;
+  color: #f5f5f5;
+}
+
+.popup button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.popup button:hover {
+  background: #45a049;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Submit Button Styles */
+.submit-btn {
+  background: gray;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: not-allowed;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.submit-btn.enabled {
+  background: green;
+  cursor: pointer;
+}
+
+/*reject popup*/
+
+#rejectPopup {
+  color: black;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 15px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}

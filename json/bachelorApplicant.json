@@ -1,0 +1,67 @@
+[
+    {
+        "documentID": 1,
+        "documentType": "CTC-G11",
+        "documentName": "Certified True Copy of Grade 11 (1st and 2nd Semester) Form 138",
+        "subtitles": [
+            "With at least a GWA of 83% or above."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 2,
+        "documentType": "CTC-G12",
+        "documentName": "Certified True Copy of Grade 12 (1st Semester) Form 138",
+        "subtitles": [
+            "With at least a GWA of 83% or above."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 3,
+        "documentType": "CTC-ID",
+        "documentName": "Certified True Copy of Grade 12 School ID",
+        "subtitles": [
+            "Front and Back in one file."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 4,
+        "documentType": "Birth-Certificate",
+        "documentName": "NSO or PSA Birth Certificate",
+        "subtitles": [
+            "Upload a clear photocopy."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 5,
+        "documentType": "Applicant-Voter-Certificate",
+        "documentName": "Applicant's Voter's Certification",
+        "subtitles": [
+            "Must be issued within Calendar Year 2023-Present."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 6,
+        "documentType": "Parent-Voter-Certificate",
+        "documentName": "Parent's Voter's Certification",
+        "subtitles": [
+            "Must be issued within Calendar Year 2023-Present."
+        ],
+        "requiredFormat": ".pdf"
+    },
+    {
+        "documentID": 7,
+        "documentType": "ID-Picture",
+        "documentName": "Passport Size ID Picture",
+        "subtitles": [
+            "With white background and name tag legibly showing the signature over printed name of the applicant.",
+            "Name tag format must be the following: First Name / M.I. / Last Name / Extension Name (if any).",
+            "Name tag must be affixed prior to having the picture taken."
+        ],
+        "requiredFormat": ".jpg,.png"
+    }
+]
