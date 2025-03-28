@@ -26,11 +26,11 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
 
 <body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
 
-  <?php include("navigation/sidebar.php") ?>
+  <?php include "components/navigation/sidebar.php" ?>
 
   <section class="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
-    <?php include("navigation/header.php") ?>
+    <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
@@ -106,7 +106,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       </div>
     </main>
 
-    <?php include("navigation/footer.php") ?>
+    <?php include "components/navigation/footer.php" ?>
 
     <!--Confirmation Popup-->
     <div class="popup" id="confirmationPopup">
