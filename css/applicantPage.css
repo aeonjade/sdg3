@@ -1,3 +1,4 @@
+/*
 .name-card {
     margin-left: 20px;
 }
@@ -10,7 +11,7 @@
 h2 {
     margin-left: 20px;
 }
-
+*/
 main div.inner-box h4 {
     margin: 0;
     font-size: 20px;
@@ -272,14 +273,14 @@ main div.inner-box .checklist-header h4 {
     display: none;
 }
 
-
+/*NEED ILAGAY TO SUBMIT REQUIREMENTS HINDI KO MAILAGAY EH*?
 /* Success Pop-up Styles */
 .blur-background {
     filter: blur(5px);
     pointer-events: none;
     /* Prevents interaction with the background */
 }
-
+/*
 .popup {
     display: none;
     position: fixed;
@@ -338,7 +339,7 @@ main div.inner-box .checklist-header h4 {
 .hidden {
     display: none;
 }
-
+*/
 /* Modal Styles */
 .modal {
     display: none;

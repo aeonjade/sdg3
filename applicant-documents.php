@@ -60,10 +60,10 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
             </ul>
           </div>
 
-          <div class="name-card">
-            <h1 class="applicant-name">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
-            <p>First Choice: <?= htmlspecialchars($firstChoice); ?></p>
-            <p>Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
+          <div class="ml-5">
+            <h1 class="text-3xl font-bold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
+            <p class="m-2 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
+            <p class="m-2 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
           </div>
 
           <h2><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
