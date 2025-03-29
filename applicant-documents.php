@@ -84,21 +84,21 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
     <?php include "components/navigation/footer.php" ?>
 
     <!--Confirmation Popup-->
-    <div class="popup" id="confirmationPopup">
-      <img src="assets/confirm.png" alt="Confirm">
-      <h2>Submit Documents</h2>
-      <p>Are you sure you want to submit?</p>
-      <div class="yes-no-buttons">
-        <button class="no" onclick="closeConfirm()">No</button>
-        <button type="submit" onclick="showPopup()">Yes</button>
+    <div class = "hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
+      <img class = "w-16 mb-3" src="assets/confirm.png" alt="Confirm">
+      <h2 class = "m-0 text-2xl text-white">Submit Documents</h2>
+      <p class = "text-sm text-white">Are you sure you want to submit?</p>
+      <div class= "space-x-4 my-8 mx-8 ">
+        <button class="bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 ml-2 hover:bg-[#0C5AAD]" onclick="closeConfirm()">No</button>
+        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit" onclick="showPopup()">Yes</button>
       </div>
-    </div>
+    </img>
     <!--Submit Popup-->
-    <div class="popup" id="successPopup">
-      <img src="assets/submit.png" alt="Success">
-      <h2>Success!</h2>
-      <p>Please wait for further instructions from the registrar.</p>
-      <button class="to-application-tracking" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+    <div class= "hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="successPopup">
+      <img class = "w-16 mb-3" src="assets/submit.png" alt="Success">
+      <h2 class = "m-0 text-2xl text-white">Success!</h2>
+      <p class = "text-sm text-white">Please wait for further instructions from the registrar.</p>
+      <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
     </div>
 
   </section>
