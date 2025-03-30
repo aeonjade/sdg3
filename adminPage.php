@@ -29,23 +29,23 @@ $requirements = json_decode($requirementsSet, true);
   <!--<link rel="stylesheet" href="css/adminPage.css">-->
 </head>
 
-<body>
+<body class= "font-roboto">
 
   <?php include("components/navigation/sidebar.php") ?>
 
   <section>
-    <header>
+    <header class= "flex justify-between items-center p-4 bg-gray-100">
       <div class="header-text">
-        <h1 class="page-header">Document Requirements</h1>
+        <h1 class="text-2xl font-bold">Document Requirements</h1>
       </div>
-      <div class="header-icons">
-        <img src="assets/Phone-Icon.png" alt="Phone">
-        <img src="assets/Notification-Icon.png" alt="Notifications">
-        <img src="assets/Profile-Icon.png" alt="Profile">
+      <div class="flex gap-4">
+        <img src="assets/Phone-Icon.png" alt="Phone" class= "w-6 h-6">
+        <img src="assets/Notification-Icon.png" alt="Notifications" class= "w-6 h-6">
+        <img src="assets/Profile-Icon.png" alt="Profile" class= "w-6 h-6">
       </div>
     </header>
 
-    <main>
+    <main class= "p-6">
       <div class="inner-box">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-6 py-5 rounded-lg border-2 border-[solid] border-[black] text-sm w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden" id="checklistBox">
