@@ -64,6 +64,7 @@ main div.inner-box .document-requirements {
   padding: 0px 0px 0px 20px;
 }
 
+/*
 .checklist-box {
   position: sticky;
   top: 0px;
@@ -81,12 +82,14 @@ main div.inner-box .document-requirements {
 }
 
 /*Checklist*/
+/*
 .checklist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
+*/
 
 .toggle-btn {
   background: transparent;
@@ -95,7 +98,7 @@ main div.inner-box .document-requirements {
   padding: 0;
   outline: none;
 }
-
+/*
 .chevron-icon {
   width: 16px;
   height: 16px;
@@ -126,7 +129,7 @@ main div.inner-box .document-requirements {
 .checklist a:hover {
   text-decoration: underline;
 }
-
+*/
 .icon {
   width: 16px;
   height: 16px;
@@ -278,6 +281,7 @@ main div.inner-box .document-requirements {
 }
 
 /* Success Pop-up Styles */
+/*
 .popup {
   position: fixed;
   top: 50%;
@@ -321,7 +325,7 @@ main div.inner-box .document-requirements {
 .popup button:hover {
   background: #45a049;
 }
-
+*/
 .hidden {
   display: none;
 }

@@ -22,10 +22,11 @@ $requirements = json_decode($requirementsSet, true);
   <meta charset="UTF-8">
   <title>Document Requirements</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/adminPage.css">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
+  <!--<link rel="stylesheet" href="css/adminPage.css">-->
 </head>
 
 <body>
@@ -47,22 +48,22 @@ $requirements = json_decode($requirementsSet, true);
     <main>
       <div class="inner-box">
         <!-- Checklist -->
-        <div class="checklist-box minimized" id="checklistBox">
-          <div class="checklist-header">
+        <div class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-6 py-5 rounded-lg border-2 border-[solid] border-[black] text-sm w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden" id="checklistBox">
+          <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
-            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
+            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="w-4 h-4 filter brightness-0 invert [transition:transform_0.3s_ease]">
           </div>
-          <ul class="checklist">
+          <ul class="list-none pl-0 m-0 [transition:opacity_0.3s_ease]">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
-              <li id="item-<?= $docType ?>">
-                <a href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
+              <li class="flex justify-between items-center mx-0 my-2 whitespace-nowrap" id="item-<?= $docType ?>">
+                <a class="no-underline text-[white] hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
-                  <img src="assets/Check-Icon.png" class="icon check">
+                  <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
                 <?php else: ?>
-                  <img src="assets/Wrong-Icon.png" class="icon wrong">
+                  <img src="assets/Wrong-Icon.png" class="w-4 h-4 ml-8">
                 <?php endif; ?>
               </li>
             <?php } ?>
@@ -78,7 +79,7 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Document Set Title -->
-        <h2 class="set"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
+        <h2 class="ml-5 text-xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
         <!-- Document Sections -->
         <?php
@@ -100,27 +101,27 @@ $requirements = json_decode($requirementsSet, true);
           }
         ?>
 
-          <div class="document-requirements" id="anchor-<?= $docType ?>">
-            <h4><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>
+          <div class="mb-8 mx-10" id="anchor-<?= $docType ?>">
+            <h4 class="m-0 text-xl pb-2"><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>
             <h5 class="mx-5 my-0 px-0 py-1 text-sm text-[gray]">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
 
-            <div class="upload-container">
+            <div class="mt-4 mx-6">
               <?php if ($fileUploaded): ?>
-                <div class="file-preview-wrapper">
-                  <div class="file-preview">
-                    <span class="file-name">
+                <div class="flex items-center gap-4 mt-2">
+                  <div class="flex justify-between items-center gap-4 border-2 border-black p-2 rounded-xl min-w-80 max-w-3xl flex-1">
+                    <span class="font-bold underline break-all">
                       <a href="<?= $targetPath ?>" target="_blank"><?= $fileName ?></a>
                     </span>
-                    <div class="file-actions">
-                      <span class="view-text" onclick="window.open('<?= $targetPath ?>', '_blank')">View</span>
-                      <img src="assets/Download-Icon.png" class="document-requirements-icon" alt="Download" title="Download"
+                    <div class="flex items-center gap-2">
+                      <span class="text-blue-500 cursor-pointer" onclick="window.open('<?= $targetPath ?>', '_blank')">View</span>
+                      <img class="w-5 h-5 cursor-pointer" src="assets/Download-Icon.png" class="document-requirements-icon" alt="Download" title="Download"
                         onclick="downloadSampleFile('<?= $targetPath ?>')">
                     </div>
                   </div>
 
-                  <div class="approval-actions" id="actions-<?= $req['documentType'] ?>">
-                    <span class="reject-text" onclick="showRejectPopup('<?= $req['documentType'] ?>', '<?= $fileName ?>')">Reject</span>
-                    <span class="approve-text" onclick="handleDecision('<?= $req['documentType'] ?>', 'approve')">Approve</span>
+                  <div class="flex gap-2" id="actions-<?= $req['documentType'] ?>">
+                    <span class="text-red-500 font-bold cursor-pointer" onclick="showRejectPopup('<?= $req['documentType'] ?>', '<?= $fileName ?>')">Reject</span>
+                    <span class="text-green-500 font-bold cursor-pointer" onclick="handleDecision('<?= $req['documentType'] ?>', 'approve')">Approve</span>
 
                     <img src="assets/Wrong-Icon.png" class="reject-icon hidden" id="reject-icon-<?= $req['documentType'] ?>" alt="Rejected">
                     <img src="assets/Check-Icon.png" class="approve-icon hidden" id="approve-icon-<?= $req['documentType'] ?>" alt="Approved">
@@ -134,19 +135,19 @@ $requirements = json_decode($requirementsSet, true);
         <?php } ?>
 
         <div class="flex justify-end">
-          <button type="button" class="bg-[#c7acee] border-2 border-dashed border-[#6a11cb] text-[#6c6c6c] font-bold px-8 py-2 rounded-none cursor-not-allowed [transition:0.3s_ease]" id="submitBtn">Submit</button>
+          <button type="button" class="bg-[#c7acee] border-2 border-[solid] border-[#6a11cb] text-[#6c6c6c] font-bold px-8 py-2 rounded-none cursor-not-allowed [transition:0.3s_ease]" id="submitBtn">Submit</button>
         </div>
 
         <!--Submit Popup-->
         <div class="popup" id="successPopup" style="display: none;">
-          <img src="assets/check-icon.png" alt="Success">
-          <h2>Success</h2>
-          <p>Please wait for further instructions from the registrar</p>
-          <button type="submit">Back to Document Upload</button>
+          <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success" >
+          <h2 class="m-0 text-2xl text-[#fff]">Success</h2>
+          <p class="text-sm text-[#f5f5f5]">Please wait for further instructions from the registrar</p>
+          <button class="bg-[#4CAF50] text-[white] border-[none] px-4 py-2 mt-4 cursor-pointer text-base rounded-md hover:bg-[#45a049]" type="submit">Back to Document Upload</button>
         </div>
 
         <!-- Reject Message Pop-up -->
-        <div class="popup" id="rejectPopup" style="display: none;">
+        <div class="text-[black] fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[white] p-4 border-2 border-[solid] border-[#ccc] rounded-xl [box-shadow:0_2px_10px_rgba(0,_0,_0,_0.2)]" id="rejectPopup" style="display: none;">
           <h2 style="color: black; padding-bottom:5px ;">Reject Message</h2>
           <textarea id="rejectMessageInput" rows="4" style="width: 100%; resize: none;"></textarea>
           <div style="margin-top: 5px; display: flex; justify-content: flex-end; gap: 10px;">
