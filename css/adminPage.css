@@ -1,4 +1,4 @@
-.name-card {
+/*.name-card {
   margin-left: 20px;
 }
 
@@ -6,11 +6,11 @@
   font-size: 28px;
   margin: 15px 0px;
 }
-
+*/
 h2 {
   margin-left: 20px;
 }
-
+/*
 main div.inner-box h4 {
   margin: 0;
   font-size: 20px;
@@ -23,7 +23,7 @@ main div.inner-box h5 {
   font-size: 15px;
   color: gray;
 }
-
+*/
 main div.inner-box h6 {
   display: inline-block;
   margin: 0;
@@ -155,11 +155,12 @@ main div.inner-box .document-requirements {
 }
 
 /*Submit Button*/
-
+/*
 .submit-wrapper {
   display: flex;
   justify-content: flex-end;
 }
+
 
 .submit-btn {
   background-color: #c7acee;
@@ -171,6 +172,7 @@ main div.inner-box .document-requirements {
   cursor: not-allowed;
   transition: 0.3s ease;
 }
+*/
 
 /*Document-Upload*/
 .file-input {

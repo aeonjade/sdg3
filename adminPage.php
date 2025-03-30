@@ -21,13 +21,16 @@ $requirements = json_decode($requirementsSet, true);
 <head>
   <meta charset="UTF-8">
   <title>Document Requirements</title>
-  <link rel="stylesheet" href="css/index.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/adminPage.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
 </head>
 
 <body>
 
-  <?php include("navigation/sidebar.php") ?>
+  <?php include("components/navigation/sidebar.php") ?>
 
   <section>
     <header>
@@ -46,7 +49,7 @@ $requirements = json_decode($requirementsSet, true);
         <!-- Checklist -->
         <div class="checklist-box minimized" id="checklistBox">
           <div class="checklist-header">
-            <h4>Checklist</h4>
+            <h4 class="m-0 text-xl pb-3">Checklist</h4>
             <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
           </div>
           <ul class="checklist">
@@ -68,8 +71,8 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Applicant Info -->
-        <div class="name-card">
-          <h1 class="applicant-name"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
+        <div class="ml-5">
+          <h1 class="text-3xl mx-0 my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
           <p>First Choice: <?= htmlspecialchars($firstChoice); ?></p>
           <p>Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
         </div>
@@ -99,7 +102,7 @@ $requirements = json_decode($requirementsSet, true);
 
           <div class="document-requirements" id="anchor-<?= $docType ?>">
             <h4><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>
-            <h5>• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
+            <h5 class="mx-5 my-0 px-0 py-1 text-sm text-[gray]">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
 
             <div class="upload-container">
               <?php if ($fileUploaded): ?>
@@ -130,8 +133,8 @@ $requirements = json_decode($requirementsSet, true);
           </div>
         <?php } ?>
 
-        <div class="submit-wrapper">
-          <button type="button" class="submit-btn" id="submitBtn">Submit</button>
+        <div class="flex justify-end">
+          <button type="button" class="bg-[#c7acee] border-2 border-dashed border-[#6a11cb] text-[#6c6c6c] font-bold px-8 py-2 rounded-none cursor-not-allowed [transition:0.3s_ease]" id="submitBtn">Submit</button>
         </div>
 
         <!--Submit Popup-->
