@@ -48,18 +48,18 @@ $requirements = json_decode($requirementsSet, true);
     <main class= "p-6">
       <div class="inner-box">
         <!-- Checklist -->
-        <div class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-6 py-5 rounded-lg border-2 border-[solid] border-[black] text-sm w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden" id="checklistBox">
+        <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
           <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
             <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="w-4 h-4 filter brightness-0 invert [transition:transform_0.3s_ease]">
           </div>
-          <ul class="list-none pl-0 m-0 [transition:opacity_0.3s_ease]">
+          <ul class="list-none pl-0 m-0 transition-opacity">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
-              <li class="flex justify-between items-center mx-0 my-2 whitespace-nowrap" id="item-<?= $docType ?>">
-                <a class="no-underline text-[white] hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
+             <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
+             <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
                 <?php else: ?>
@@ -73,7 +73,7 @@ $requirements = json_decode($requirementsSet, true);
 
         <!-- Applicant Info -->
         <div class="ml-5">
-          <h1 class="text-3xl mx-0 my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
+        <h1 class="text-3xl font-bold my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
           <p>First Choice: <?= htmlspecialchars($firstChoice); ?></p>
           <p>Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
         </div>
