@@ -70,7 +70,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
 
           <!-- The next php include is the documents part of the page -->
 
-          <?php include "components/documents/getDocuments.php" ?>
+          <?php include "components/documents/getApplicantDocuments.php" ?>
 
           <div class="submit-wrapper">
             <button type="button" class="submit-btn" disabled onclick="showConfirm()">Submit</button>
