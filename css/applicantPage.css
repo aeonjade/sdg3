@@ -179,7 +179,7 @@ main div.inner-box .checklist-header h4 {
 }
 
 /*Submit Button*/
-
+/*
 .submit-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -197,7 +197,7 @@ main div.inner-box .checklist-header h4 {
     margin: 30px 0px;
     transition: 0.3s;
 }
-
+*/
 .submit-btn.enabled {
     background: rgb(45, 174, 40);
     color: white;

@@ -61,19 +61,19 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           </div>
 
           <div class="ml-5">
-            <h1 class="text-3xl font-bold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
-            <p class="m-2 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
-            <p class="m-2 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
+            <h1 class="text-3xl font-extrabold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
+            <p class="my-2.5 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
+            <p class="my-2.5 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
           </div>
 
-          <h2><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
+          <h2 class="ml-5 text-2xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
           <!-- The next php include is the documents part of the page -->
 
           <?php include "components/documents/getApplicantDocuments.php" ?>
 
-          <div class="submit-wrapper">
-            <button type="button" class="submit-btn" disabled onclick="showConfirm()">Submit</button>
+          <div class="flex justify-end">
+            <button type="button" class="text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
           </div>
 
         </form>
