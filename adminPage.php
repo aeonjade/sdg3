@@ -16,37 +16,29 @@ $requirements = json_decode($requirementsSet, true);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="font-[Roboto] h-full flex flex-1 overflow-auto box-border">
 
 <head>
   <meta charset="UTF-8">
   <title>Document Requirements</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
   <!--<link rel="stylesheet" href="css/adminPage.css">-->
 </head>
 
-<body class= "font-roboto">
+<body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
 
   <?php include("components/navigation/sidebar.php") ?>
 
-  <section>
-    <header class= "flex justify-between items-center p-4 bg-gray-100">
-      <div class="header-text">
-        <h1 class="text-2xl font-bold">Document Requirements</h1>
-      </div>
-      <div class="flex gap-4">
-        <img src="assets/Phone-Icon.png" alt="Phone" class= "w-6 h-6">
-        <img src="assets/Notification-Icon.png" alt="Notifications" class= "w-6 h-6">
-        <img src="assets/Profile-Icon.png" alt="Profile" class= "w-6 h-6">
-      </div>
-    </header>
+  <section class="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
-    <main class= "p-6">
-      <div class="inner-box">
+    <?php include "components/navigation/header.php" ?>
+
+    <main class="flex flex-col h-full overflow-auto">
+      <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
           <div class="flex justify-between items-center mb-3">
@@ -58,8 +50,8 @@ $requirements = json_decode($requirementsSet, true);
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
-             <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
-             <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
+              <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
+                <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
                 <?php else: ?>
@@ -73,7 +65,7 @@ $requirements = json_decode($requirementsSet, true);
 
         <!-- Applicant Info -->
         <div class="ml-5">
-        <h1 class="text-3xl font-bold my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
+          <h1 class="text-3xl font-bold my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
           <p>First Choice: <?= htmlspecialchars($firstChoice); ?></p>
           <p>Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
         </div>
@@ -140,7 +132,7 @@ $requirements = json_decode($requirementsSet, true);
 
         <!--Submit Popup-->
         <div class="popup" id="successPopup" style="display: none;">
-          <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success" >
+          <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success">
           <h2 class="m-0 text-2xl text-[#fff]">Success</h2>
           <p class="text-sm text-[#f5f5f5]">Please wait for further instructions from the registrar</p>
           <button class="bg-[#4CAF50] text-[white] border-[none] px-4 py-2 mt-4 cursor-pointer text-base rounded-md hover:bg-[#45a049]" type="submit">Back to Document Upload</button>
@@ -156,14 +148,15 @@ $requirements = json_decode($requirementsSet, true);
           </div>
         </div>
     </main>
+    <?php include "components/navigation/footer.php" ?>
   </section>
 
   <script>
-
     let namefile;
 
 
     let currentRejectId = null;
+
     function showRejectPopup(id, filename) {
       namefile = filename;
       currentRejectId = id; // Save the ID for use in save
@@ -181,86 +174,83 @@ $requirements = json_decode($requirementsSet, true);
     }
 
 
-  function saveRejectMessage() {
-  const message = document.getElementById('rejectMessageInput').value;
-  console.log("Rejected with message:", message);
+    function saveRejectMessage() {
+      const message = document.getElementById('rejectMessageInput').value;
+      console.log("Rejected with message:", message);
 
 
-  let formData = new FormData();
-  formData.append("fileName", namefile);
-  formData.append("rejectReason", message);
+      let formData = new FormData();
+      formData.append("fileName", namefile);
+      formData.append("rejectReason", message);
 
 
-  fetch("php/updateRejectMessage.php", {
-    method: "POST",
-    body: formData,
-  }).then((response) => response.text());
+      fetch("php/updateRejectMessage.php", {
+        method: "POST",
+        body: formData,
+      }).then((response) => response.text());
 
 
 
 
 
-  // Hide popup
-  cancelReject();
+      // Hide popup
+      cancelReject();
 
-  // Hide approve/reject text
-  const approveText = document.querySelector(`#actions-${currentRejectId} .approve-text`);
-  const rejectText = document.querySelector(`#actions-${currentRejectId} .reject-text`);
-  if (approveText) approveText.style.display = "none";
-  if (rejectText) rejectText.style.display = "none";
+      // Hide approve/reject text
+      const approveText = document.querySelector(`#actions-${currentRejectId} .approve-text`);
+      const rejectText = document.querySelector(`#actions-${currentRejectId} .reject-text`);
+      if (approveText) approveText.style.display = "none";
+      if (rejectText) rejectText.style.display = "none";
 
-  // Show reject icon, hide approve icon
-  const rejectIcon = document.getElementById(`reject-icon-${currentRejectId}`);
-  const approveIcon = document.getElementById(`approve-icon-${currentRejectId}`);
-  if (rejectIcon) rejectIcon.style.display = "inline";
-  if (approveIcon) approveIcon.style.display = "none";
-  }
+      // Show reject icon, hide approve icon
+      const rejectIcon = document.getElementById(`reject-icon-${currentRejectId}`);
+      const approveIcon = document.getElementById(`approve-icon-${currentRejectId}`);
+      if (rejectIcon) rejectIcon.style.display = "inline";
+      if (approveIcon) approveIcon.style.display = "none";
+    }
 
 
-  function downloadSampleFile(filePath) {
-    const link = document.createElement("a");
-    link.href = filePath;
-    link.download = filePath.split("/").pop();
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+    function downloadSampleFile(filePath) {
+      const link = document.createElement("a");
+      link.href = filePath;
+      link.download = filePath.split("/").pop();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
-  function toggleChecklist() {
-    const checklist = document.getElementById("checklistBox");
-    checklist.classList.toggle("minimized");
-  }
+    function toggleChecklist() {
+      const checklist = document.getElementById("checklistBox");
+      checklist.classList.toggle("minimized");
+    }
 
-  /**Approve or reject */
-  function handleDecision(id, action) {
-    const approveText = document.querySelector(`#actions-${id} .approve-text`);
-    const rejectText = document.querySelector(`#actions-${id} .reject-text`);
-    const approveIcon = document.getElementById(`approve-icon-${id}`);
-    const rejectIcon = document.getElementById(`reject-icon-${id}`);
+    /**Approve or reject */
+    function handleDecision(id, action) {
+      const approveText = document.querySelector(`#actions-${id} .approve-text`);
+      const rejectText = document.querySelector(`#actions-${id} .reject-text`);
+      const approveIcon = document.getElementById(`approve-icon-${id}`);
+      const rejectIcon = document.getElementById(`reject-icon-${id}`);
 
-    if (approveText) approveText.style.display = "none";
-    if (rejectText) rejectText.style.display = "none";
+      if (approveText) approveText.style.display = "none";
+      if (rejectText) rejectText.style.display = "none";
 
-    if (action === "approve") {
+      if (action === "approve") {
         if (approveIcon) approveIcon.classList.remove("hidden");
         if (rejectIcon) rejectIcon.classList.add("hidden");
-    } else {
+      } else {
         if (rejectIcon) rejectIcon.classList.remove("hidden");
         if (approveIcon) approveIcon.classList.add("hidden");
+      }
     }
-  }
 
-  const submitBtn = document.getElementById('submitBtn');
-  const successPopup = document.getElementById('successPopup');
+    const submitBtn = document.getElementById('submitBtn');
+    const successPopup = document.getElementById('successPopup');
 
-  submitBtn.addEventListener('click', function() {
-    if (!submitBtn.disabled) {
-      successPopup.style.display = 'block';
-    }
-  });
-
-
-    
+    submitBtn.addEventListener('click', function() {
+      if (!submitBtn.disabled) {
+        successPopup.style.display = 'block';
+      }
+    });
   </script>
   <script src="javascript/adminPage.js"></script>
 </body>
