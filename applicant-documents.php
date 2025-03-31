@@ -73,7 +73,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <?php include "components/documents/getApplicantDocuments.php" ?>
 
           <div class="flex justify-end">
-            <button type="button" class="text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
+            <button type="button" class="cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
           </div>
 
         </form>
@@ -89,8 +89,8 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       <h2 class = "m-0 text-2xl text-white">Submit Documents</h2>
       <p class = "text-sm text-white">Are you sure you want to submit?</p>
       <div class= "space-x-4 my-8 mx-8 ">
-        <button class="bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 ml-2 hover:bg-[#0C5AAD]" onclick="closeConfirm()">No</button>
-        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit" onclick="showPopup()">Yes</button>
+        <button class="bg-[rgb(145,_29,_52)] border-[black] text-white cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 ml-2 hover:bg-[#0C5AAD]" onclick="closeConfirm()">No</button>
+        <button class="bg-[rgb(45,_174,_40)] border-[black] text-white cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit" onclick="showPopup()">Yes</button>
       </div>
     </img>
     <!--Submit Popup-->
@@ -98,7 +98,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       <img class = "w-16 mb-3" src="assets/submit.png" alt="Success">
       <h2 class = "m-0 text-2xl text-white">Success!</h2>
       <p class = "text-sm text-white">Please wait for further instructions from the registrar.</p>
-      <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+      <button class="bg-[rgb(45,_174,_40)] border-[black] text-white cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
     </div>
 
   </section>
