@@ -38,16 +38,16 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
         <form action="adminPage.php" method="POST" enctype="multipart/form-data">
           <!-- Checklist -->
           <div class="checklist-box">
-            <div class="checklist-header">
-              <h4>Requirements</h4>
+            <!-- .checklist-header-->
+            <div class="flex justify-between items-center">
+               <!-- main div.inner-box .checklist-header h4-->
+              <h4 class="pb-0 text-lg font-bold">Requirements</h4>
               <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
             </div>
             <ul class="checklist">
               <?php
-
               $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
               $requirements = json_decode($requirementsSet, true);
-
               foreach ($requirements as $req) { ?>
                 <li id="item-<?= $req['documentType'] ?>">
                   <a href="#anchor-<?= $req['documentType'] ?>"><?= str_replace("-", " ", $req['documentType'])  ?></a>
@@ -61,6 +61,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           </div>
 
           <div class="ml-5">
+            <!-- .name-card h1.applicant-name-->
             <h1 class="text-3xl font-extrabold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
             <p class="my-2.5 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
             <p class="my-2.5 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
@@ -71,16 +72,29 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <!-- The next php include is the documents part of the page -->
 
           <?php include "components/documents/getApplicantDocuments.php" ?>
+<<<<<<< HEAD
 
           <div class="flex justify-end">
             <button type="button" class="cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
+=======
+           
+          <!-- .submit-wrapper-->
+          <div class="submit-wrapper flex justify-end">
+            <!-- .submit-btn-->
+            <button type="button" class="submit-btn text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
+>>>>>>> 41d0cc1ecb5b78add06749c428a16502e1af1ab6
           </div>
 
         </form>
 
       </div>
     </main>
+    
+    <!--Comment ko muna 'to, nakalitaw eh-->
+    <?php// include "components/navigation/footer.php" ?>
+    
 
+<<<<<<< HEAD
     <?php include "components/navigation/footer.php" ?>
 
     <!--Confirmation Popup-->
@@ -99,6 +113,25 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       <h2 class = "m-0 text-2xl text-white">Success!</h2>
       <p class = "text-sm text-white">Please wait for further instructions from the registrar.</p>
       <button class="bg-[rgb(45,_174,_40)] border-[black] text-white cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+=======
+    <!-- Confirmation Popup -->
+    <div class="popup hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
+      <img class="w-16 mb-3" src="assets/confirm.png" alt="Confirm">
+      <h2 class="m-0 text-2xl text-white">Submit Documents</h2>
+      <p class="text-sm text-white">Are you sure you want to submit?</p>
+      <div class="yes-no-buttons space-x-4 my-8 mx-8">
+        <button class="no bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 ml-2 hover:bg-[#0C5AAD]" onclick="closeConfirm()">No</button>
+        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit" onclick="showPopup()">Yes</button>
+      </div>
+    </div>
+
+    <!-- Submit Popup -->
+    <div class="popup hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="successPopup">
+      <img class="w-16 mb-3" src="assets/submit.png" alt="Success">
+      <h2 class="m-0 text-2xl text-white">Success!</h2>
+      <p class="text-sm text-white">Please wait for further instructions from the registrar.</p>
+      <button class="to-application-tracking bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+>>>>>>> 41d0cc1ecb5b78add06749c428a16502e1af1ab6
     </div>
 
   </section>

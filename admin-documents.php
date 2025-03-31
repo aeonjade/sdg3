@@ -38,13 +38,16 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
+      <!-- .checklist-box minimized -->
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
+          <!-- .checklist header -->
           <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
             <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="w-4 h-4 filter brightness-0 invert [transition:transform_0.3s_ease]">
           </div>
+          <!-- .checklist -->
           <ul class="list-none pl-0 m-0 transition-opacity">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
@@ -53,8 +56,10 @@ $requirements = json_decode($requirementsSet, true);
               <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
                 <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
+                  <!-- .icon check -->
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
                 <?php else: ?>
+                  <!-- . icon wrong -->
                   <img src="assets/Wrong-Icon.png" class="w-4 h-4 ml-8">
                 <?php endif; ?>
               </li>
@@ -64,19 +69,23 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Applicant Info -->
+         <!-- .name-card -->
         <div class="ml-5">
+          <!-- applicant-name -->
           <h1 class="text-3xl font-bold my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
           <p>First Choice: <?= htmlspecialchars($firstChoice); ?></p>
           <p>Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
         </div>
 
         <!-- Document Set Title -->
+         <!-- set -->
         <h2 class="ml-5 text-xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
         <!-- Document Sections -->
         <?php include "components/documents/getAdminDocuments.php" ?>
 
         <!--Submit Popup-->
+        <!-- .popup, h2, p, button -->
         <div class="popup" id="successPopup" style="display: none;">
           <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success">
           <h2 class="m-0 text-2xl text-[#fff]">Success</h2>
@@ -85,6 +94,7 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Reject Message Pop-up -->
+         <!-- .popup, h2, -->
         <div class="text-[black] fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[white] p-4 border-2 border-[solid] border-[#ccc] rounded-xl [box-shadow:0_2px_10px_rgba(0,_0,_0,_0.2)]" id="rejectPopup" style="display: none;">
           <h2 style="color: black; padding-bottom:5px ;">Reject Message</h2>
           <textarea id="rejectMessageInput" rows="4" style="width: 100%; resize: none;"></textarea>

@@ -62,7 +62,7 @@ function checkAllFilesUploaded() {
     submitBtn.classList.add("enabled");
   } else {
     submitBtn.classList.remove("enabled");
-  }
+  } 
 }
 
 const allowedFormats = {
