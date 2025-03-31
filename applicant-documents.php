@@ -46,10 +46,8 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
             </div>
             <ul class="checklist">
               <?php
-
               $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
               $requirements = json_decode($requirementsSet, true);
-
               foreach ($requirements as $req) { ?>
                 <li id="item-<?= $req['documentType'] ?>">
                   <a href="#anchor-<?= $req['documentType'] ?>"><?= str_replace("-", " ", $req['documentType'])  ?></a>
@@ -85,8 +83,10 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
 
       </div>
     </main>
-
-    <?php include "components/navigation/footer.php" ?>
+    
+    <!--Comment ko muna 'to, nakalitaw eh-->
+    <?php// include "components/navigation/footer.php" ?>
+    
 
     <!--Confirmation Popup-->
     <div class = "hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
@@ -99,13 +99,13 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       </div>
     </img>
     <!--Submit Popup-->
-    <div class= "hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="successPopup">
-      <img class = "w-16 mb-3" src="assets/submit.png" alt="Success">
-      <h2 class = "m-0 text-2xl text-white">Success!</h2>
-      <p class = "text-sm text-white">Please wait for further instructions from the registrar.</p>
-      <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+      <div class= "hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="successPopup">
+        <img class = "w-16 mb-3" src="assets/submit.png" alt="Success">
+        <h2 class = "m-0 text-2xl text-white">Success!</h2>
+        <p class = "text-sm text-white">Please wait for further instructions from the registrar.</p>
+        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold  [transition:0.3s] flex-[1] px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+      </div>
     </div>
-
   </section>
 
 </body>
