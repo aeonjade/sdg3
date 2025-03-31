@@ -38,8 +38,10 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
         <form action="adminPage.php" method="POST" enctype="multipart/form-data">
           <!-- Checklist -->
           <div class="checklist-box">
-            <div class="checklist-header">
-              <h4>Requirements</h4>
+            <!-- .checklist-header-->
+            <div class="flex justify-between items-center">
+               <!-- main div.inner-box .checklist-header h4-->
+              <h4 class="pb-0 text-lg">Requirements</h4>
               <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
             </div>
             <ul class="checklist">
@@ -61,6 +63,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           </div>
 
           <div class="ml-5">
+            <!-- .name-card h1.applicant-name-->
             <h1 class="text-3xl font-extrabold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
             <p class="my-2.5 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
             <p class="my-2.5 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
@@ -71,8 +74,10 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <!-- The next php include is the documents part of the page -->
 
           <?php include "components/documents/getApplicantDocuments.php" ?>
-
+           
+          <!-- .submit-wrapper-->
           <div class="flex justify-end">
+            <!-- .submit-btn-->
             <button type="button" class="text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
           </div>
 
