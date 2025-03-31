@@ -35,7 +35,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
     <main class="flex flex-col h-full overflow-auto">
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
 
-        <form action="adminPage.php" method="POST" enctype="multipart/form-data">
+        <form action="admin-documents.php" method="POST" enctype="multipart/form-data">
           <!-- Checklist -->
           <div class="checklist-box">
             <!-- .checklist-header-->
