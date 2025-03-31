@@ -76,7 +76,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <!-- .submit-wrapper-->
           <div class="submit-wrapper flex justify-end">
             <!-- .submit-btn-->
-            <button type="button" class="submit-btn text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
+            <button type="button" class="submit-btn text-[white] cursor-not-allowed text-gray-400 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-11 py-2 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
           </div>
 
         </form>
