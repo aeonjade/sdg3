@@ -104,7 +104,7 @@ $requirements = json_decode($requirementsSet, true);
           </div>
         </div>
     </main>
-    <?php include "components/navigation/footer.php" ?>
+    <?php //include "components/navigation/footer.php" ?>
   </section>
 
   <script>

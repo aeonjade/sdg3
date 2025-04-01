@@ -311,32 +311,62 @@ function openSampleImage(documentType) {
   }
 }
 
-// Attach event listeners to requirement titles
+//Add eventlistener dun sa mga tinanggal ko yung onClick 
 document.addEventListener("DOMContentLoaded", function () {
+  // Requirement Links - Sample Image Viewer
   const requirementLinks = document.querySelectorAll(".checklist li a");
   requirementLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default link behavior
-      const documentType = this.parentElement.id.replace("item-", ""); // Extract document type
-      openSampleImage(documentType); // Open image in new tab
+      event.preventDefault();
+      const documentType = this.parentElement.id.replace("item-", "");
+      openSampleImage(documentType);
     });
   });
+
+  // Toggle Checklist Icon
+  const chevronIcon = document.querySelector(".chevron-icon");
+  if (chevronIcon) {
+    chevronIcon.addEventListener("click", toggleChecklist);
+  }
+
+  // Submit Button
+  const submitBtn = document.querySelector(".submit-btn");
+  if (submitBtn) {
+    submitBtn.addEventListener("click", showConfirm);
+  }
+
+  // Confirmation Popup Buttons
+  const noBtn = document.querySelector(".no");
+  if (noBtn) {
+    noBtn.addEventListener("click", closeConfirm);
+  }
+
+  const yesBtn = document.querySelector("#confirmationPopup button[type='submit']");
+  if (yesBtn) {
+    yesBtn.addEventListener("click", showPopup);
+  }
+
+  // Success Popup Button
+  const proceedBtn = document.querySelector(".to-application-tracking");
+  if (proceedBtn) {
+    proceedBtn.addEventListener("click", submitForm);
+  }
 });
 
 function submitForm() {
-  // Actually submit the form
   document.querySelector("form").submit();
 }
 
 function showConfirm() {
   document.getElementById("confirmationPopup").style.display = "flex";
-  document.querySelector(".inner-box").style.overflow = "hidden";
-  document.querySelector("main").classList.add("blur-background");
+  document.querySelector(".inner-box")?.classList.add("overflow-hidden"); 
+  document.querySelector("main")?.classList.add("blur-background"); //pag wala yung ?, di gagana yung blur bg
 }
+
 function closeConfirm() {
   document.getElementById("confirmationPopup").style.display = "none";
-  document.querySelector(".inner-box").style.overflow = "auto";
-  document.querySelector("main").classList.remove("blur-background");
+  document.querySelector(".inner-box")?.classList.remove("overflow-hidden");
+  document.querySelector("main")?.classList.remove("blur-background");
 }
 
 function showPopup() {
