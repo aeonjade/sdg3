@@ -15,8 +15,6 @@ function triggerUpload(id) {
   document.getElementById(id).click();
 }
 
-
-
 function removeFile(id) {
   const input = document.getElementById(id);
   const preview = document.getElementById("preview-" + id);
@@ -67,7 +65,7 @@ function toggleChecklist() {
       : "rotate(0deg)";
   }
 }
-
+ 
 document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
     const id = this.id;
@@ -143,3 +141,97 @@ document.querySelectorAll(".file-input").forEach((input) => {
     checkAllFilesUploaded();
   });
 });
+
+/*Pasted from admin-documents php */
+document.addEventListener('DOMContentLoaded', () => {
+  let namefile;
+  let currentRejectId = null;
+
+  window.showRejectPopup = function(id, filename) {
+    namefile = filename;
+    currentRejectId = id;
+
+    const popup = document.getElementById('rejectPopup');
+    if (popup) {
+      popup.classList.remove('hidden');
+    }
+  };
+
+  window.cancelReject = function() {
+    const popup = document.getElementById('rejectPopup');
+    if (popup) {
+      popup.classList.add('hidden');
+    }
+  };
+
+  window.saveRejectMessage = function() {
+    const message = document.getElementById('rejectMessageInput').value;
+    console.log("Rejected with message:", message);
+
+    const formData = new FormData();
+    formData.append("fileName", namefile);
+    formData.append("rejectReason", message);
+
+    fetch("php/updateRejectMessage.php", {
+      method: "POST",
+      body: formData,
+    }).then(res => res.text());
+
+    cancelReject();
+
+    const approveText = document.querySelector(`#actions-${currentRejectId} .approve-text`);
+    const rejectText = document.querySelector(`#actions-${currentRejectId} .reject-text`);
+    const rejectIcon = document.getElementById(`reject-icon-${currentRejectId}`);
+    const approveIcon = document.getElementById(`approve-icon-${currentRejectId}`);
+
+    if (approveText) approveText.style.display = "none";
+    if (rejectText) rejectText.style.display = "none";
+
+    if (rejectIcon) rejectIcon.classList.remove("hidden");
+    if (approveIcon) approveIcon.classList.add("hidden");
+  };
+
+  window.downloadSampleFile = function(filePath) {
+    const link = document.createElement("a");
+    link.href = filePath;
+    link.download = filePath.split("/").pop();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  window.toggleChecklist = function() {
+    const checklist = document.getElementById("checklistBox");
+    checklist.classList.toggle("minimized");
+  };
+
+  window.handleDecision = function(id, action) {
+    const approveText = document.querySelector(`#actions-${id} .approve-text`);
+    const rejectText = document.querySelector(`#actions-${id} .reject-text`);
+    const approveIcon = document.getElementById(`approve-icon-${id}`);
+    const rejectIcon = document.getElementById(`reject-icon-${id}`);
+
+    if (approveText) approveText.style.display = "none";
+    if (rejectText) rejectText.style.display = "none";
+
+    if (action === "approve") {
+      if (approveIcon) approveIcon.classList.remove("hidden");
+      if (rejectIcon) rejectIcon.classList.add("hidden");
+    } else {
+      if (rejectIcon) rejectIcon.classList.remove("hidden");
+      if (approveIcon) approveIcon.classList.add("hidden");
+    }
+  };
+
+  const submitBtn = document.getElementById('submitBtn');
+  const successPopup = document.getElementById('successPopup');
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function () {
+      if (!submitBtn.disabled && successPopup) {
+        successPopup.style.display = 'block';
+      }
+    });
+  }
+});
+
