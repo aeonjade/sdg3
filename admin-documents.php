@@ -85,12 +85,16 @@ $requirements = json_decode($requirementsSet, true);
 
         <!--Submit Popup-->
         <!-- .popup, h2, p, button -->
-        <div class="popup" id="successPopup" style="display: none;">
-          <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success">
-          <h2 class="m-0 text-2xl text-[#fff]">Success</h2>
-          <p class="text-sm text-[#f5f5f5]">Please wait for further instructions from the registrar</p>
-          <button class="bg-[#4CAF50] text-[white] border-[none] px-4 py-2 mt-4 cursor-pointer text-base rounded-md hover:bg-[#45a049]" type="submit">Back to Document Upload</button>
+        <!--Submit Popup-->
+        <div id="successPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+          <div class="bg-gradient-to-b from-purple-500 to-purple-700 p-8 rounded-2xl text-center shadow-xl text-white w-[90%] max-w-md">
+            <img class="w-12 h-12 mx-auto mb-4" src="assets/check-icon.png" alt="Success Icon">
+            <h2 class="text-2xl font-bold mb-2">Success</h2>
+            <p class="text-sm mb-6">Please wait for further instructions from the registrar</p>
+            <button onclick="window.location.reload()" class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
+          </div>
         </div>
+
 
         <!-- Reject Message Pop-up -->
          <!-- .popup, h2, -->
