@@ -7,7 +7,9 @@ if (!file_exists($uploadDir)) {
 foreach ($requirements as $req) {
     $docType = $req['documentType'];
     $inputName = $docType;
-    $fileUploaded = isset($_FILES[$inputName]) && $_FILES[$inputName]['error'] === 0;
+
+    $fileUploaded = isset($_FILES[$inputName]) && $_FILES[$inputName]['error'] === 0 && $_FILES[$inputName]['size'] > 0;
+
     $fileName = $fileUploaded ? basename($_FILES[$inputName]['name']) : null;
 
     if ($fileUploaded) {
@@ -37,13 +39,11 @@ foreach ($requirements as $req) {
 
                     <!-- Actions + icons -->
                     <div class="flex items-center gap-2" id="actions-<?= $req['documentType'] ?>" data-status="pending">
-                        <!-- Action buttons -->
                         <span class="text-red-500 font-bold cursor-pointer reject-text"
                               onclick="showRejectPopup('<?= $req['documentType'] ?>', '<?= $fileName ?>')">Reject</span>
                         <span class="text-green-500 font-bold cursor-pointer approve-text"
                               onclick="handleDecision('<?= $req['documentType'] ?>', 'approve')">Approve</span>
 
-                        <!-- Status icons -->
                         <img src="assets/Wrong-Icon.png" class="reject-icon hidden w-5 h-5" id="reject-icon-<?= $req['documentType'] ?>" alt="Rejected">
                         <img src="assets/Check-Icon.png" class="approve-icon hidden w-5 h-5" id="approve-icon-<?= $req['documentType'] ?>" alt="Approved">
                     </div>
@@ -57,6 +57,7 @@ foreach ($requirements as $req) {
 
 <!-- Submit Button -->
 <div class="flex justify-end">
-<button type="button" id="submitBtn" class="bg-[#c7acee] border-2 border-[#6a11cb] text-[#6c6c6c] font-bold px-8 py-2 rounded-none transition-all cursor-not-allowed" disabled>Submit</button>
-
+    <button type="button" id="submitBtn" class="bg-[#c7acee] border-2 border-[#6a11cb] text-[#6c6c6c] font-bold px-8 py-2 rounded-none transition-all cursor-not-allowed" disabled>
+        Submit
+    </button>
 </div>

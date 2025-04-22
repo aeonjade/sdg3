@@ -15,8 +15,8 @@ function removeFile(id) {
   const uploadBtn = container.querySelector(".upload-btn");
   const errorMessage = container.querySelector(".error-message");
 
-  // fetch remove
-  let formData = new FormData();
+  // 🗑️ Backend removal
+  const formData = new FormData();
   formData.append("documentType", id);
 
   fetch("php/removeDocument.php", {
@@ -24,19 +24,26 @@ function removeFile(id) {
     body: formData,
   }).then((response) => response.text());
 
-  // Reset file input
-  input.value = "";
-  preview.classList.add("hidden");
+  // 🧼 Reset file input
+  if (input) input.value = "";
 
-  // Show upload button again (using opacity method)
-  uploadBtn.style.display = "block";
-  uploadBtn.style.pointerEvents = "auto";
-  uploadBtn.style.height = "";
+  // 🧼 Hide preview
+  if (preview) preview.classList.add("hidden");
 
-  // Hide error message
-  errorMessage.classList.add("hidden");
+  // 🔁 Show upload button
+  if (uploadBtn) {
+    uploadBtn.style.display = "block";
+    uploadBtn.style.pointerEvents = "auto";
+    uploadBtn.style.height = "";
+  }
 
-  // Reset checklist icons
+  // ❌ Clear error message
+  if (errorMessage) {
+    errorMessage.textContent = "";
+    errorMessage.classList.add("hidden");
+  }
+
+  // ✅ Reset checklist icons
   const checklistIcon = document.querySelector(`#item-${id} .info`);
   const checkIcon = document.querySelector(`#item-${id} .check`);
   if (checklistIcon && checkIcon) {
@@ -44,10 +51,10 @@ function removeFile(id) {
     checkIcon.style.display = "none";
   }
 
-  // Remove from memory
+  // 🧠 Clear from memory
   delete uploadedFiles[id];
 
-  // Check if all files are uploaded
+  // 🚦 Re-check if form is valid
   checkAllFilesUploaded();
 }
 
