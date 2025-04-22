@@ -48,7 +48,7 @@ function checkAllFilesUploaded() {
   );
   if (submitBtn) submitBtn.disabled = !allUploaded;
 }
-
+ 
 function isValidFile(id, file) {
   const extension = file.name.split(".").pop().toLowerCase();
   return allowedFormats[id]?.includes("." + extension);
@@ -256,3 +256,30 @@ function checkAllReviewed() {
   }
 }
 
+//All onclicks in admin-document
+document.addEventListener('DOMContentLoaded', () => {
+  const chevronIcon = document.getElementById('chevron-icon');
+  const checklistContent = document.getElementById('checklistContent');
+
+  if (chevronIcon) {
+    chevronIcon.addEventListener('click', () => {
+      checklistContent.classList.toggle('hidden');
+      chevronIcon.classList.toggle('rotate-180');
+    });
+  }
+
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => window.location.reload());
+  }
+
+  const saveReject = document.getElementById('save-reject');
+  if (saveReject) {
+    saveReject.addEventListener('click', saveRejectMessage);
+  }
+
+  const cancelRejectBtn = document.getElementById('cancel-reject');
+  if (cancelRejectBtn) {
+    cancelRejectBtn.addEventListener('click', cancelReject);
+  }
+});

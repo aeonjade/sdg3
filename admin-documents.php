@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+ 
 $applicantName = $_SESSION['applicantName'] ?? "Ms. Galve-Abad";
 $firstChoice = $_SESSION['firstChoice'] ?? "Bachelor of Science in Information Technology";
 $secondChoice = $_SESSION['secondChoice'] ?? "Bachelor of Science in Civil Engineering";
@@ -44,7 +44,7 @@ $requirements = json_decode($requirementsSet, true);
           <!-- .checklist header -->
           <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
-            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-4 h-4 filter brightness-0 invert cursor-pointer transform transition-transform duration-300"/>
+            <img src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-4 h-4 filter brightness-0 invert cursor-pointer transform transition-transform duration-300"/>
           </div>
           <!-- .checklist -->
           <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
@@ -91,11 +91,10 @@ $requirements = json_decode($requirementsSet, true);
             <img class="w-12 h-12 mx-auto mb-4" src="assets/check-icon.png" alt="Success Icon">
             <h2 class="text-2xl font-bold mb-2">Success</h2>
             <p class="text-sm mb-6">Please wait for further instructions from the registrar</p>
-            <button onclick="window.location.reload()" class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
+            <button class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
           </div>
         </div>
-
-
+        
         <!-- Reject Message Pop-up -->
          <!-- .popup, h2, -->
          <div id="rejectPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden">
@@ -103,8 +102,8 @@ $requirements = json_decode($requirementsSet, true);
             <h2 class="text-lg font-medium mb-2">Reject Message</h2>
             <textarea id="rejectMessageInput" rows="4" class="w-full p-2 border rounded resize-none"></textarea>
             <div class="flex justify-end gap-2 mt-3">
-              <button onclick="saveRejectMessage()" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
-              <button onclick="cancelReject()" class="border px-4 py-1 rounded">Cancel</button>
+              <button class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
+              <button class="border px-4 py-1 rounded">Cancel</button>
             </div>
           </div>
         </div>
