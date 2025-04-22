@@ -55,16 +55,16 @@ function isValidFile(id, file) {
 }
 
 function toggleChecklist() {
-  const checklistBox = document.querySelector(".checklist-box");
-  const chevronIcon = document.querySelector(".chevron-icon");
+  const checklistContent = document.getElementById("checklistContent");
+  const chevronIcon = document.getElementById("chevron-icon");
 
-  checklistBox.classList.toggle("minimized");
-  if (chevronIcon) {
-    chevronIcon.style.transform = checklistBox.classList.contains("minimized")
-      ? "rotate(180deg)"
-      : "rotate(0deg)";
-  }
+  // Toggle visibility
+  checklistContent.classList.toggle("hidden");
+
+  // Toggle chevron rotation
+  chevronIcon.classList.toggle("rotate-180");
 }
+
  
 document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
@@ -204,12 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.click();
     document.body.removeChild(link);
   };
-
-  window.toggleChecklist = function() {
-    const checklist = document.getElementById("checklistBox");
-    checklist.classList.toggle("minimized");
-  };
-
+  
   window.handleDecision = function(id, action) {
     const approveText = document.querySelector(`#actions-${id} .approve-text`);
     const rejectText = document.querySelector(`#actions-${id} .reject-text`);

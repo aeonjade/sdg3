@@ -38,16 +38,16 @@ $requirements = json_decode($requirementsSet, true);
 
     <main class="flex flex-col h-full overflow-auto">
       <!-- .checklist-box minimized -->
-      <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
+      <div id="checklist-box" class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
           <!-- .checklist header -->
           <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
-            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="w-4 h-4 filter brightness-0 invert [transition:transform_0.3s_ease]">
+            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-4 h-4 filter brightness-0 invert cursor-pointer transform transition-transform duration-300"/>
           </div>
           <!-- .checklist -->
-          <ul class="list-none pl-0 m-0 transition-opacity">
+          <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
