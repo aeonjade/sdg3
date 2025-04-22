@@ -15,7 +15,7 @@ function removeFile(id) {
   const uploadBtn = container.querySelector(".upload-btn");
   const errorMessage = container.querySelector(".error-message");
 
-  // 🗑️ Backend removal
+  // Backend dynamic file remove
   const formData = new FormData();
   formData.append("documentType", id);
 
@@ -24,26 +24,26 @@ function removeFile(id) {
     body: formData,
   }).then((response) => response.text());
 
-  // 🧼 Reset file input
+  // Reset file input
   if (input) input.value = "";
 
-  // 🧼 Hide preview
+  // Hide preview
   if (preview) preview.classList.add("hidden");
 
-  // 🔁 Show upload button
+  // Show upload button
   if (uploadBtn) {
     uploadBtn.style.display = "block";
     uploadBtn.style.pointerEvents = "auto";
     uploadBtn.style.height = "";
   }
 
-  // ❌ Clear error message
+  // Clear error message
   if (errorMessage) {
     errorMessage.textContent = "";
     errorMessage.classList.add("hidden");
   }
 
-  // ✅ Reset checklist icons
+  // Reset checklist icons
   const checklistIcon = document.querySelector(`#item-${id} .info`);
   const checkIcon = document.querySelector(`#item-${id} .check`);
   if (checklistIcon && checkIcon) {
@@ -51,10 +51,10 @@ function removeFile(id) {
     checkIcon.style.display = "none";
   }
 
-  // 🧠 Clear from memory
+  // Clear from memory / database
   delete uploadedFiles[id];
 
-  // 🚦 Re-check if form is valid
+  // Re-check if form is valid
   checkAllFilesUploaded();
 }
 

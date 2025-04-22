@@ -7,7 +7,8 @@ if (!file_exists($uploadDir)) {
 foreach ($requirements as $req) {
     $docType = $req['documentType'];
     $inputName = $docType;
-
+    
+    // double check if file exists, and uploaded successfully, and isn't empty before saving to db
     $fileUploaded = isset($_FILES[$inputName]) && $_FILES[$inputName]['error'] === 0 && $_FILES[$inputName]['size'] > 0;
 
     $fileName = $fileUploaded ? basename($_FILES[$inputName]['name']) : null;
