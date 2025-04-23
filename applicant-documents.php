@@ -83,7 +83,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
 
       </div>
     </main>
-    
+     
     <!--Comment ko muna 'to, nakalitaw eh-->
     <?php// include "components/navigation/footer.php" ?>
     

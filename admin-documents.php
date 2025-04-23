@@ -37,7 +37,7 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
-      <!-- .checklist-box minimized -->
+      <!-- .checklist-box minimized --> 
       <div id="checklist-box" class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
@@ -53,7 +53,7 @@ $requirements = json_decode($requirementsSet, true);
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
               <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
-                <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
+                <a class="text-white no-underline hover:underline cursor-pointer" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
                   <!-- .icon check -->
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">

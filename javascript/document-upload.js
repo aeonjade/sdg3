@@ -255,7 +255,7 @@ const sampleImages = {
   "ID-Picture": "assets/samples/ID-Picture.jpg",
 };
 
-// Function to open the sample image in a modal
+// Function to open the sample image in a modal - Checklist
 function openSampleImage(documentType) {
   if (sampleImages[documentType]) {
     // Create modal elements
