@@ -193,8 +193,18 @@ document.addEventListener('DOMContentLoaded', () => {
   
     checkAllReviewed();
   };
-  
 
+  // Event listeners for the Save and Cancel buttons
+  const saveRejectBtn = document.getElementById('saveRejectBtn');
+  if (saveRejectBtn) {
+    saveRejectBtn.addEventListener('click', saveRejectMessage);
+  }
+
+  const cancelRejectBtn = document.getElementById('cancelRejectBtn');
+  if (cancelRejectBtn) {
+    cancelRejectBtn.addEventListener('click', cancelReject);
+  }
+  
   window.downloadSampleFile = function(filePath) {
     const link = document.createElement("a");
     link.href = filePath;
@@ -356,3 +366,4 @@ function openSampleImage(documentType) {
     alert("Sample image not available.");
   }
 }
+

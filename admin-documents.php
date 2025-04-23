@@ -37,7 +37,7 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
-      <!-- .checklist-box minimized --> 
+      <!-- .checklist-box minimized -->  
       <div id="checklist-box" class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
@@ -64,7 +64,6 @@ $requirements = json_decode($requirementsSet, true);
               </li>
             <?php } ?>
           </ul>
-
         </div>
 
         <!-- Applicant Info -->
@@ -96,17 +95,17 @@ $requirements = json_decode($requirementsSet, true);
         </div>
         
         <!-- Reject Message Pop-up -->
-         <!-- .popup, h2, -->
-         <div id="rejectPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div id="rejectPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden">
           <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-300 w-[350px]">
             <h2 class="text-lg font-medium mb-2">Reject Message</h2>
             <textarea id="rejectMessageInput" rows="4" class="w-full p-2 border rounded resize-none"></textarea>
             <div class="flex justify-end gap-2 mt-3">
-              <button class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
-              <button class="border px-4 py-1 rounded">Cancel</button>
+              <button id="saveRejectBtn" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
+              <button id="cancelRejectBtn" class="border px-4 py-1 rounded">Cancel</button>
             </div>
           </div>
         </div>
+
 
     </main>
     <?php //include "components/navigation/footer.php" ?>
