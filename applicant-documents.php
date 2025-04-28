@@ -40,7 +40,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <div class="checklist-box">
             <!-- .checklist-header-->
             <div class="flex justify-between items-center">
-               <!-- main div.inner-box .checklist-header h4-->
+              <!-- main div.inner-box .checklist-header h4-->
               <h4 class="pb-0 text-lg font-bold">Requirements</h4>
               <img src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
             </div>
@@ -56,7 +56,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
                 </li>
               <?php
               }
-              ?> 
+              ?>
             </ul>
           </div>
 
@@ -72,21 +72,19 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <!-- The next php include is the documents part of the page -->
 
           <?php include "components/documents/getApplicantDocuments.php" ?>
-           
+
           <!-- .submit-wrapper-->
           <div class="submit-wrapper flex justify-end">
             <!-- .submit-btn-->
-            <button type="button" class="submit-btn text-[white] cursor-not-allowed border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled>Submit</>
+            <button type="button" class="submit-btn text-[gray] cursor-not-allowed border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled>Submit</>
           </div>
 
         </form>
 
       </div>
     </main>
-     
-    <!--Comment ko muna 'to, nakalitaw eh-->
-    <?php// include "components/navigation/footer.php" ?>
-    
+
+    <?php include "components/navigation/footer.php" ?>
 
     <!-- Confirmation Popup -->
     <div class="popup hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
