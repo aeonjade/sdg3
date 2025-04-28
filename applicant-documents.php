@@ -35,14 +35,14 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
     <main class="flex flex-col h-full overflow-auto">
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
 
-        <form action="adminPage.php" method="POST" enctype="multipart/form-data">
+        <form action="admin-documents.php" method="POST" enctype="multipart/form-data">
           <!-- Checklist -->
           <div class="checklist-box">
             <!-- .checklist-header-->
             <div class="flex justify-between items-center">
                <!-- main div.inner-box .checklist-header h4-->
               <h4 class="pb-0 text-lg font-bold">Requirements</h4>
-              <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
+              <img src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
             </div>
             <ul class="checklist">
               <?php
@@ -56,7 +56,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
                 </li>
               <?php
               }
-              ?>
+              ?> 
             </ul>
           </div>
 
@@ -76,7 +76,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
           <!-- .submit-wrapper-->
           <div class="submit-wrapper flex justify-end">
             <!-- .submit-btn-->
-            <button type="button" class="submit-btn text-[white] cursor-not-allowed text-gray-400 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-11 py-2 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
+            <button type="button" class="submit-btn text-[white] cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled onclick="showConfirm()">Submit</>
           </div>
 
         </form>
@@ -94,8 +94,8 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       <h2 class="m-0 text-2xl text-white">Submit Documents</h2>
       <p class="text-sm text-white">Are you sure you want to submit?</p>
       <div class="yes-no-buttons space-x-4 my-8 mx-8">
-        <button class="no bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 ml-2 hover:bg-[#0C5AAD]" onclick="closeConfirm()">No</button>
-        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit" onclick="showPopup()">Yes</button>
+        <button class="no bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 ml-2 hover:bg-[#0C5AAD]">No</button>
+        <button class="bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 mr-4 hover:bg-[#0C5AAD]" type="submit">Yes</button>
       </div>
     </div>
 
@@ -104,7 +104,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
       <img class="w-16 mb-3" src="assets/submit.png" alt="Success">
       <h2 class="m-0 text-2xl text-white">Success!</h2>
       <p class="text-sm text-white">Please wait for further instructions from the registrar.</p>
-      <button class="to-application-tracking bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit" onclick="submitForm()">Proceed to Application Tracking</button>
+      <button class="to-application-tracking bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 m-8 hover:bg-[#0C5AAD]" type="submit">Proceed to Application Tracking</button>
     </div>
 
   </section>
