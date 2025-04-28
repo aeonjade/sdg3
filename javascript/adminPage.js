@@ -15,8 +15,6 @@ function triggerUpload(id) {
   document.getElementById(id).click();
 }
 
-
-
 function removeFile(id) {
   const input = document.getElementById(id);
   const preview = document.getElementById("preview-" + id);
@@ -50,24 +48,23 @@ function checkAllFilesUploaded() {
   );
   if (submitBtn) submitBtn.disabled = !allUploaded;
 }
-
+ 
 function isValidFile(id, file) {
   const extension = file.name.split(".").pop().toLowerCase();
   return allowedFormats[id]?.includes("." + extension);
 }
 
 function toggleChecklist() {
-  const checklistBox = document.querySelector(".checklist-box");
-  const chevronIcon = document.querySelector(".chevron-icon");
+  const checklistContent = document.getElementById("checklistContent");
+  const chevronIcon = document.getElementById("chevron-icon");
 
-  checklistBox.classList.toggle("minimized");
-  if (chevronIcon) {
-    chevronIcon.style.transform = checklistBox.classList.contains("minimized")
-      ? "rotate(180deg)"
-      : "rotate(0deg)";
-  }
+  // Toggle visibility
+  checklistContent.classList.toggle("hidden");
+
+  // Toggle chevron rotation
+  chevronIcon.classList.toggle("rotate-180");
 }
-
+ 
 document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
     const id = this.id;
@@ -143,3 +140,230 @@ document.querySelectorAll(".file-input").forEach((input) => {
     checkAllFilesUploaded();
   });
 });
+
+/*Pasted from admin-documents php */
+document.addEventListener('DOMContentLoaded', () => {
+  let namefile;
+  let currentRejectId = null;
+
+  window.showRejectPopup = function(id, filename) {
+    namefile = filename;
+    currentRejectId = id;
+
+    const popup = document.getElementById('rejectPopup');
+    if (popup) {
+      popup.classList.remove('hidden');
+    }
+  };
+
+  window.cancelReject = function() {
+    const popup = document.getElementById('rejectPopup');
+    if (popup) {
+      popup.classList.add('hidden');
+    }
+  };
+
+  window.saveRejectMessage = function () {
+    const message = document.getElementById('rejectMessageInput').value;
+  
+    const formData = new FormData();
+    formData.append("fileName", namefile);
+    formData.append("rejectReason", message);
+  
+    fetch("php/updateRejectMessage.php", {
+      method: "POST",
+      body: formData,
+    }).then(res => res.text());
+  
+    cancelReject();
+  
+    const approveText = document.querySelector(`#actions-${currentRejectId} .approve-text`);
+    const rejectText = document.querySelector(`#actions-${currentRejectId} .reject-text`);
+    const rejectIcon = document.getElementById(`reject-icon-${currentRejectId}`);
+    const approveIcon = document.getElementById(`approve-icon-${currentRejectId}`);
+    const actionsDiv = document.getElementById(`actions-${currentRejectId}`);
+  
+    if (approveText) approveText.style.display = "none";
+    if (rejectText) rejectText.style.display = "none";
+  
+    if (rejectIcon) rejectIcon.classList.remove("hidden");
+    if (approveIcon) approveIcon.classList.add("hidden");
+  
+    if (actionsDiv) actionsDiv.setAttribute("data-status", "rejected");
+  
+    checkAllReviewed();
+  };
+
+  // Event listeners for the Save and Cancel buttons
+  const saveRejectBtn = document.getElementById('saveRejectBtn');
+  if (saveRejectBtn) {
+    saveRejectBtn.addEventListener('click', saveRejectMessage);
+  }
+
+  const cancelRejectBtn = document.getElementById('cancelRejectBtn');
+  if (cancelRejectBtn) {
+    cancelRejectBtn.addEventListener('click', cancelReject);
+  }
+  
+  window.downloadSampleFile = function(filePath) {
+    const link = document.createElement("a");
+    link.href = filePath;
+    link.download = filePath.split("/").pop();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
+  window.handleDecision = function(id, action) {
+    const approveText = document.querySelector(`#actions-${id} .approve-text`);
+    const rejectText = document.querySelector(`#actions-${id} .reject-text`);
+    const approveIcon = document.getElementById(`approve-icon-${id}`);
+    const rejectIcon = document.getElementById(`reject-icon-${id}`);
+    const actionsDiv = document.getElementById(`actions-${id}`);
+  
+    if (approveText) approveText.style.display = "none";
+    if (rejectText) rejectText.style.display = "none";
+  
+    if (action === "approve") {
+      if (approveIcon) approveIcon.classList.remove("hidden");
+      if (rejectIcon) rejectIcon.classList.add("hidden");
+      if (actionsDiv) actionsDiv.setAttribute("data-status", "approved");
+    }
+    checkAllReviewed();
+  };
+  
+
+  const submitBtn = document.getElementById('submitBtn');
+  const successPopup = document.getElementById('successPopup');
+
+  if (submitBtn && successPopup) {
+    submitBtn.addEventListener('click', () => {
+      if (!submitBtn.disabled) {
+        successPopup.classList.remove('hidden');
+      }
+    });
+  }  
+});
+
+function checkAllReviewed() {
+  const allReviewed = Array.from(document.querySelectorAll('[id^="actions-"]')).every(container => {
+    const status = container.getAttribute('data-status');
+    return status === 'approved' || status === 'rejected';
+  });
+
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    if (allReviewed) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('bg-[#c7acee]', 'text-[#6c6c6c]', 'cursor-not-allowed');
+      submitBtn.classList.add('bg-[#6a11cb]', 'text-white', 'cursor-pointer', 'hover:bg-[#5a0eb5]');
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.add('bg-[#c7acee]', 'text-[#6c6c6c]', 'cursor-not-allowed');
+      submitBtn.classList.remove('bg-[#6a11cb]', 'text-white', 'cursor-pointer', 'hover:bg-[#5a0eb5]');
+    }
+  }
+}
+
+//All onclicks in admin-document
+document.addEventListener('DOMContentLoaded', () => {
+  const chevronIcon = document.getElementById('chevron-icon');
+  const checklistContent = document.getElementById('checklistContent');
+
+  if (chevronIcon) {
+    chevronIcon.addEventListener('click', () => {
+      checklistContent.classList.toggle('hidden');
+      chevronIcon.classList.toggle('rotate-180');
+    });
+  }
+
+  const reloadBtn = document.getElementById('reload-btn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => window.location.reload());
+  }
+
+  const saveReject = document.getElementById('save-reject');
+  if (saveReject) {
+    saveReject.addEventListener('click', saveRejectMessage);
+  }
+
+  const cancelRejectBtn = document.getElementById('cancel-reject');
+  if (cancelRejectBtn) {
+    cancelRejectBtn.addEventListener('click', cancelReject);
+  }
+});
+
+ // Sample images mapping
+const sampleImages = {
+  "CTC-G11": "assets/samples/CTC-G11.jpg",
+  "CTC-G12": "assets/samples/CTC-G12.jpg",
+  "CTC-ID": "assets/samples/CTC-ID.jpg",
+  "Birth-Certificate": "assets/samples/Birth-Certificate.jpg",
+  "Applicant-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+  "Parent-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+  "ID-Picture": "assets/samples/ID-Picture.jpg",
+};
+
+// Function to open the sample image in a modal - checklist
+function openSampleImage(documentType) {
+  if (sampleImages[documentType]) {
+    // Create modal elements
+    const modal = document.createElement("div");
+    modal.style.position = "fixed";
+    modal.style.top = "0";
+    modal.style.left = "0";
+    modal.style.width = "100%";
+    modal.style.height = "100%";
+    modal.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    modal.style.display = "flex";
+    modal.style.justifyContent = "center";
+    modal.style.alignItems = "center";
+    modal.style.zIndex = "1000";
+
+    const modalContent = document.createElement("div");
+    modalContent.style.backgroundColor = "white";
+    modalContent.style.padding = "10px";
+    modalContent.style.borderRadius = "8px";
+    modalContent.style.maxWidth = "70%";
+    modalContent.style.maxHeight = "70%";
+    modalContent.style.overflow = "auto";
+    modalContent.style.position = "relative";
+
+    const img = document.createElement("img");
+    img.src = sampleImages[documentType];
+    img.alt = `Sample ${documentType}`;
+    img.style.maxWidth = "90%";
+    img.style.maxHeight = "90%";
+    img.style.display = "block";
+    img.style.margin = "0 auto";
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "X";
+    closeButton.style.position = "fixed";
+    closeButton.style.top = "10px";
+    closeButton.style.right = "10px";
+    closeButton.style.background = "transparent";
+    closeButton.style.color = "white";
+    closeButton.style.border = "none";
+    closeButton.style.fontSize = "20px";
+    closeButton.style.cursor = "pointer";
+    closeButton.style.zIndex = "1001";
+
+    closeButton.addEventListener("click", () => {
+      document.body.removeChild(modal);
+    });
+
+    // Append elements to modal content
+    modalContent.appendChild(img);
+
+    // Append modal content to modal
+    modal.appendChild(modalContent);
+    modal.appendChild(closeButton);
+
+    // Append modal to body
+    document.body.appendChild(modal);
+  } else {
+    alert("Sample image not available.");
+  }
+}
+

@@ -1,72 +1,3 @@
-// No longer used replaced by Tailwind toggle & JS
-/*
-function toggleChecklist() {
-  const checklistBox = document.querySelector(".checklist-box");
-  const chevronIcon = document.querySelector(".chevron-icon");
-
-  checklistBox.classList.toggle("minimized");
-
-  if (checklistBox.classList.contains("minimized")) {
-    chevronIcon.style.transform = "rotate(180deg)";
-  } else {
-    chevronIcon.style.transform = "rotate(0deg)";
-  }
-}
-*/
-
-
-// Not being used anymore
-// This was used before when manually triggering a preview from server file
-/*
-function handleFileChange(id, documentName) {
-  const input = document.getElementById(id);
-  if (!input) return;
-
-  const file = input.files[0];
-  const preview = document.getElementById("preview-" + id);
-  const container = input.closest(".upload-container");
-  const uploadBtn = container.querySelector(".upload-btn");
-
-  preview.querySelector(".file-name").textContent = documentName;
-  preview.classList.remove("hidden");
-
-  uploadBtn.style.display = "none";
-  uploadBtn.style.pointerEvents = "none";
-  uploadBtn.style.height = "0";
-
-  const checklistIcon = document.querySelector(`#item-${id} .info`);
-  const checkIcon = document.querySelector(`#item-${id} .check`);
-  if (checklistIcon && checkIcon) {
-    checklistIcon.style.display = "none";
-    checkIcon.style.display = "inline";
-  }
-
-  uploadedFiles[id] = file;
-
-  const downloadIcon = preview.querySelector(".document-requirements-icon");
-  downloadIcon.onclick = () => {
-    const fileToDownload = uploadedFiles[id];
-    const url = URL.createObjectURL(fileToDownload);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileToDownload.name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const viewText = preview.querySelector(".view-text");
-  viewText.onclick = () => {
-    const fileToView = uploadedFiles[id];
-    const url = URL.createObjectURL(fileToView);
-    window.open(url, "_blank");
-  };
-
-  checkAllFilesUploaded();
-}
-*/
-
 // Define maximum file size (e.g., 5MB)
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
 
@@ -84,7 +15,8 @@ function removeFile(id) {
   const uploadBtn = container.querySelector(".upload-btn");
   const errorMessage = container.querySelector(".error-message");
 
-  let formData = new FormData();
+  // Backend dynamic file remove
+  const formData = new FormData();
   formData.append("documentType", id);
 
   fetch("php/removeDocument.php", {
@@ -92,15 +24,26 @@ function removeFile(id) {
     body: formData,
   }).then((response) => response.text());
 
-  input.value = "";
-  preview.classList.add("hidden");
+  // Reset file input
+  if (input) input.value = "";
 
-  uploadBtn.style.display = "block";
-  uploadBtn.style.pointerEvents = "auto";
-  uploadBtn.style.height = "";
+  // Hide preview
+  if (preview) preview.classList.add("hidden");
 
-  errorMessage.classList.add("hidden");
+  // Show upload button
+  if (uploadBtn) {
+    uploadBtn.style.display = "block";
+    uploadBtn.style.pointerEvents = "auto";
+    uploadBtn.style.height = "";
+  }
 
+  // Clear error message
+  if (errorMessage) {
+    errorMessage.textContent = "";
+    errorMessage.classList.add("hidden");
+  }
+
+  // Reset checklist icons
   const checklistIcon = document.querySelector(`#item-${id} .info`);
   const checkIcon = document.querySelector(`#item-${id} .check`);
   if (checklistIcon && checkIcon) {
@@ -108,8 +51,10 @@ function removeFile(id) {
     checkIcon.style.display = "none";
   }
 
+  // Clear from memory / database
   delete uploadedFiles[id];
 
+  // Re-check if form is valid
   checkAllFilesUploaded();
 }
 
@@ -124,7 +69,7 @@ function checkAllFilesUploaded() {
     submitBtn.classList.add("enabled");
   } else {
     submitBtn.classList.remove("enabled");
-  }
+  } 
 }
 
 const allowedFormats = {
@@ -142,6 +87,20 @@ function isValidFile(id, file) {
   return allowedFormats[id].includes("." + extension);
 }
 
+function toggleChecklist() {
+  const checklistBox = document.querySelector(".checklist-box");
+  const chevronIcon = document.querySelector(".chevron-icon");
+
+  checklistBox.classList.toggle("minimized");
+
+  // Rotate the chevron icon
+  if (checklistBox.classList.contains("minimized")) {
+    chevronIcon.style.transform = "rotate(180deg)";
+  } else {
+    chevronIcon.style.transform = "rotate(0deg)";
+  }
+}
+
 document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
     const id = this.id;
@@ -151,20 +110,26 @@ document.querySelectorAll(".file-input").forEach((input) => {
     const uploadBtn = container.querySelector(".upload-btn");
     const errorMessage = container.querySelector(".error-message");
 
+    // Clear previous error
     errorMessage.textContent = "";
-    errorMessage.classList.add("hidden");
+    errorMessage.classList.remove("visible");
 
     if (file) {
       if (!isValidFile(id, file)) {
-        errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[id].join(", ")}`;
+        errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[
+          id
+        ].join(", ")}`;
         errorMessage.style.display = "block";
         return;
       } else if (file.size > MAX_FILE_SIZE) {
-        errorMessage.textContent = `File size exceeds the limit of ${MAX_FILE_SIZE / 1024 / 1024} MB.`;
+        errorMessage.textContent = `File size exceeds the limit of ${
+          MAX_FILE_SIZE / 1024 / 1024
+        } MB.`;
         errorMessage.style.display = "block";
         return;
       }
 
+      // fetch upload
       let formData = new FormData();
       formData.append("file", file);
       formData.append("applicantID", 1);
@@ -176,13 +141,16 @@ document.querySelectorAll(".file-input").forEach((input) => {
         body: formData,
       }).then((response) => response.text());
 
+      // Show filename and preview
       preview.querySelector(".file-name").textContent = file.name;
       preview.classList.remove("hidden");
 
+      // Hide upload button using opacity
       uploadBtn.style.display = "none";
       uploadBtn.style.pointerEvents = "none";
       uploadBtn.style.height = "0";
 
+      // Update checklist icons
       const checklistIcon = document.querySelector(`#item-${id} .info`);
       const checkIcon = document.querySelector(`#item-${id} .check`);
       if (checklistIcon && checkIcon) {
@@ -190,8 +158,10 @@ document.querySelectorAll(".file-input").forEach((input) => {
         checkIcon.style.display = "inline";
       }
 
+      // Save file for later use (view/download)
       uploadedFiles[id] = file;
 
+      // Set up download
       const downloadIcon = preview.querySelector(".document-requirements-icon");
       downloadIcon.onclick = () => {
         const fileToDownload = uploadedFiles[id];
@@ -205,6 +175,7 @@ document.querySelectorAll(".file-input").forEach((input) => {
         URL.revokeObjectURL(url);
       };
 
+      // Set up view
       const viewText = preview.querySelector(".view-text");
       viewText.onclick = () => {
         const fileToView = uploadedFiles[id];
@@ -212,12 +183,68 @@ document.querySelectorAll(".file-input").forEach((input) => {
         window.open(url, "_blank");
       };
 
+      // Check if all files are uploaded
       checkAllFilesUploaded();
     }
   });
 });
 
-// Define sample image paths
+function handleFileChange(id, documentName) {
+  const input = document.getElementById(id);
+  if (!input) return;
+
+  const file = input.files[0];
+  const preview = document.getElementById("preview-" + id);
+  const container = input.closest(".upload-container");
+  const uploadBtn = container.querySelector(".upload-btn");
+
+  // Show filename and preview
+  preview.querySelector(".file-name").textContent = documentName;
+  preview.classList.remove("hidden");
+
+  // Hide upload button using opacity
+  uploadBtn.style.display = "none";
+  uploadBtn.style.pointerEvents = "none";
+  uploadBtn.style.height = "0";
+
+  // Update checklist icons
+  const checklistIcon = document.querySelector(`#item-${id} .info`);
+  const checkIcon = document.querySelector(`#item-${id} .check`);
+  if (checklistIcon && checkIcon) {
+    checklistIcon.style.display = "none";
+    checkIcon.style.display = "inline";
+  }
+
+  // Save file for later use (view/download)
+  uploadedFiles[id] = file;
+
+  // Set up download
+  const downloadIcon = preview.querySelector(".document-requirements-icon");
+  downloadIcon.onclick = () => {
+    const fileToDownload = uploadedFiles[id];
+    const url = URL.createObjectURL(fileToDownload);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileToDownload.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Set up view
+  const viewText = preview.querySelector(".view-text");
+  viewText.onclick = () => {
+    const fileToView = uploadedFiles[id];
+    const url = URL.createObjectURL(fileToView);
+    window.open(url, "_blank");
+  };
+
+  // Check if all files are uploaded
+  checkAllFilesUploaded();
+}
+
+// Define sample image paths (Ensure images exist in the "samples" folder)
 const sampleImages = {
   "CTC-G11": "assets/samples/CTC-G11.jpg",
   "CTC-G12": "assets/samples/CTC-G12.jpg",
@@ -228,8 +255,10 @@ const sampleImages = {
   "ID-Picture": "assets/samples/ID-Picture.jpg",
 };
 
+// Function to open the sample image in a modal - Checklist
 function openSampleImage(documentType) {
   if (sampleImages[documentType]) {
+    // Create modal elements
     const modal = document.createElement("div");
     modal.style.position = "fixed";
     modal.style.top = "0";
@@ -244,10 +273,10 @@ function openSampleImage(documentType) {
 
     const modalContent = document.createElement("div");
     modalContent.style.backgroundColor = "white";
-    modalContent.style.padding = "10px";
+    modalContent.style.padding = "10px"; // reduce padding
     modalContent.style.borderRadius = "8px";
-    modalContent.style.maxWidth = "70%";
-    modalContent.style.maxHeight = "70%";
+    modalContent.style.maxWidth = "70%"; // reduce max width
+    modalContent.style.maxHeight = "70%"; // reduce max height
     modalContent.style.overflow = "auto";
     modalContent.style.position = "relative";
 
@@ -262,8 +291,8 @@ function openSampleImage(documentType) {
     const closeButton = document.createElement("button");
     closeButton.textContent = "X";
     closeButton.style.position = "fixed";
-    closeButton.style.top = "10px";
-    closeButton.style.right = "10px";
+    closeButton.style.top = "10px"; // reduce top spacing
+    closeButton.style.right = "10px"; // reduce right spacing
     closeButton.style.background = "transparent";
     closeButton.style.color = "white";
     closeButton.style.border = "none";
@@ -275,17 +304,23 @@ function openSampleImage(documentType) {
       document.body.removeChild(modal);
     });
 
+    // Append elements to modal content
     modalContent.appendChild(img);
+
+    // Append modal content to modal
     modal.appendChild(modalContent);
     modal.appendChild(closeButton);
 
+    // Append modal to body
     document.body.appendChild(modal);
   } else {
     alert("Sample image not available.");
   }
 }
 
+//Add eventlistener dun sa mga tinanggal ko yung onClick 
 document.addEventListener("DOMContentLoaded", function () {
+  // Requirement Links - Sample Image Viewer
   const requirementLinks = document.querySelectorAll(".checklist li a");
   requirementLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
@@ -295,20 +330,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Toggle Checklist Icon
   const chevronIcon = document.querySelector(".chevron-icon");
   if (chevronIcon) {
-    chevronIcon.addEventListener("click", () => {
-      const checklistItems = document.querySelector(".checklist");
-      checklistItems.classList.toggle("hidden");
-      chevronIcon.classList.toggle("rotate-180");
-    });
+    chevronIcon.addEventListener("click", toggleChecklist);
   }
 
+  // Submit Button
   const submitBtn = document.querySelector(".submit-btn");
   if (submitBtn) {
     submitBtn.addEventListener("click", showConfirm);
   }
 
+  // Confirmation Popup Buttons
   const noBtn = document.querySelector(".no");
   if (noBtn) {
     noBtn.addEventListener("click", closeConfirm);
@@ -319,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
     yesBtn.addEventListener("click", showPopup);
   }
 
+  // Success Popup Button
   const proceedBtn = document.querySelector(".to-application-tracking");
   if (proceedBtn) {
     proceedBtn.addEventListener("click", submitForm);
@@ -331,11 +366,13 @@ function submitForm() {
 
 function showConfirm() {
   document.getElementById("confirmationPopup").style.display = "flex";
-  document.querySelector("main")?.classList.add("blur-background");
+  document.querySelector(".inner-box")?.classList.add("overflow-hidden"); 
+  document.querySelector("main")?.classList.add("blur-background"); //pag wala yung ?, di gagana yung blur bg
 }
 
 function closeConfirm() {
   document.getElementById("confirmationPopup").style.display = "none";
+  document.querySelector(".inner-box")?.classList.remove("overflow-hidden");
   document.querySelector("main")?.classList.remove("blur-background");
 }
 

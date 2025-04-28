@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+ 
 $applicantName = $_SESSION['applicantName'] ?? "Ms. Galve-Abad";
 $firstChoice = $_SESSION['firstChoice'] ?? "Bachelor of Science in Information Technology";
 $secondChoice = $_SESSION['secondChoice'] ?? "Bachelor of Science in Civil Engineering";
@@ -12,9 +12,8 @@ $requirementsSet = $applicantType == "Bachelor-Program"
   : file_get_contents("json/graduateApplicant.json");
 
 $requirements = json_decode($requirementsSet, true);
-
 ?>
-
+ 
 <!DOCTYPE html>
 <html lang="en" class="font-[Roboto] h-full flex flex-1 overflow-auto box-border">
 
@@ -38,23 +37,23 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
-      <!-- .checklist-box minimized -->
-      <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
+      <!-- .checklist-box minimized -->  
+      <div id="checklist-box" class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
         <!-- Checklist -->
         <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
           <!-- .checklist header -->
           <div class="flex justify-between items-center mb-3">
             <h4 class="m-0 text-xl pb-3">Checklist</h4>
-            <img onclick="toggleChecklist()" src="assets/chevron-up.png" alt="Toggle" class="w-4 h-4 filter brightness-0 invert [transition:transform_0.3s_ease]">
+            <img src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-4 h-4 filter brightness-0 invert cursor-pointer transform transition-transform duration-300"/>
           </div>
           <!-- .checklist -->
-          <ul class="list-none pl-0 m-0 transition-opacity">
+          <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
               <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
-                <a class="text-white no-underline hover:underline" href="#anchor-<?= $docType ?>">• <?= str_replace("-", " ", $docType) ?></a>
+                <a class="text-white no-underline hover:underline cursor-pointer" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;">• <?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
                   <!-- .icon check -->
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
@@ -65,7 +64,6 @@ $requirements = json_decode($requirementsSet, true);
               </li>
             <?php } ?>
           </ul>
-
         </div>
 
         <!-- Applicant Info -->
@@ -86,128 +84,33 @@ $requirements = json_decode($requirementsSet, true);
 
         <!--Submit Popup-->
         <!-- .popup, h2, p, button -->
-        <div class="popup" id="successPopup" style="display: none;">
-          <img class="w-12 mb-3" src="assets/check-icon.png" alt="Success">
-          <h2 class="m-0 text-2xl text-[#fff]">Success</h2>
-          <p class="text-sm text-[#f5f5f5]">Please wait for further instructions from the registrar</p>
-          <button class="bg-[#4CAF50] text-[white] border-[none] px-4 py-2 mt-4 cursor-pointer text-base rounded-md hover:bg-[#45a049]" type="submit">Back to Document Upload</button>
-        </div>
-
-        <!-- Reject Message Pop-up -->
-         <!-- .popup, h2, -->
-        <div class="text-[black] fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[white] p-4 border-2 border-[solid] border-[#ccc] rounded-xl [box-shadow:0_2px_10px_rgba(0,_0,_0,_0.2)]" id="rejectPopup" style="display: none;">
-          <h2 style="color: black; padding-bottom:5px ;">Reject Message</h2>
-          <textarea id="rejectMessageInput" rows="4" style="width: 100%; resize: none;"></textarea>
-          <div style="margin-top: 5px; display: flex; justify-content: flex-end; gap: 10px;">
-            <button onclick="saveRejectMessage()" style="background: limegreen; color: white; padding: 6px 14px; border: none; border-radius: 4px;">Save</button>
-            <button onclick="cancelReject()" style="border: 1px solid gray; padding: 6px 14px; background: white; color:black;">Cancel</button>
+        <!--Submit Popup-->
+        <div id="successPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+          <div class="bg-gradient-to-b from-purple-500 to-purple-700 p-8 rounded-2xl text-center shadow-xl text-white w-[90%] max-w-md">
+            <img class="w-12 h-12 mx-auto mb-4" src="assets/check-icon.png" alt="Success Icon">
+            <h2 class="text-2xl font-bold mb-2">Success</h2>
+            <p class="text-sm mb-6">Please wait for further instructions from the registrar</p>
+            <button class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
           </div>
         </div>
+        
+        <!-- Reject Message Pop-up -->
+        <div id="rejectPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+          <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-300 w-[350px]">
+            <h2 class="text-lg font-medium mb-2">Reject Message</h2>
+            <textarea id="rejectMessageInput" rows="4" class="w-full p-2 border rounded resize-none"></textarea>
+            <div class="flex justify-end gap-2 mt-3">
+              <button id="saveRejectBtn" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
+              <button id="cancelRejectBtn" class="border px-4 py-1 rounded">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+
     </main>
     <?php //include "components/navigation/footer.php" ?>
   </section>
 
-  <script>
-    let namefile;
-
-
-    let currentRejectId = null;
-
-    function showRejectPopup(id, filename) {
-      namefile = filename;
-      currentRejectId = id; // Save the ID for use in save
-      const popup = document.getElementById('rejectPopup');
-      if (popup) {
-        popup.style.display = 'block';
-      }
-    }
-
-    function cancelReject() {
-      const popup = document.getElementById('rejectPopup');
-      if (popup) {
-        popup.style.display = 'none';
-      }
-    }
-
-
-    function saveRejectMessage() {
-      const message = document.getElementById('rejectMessageInput').value;
-      console.log("Rejected with message:", message);
-
-
-      let formData = new FormData();
-      formData.append("fileName", namefile);
-      formData.append("rejectReason", message);
-
-
-      fetch("php/updateRejectMessage.php", {
-        method: "POST",
-        body: formData,
-      }).then((response) => response.text());
-
-
-
-
-
-      // Hide popup
-      cancelReject();
-
-      // Hide approve/reject text
-      const approveText = document.querySelector(`#actions-${currentRejectId} .approve-text`);
-      const rejectText = document.querySelector(`#actions-${currentRejectId} .reject-text`);
-      if (approveText) approveText.style.display = "none";
-      if (rejectText) rejectText.style.display = "none";
-
-      // Show reject icon, hide approve icon
-      const rejectIcon = document.getElementById(`reject-icon-${currentRejectId}`);
-      const approveIcon = document.getElementById(`approve-icon-${currentRejectId}`);
-      if (rejectIcon) rejectIcon.style.display = "inline";
-      if (approveIcon) approveIcon.style.display = "none";
-    }
-
-
-    function downloadSampleFile(filePath) {
-      const link = document.createElement("a");
-      link.href = filePath;
-      link.download = filePath.split("/").pop();
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function toggleChecklist() {
-      const checklist = document.getElementById("checklistBox");
-      checklist.classList.toggle("minimized");
-    }
-
-    /**Approve or reject */
-    function handleDecision(id, action) {
-      const approveText = document.querySelector(`#actions-${id} .approve-text`);
-      const rejectText = document.querySelector(`#actions-${id} .reject-text`);
-      const approveIcon = document.getElementById(`approve-icon-${id}`);
-      const rejectIcon = document.getElementById(`reject-icon-${id}`);
-
-      if (approveText) approveText.style.display = "none";
-      if (rejectText) rejectText.style.display = "none";
-
-      if (action === "approve") {
-        if (approveIcon) approveIcon.classList.remove("hidden");
-        if (rejectIcon) rejectIcon.classList.add("hidden");
-      } else {
-        if (rejectIcon) rejectIcon.classList.remove("hidden");
-        if (approveIcon) approveIcon.classList.add("hidden");
-      }
-    }
-
-    const submitBtn = document.getElementById('submitBtn');
-    const successPopup = document.getElementById('successPopup');
-
-    submitBtn.addEventListener('click', function() {
-      if (!submitBtn.disabled) {
-        successPopup.style.display = 'block';
-      }
-    });
-  </script>
   <script src="javascript/adminPage.js"></script>
 </body>
 
