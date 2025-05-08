@@ -19,24 +19,22 @@ foreach ($requirements as $req) {
     <h5 class="ml-5 text-sm text-[red] font-medium">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
 
     <!-- .upload-container -->
-    <div class="upload-container mt-4 mx-6 mb-0" data-applicant-id="<?= $applicantID ?>">
+    <div class="upload-container mt-4 mx-6 mb-0">
       <?php if (!$hasDocument) { ?>
         <!-- Show input and button if no document exists -->
-        <input type="file" name="<?= $req['documentType'] ?>" id="<?= $req['documentType'] ?>"
+        <input type="file" name="<?= $req['documentType'] ?>" id="input-<?= $req['documentType'] ?>"
           class="file-input hidden"
-          accept="<?= $req['requiredFormat'] ?>"
-          data-applicant-id="<?= $applicantID ?>">
+          accept="<?= $req['requiredFormat'] ?>">
         <button type="button"
-          class="upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]"
-          data-id="<?= $req['documentType'] ?>"
-          data-applicant-id="<?= $applicantID ?>">Upload</button> <?php } else { ?>
+          class="upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]">Upload</button>
+      <?php } else { ?>
         <!-- Show file preview if document exists -->
         <div id="preview-<?= $req['documentType'] ?>" class="file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]" id="preview-<?= $req['documentType'] ?>">
           <span class="file-name font-bold underline break-all"><?= $doc['documentName'] ?></span>
           <div class="file-actions flex items-center gap-3">
             <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download">
             <span class="view-text text-[blue] cursor-pointer">View</span>
-            <span class="remove-text text-[red] cursor-pointer" onclick="removeFile('<?= $req['documentType'] ?>')">Remove</span>
+            <span class="remove-text text-[red] cursor-pointer">Remove</span>
           </div>
         </div>
       <?php } ?>

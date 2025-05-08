@@ -267,79 +267,79 @@ function handleFileChange(id, documentName) {
   checkAllFilesUploaded();
 }
 
-// Define sample image paths (Ensure images exist in the "samples" folder)
-const sampleImages = {
-  "CTC-G11": "assets/samples/CTC-G11.jpg",
-  "CTC-G12": "assets/samples/CTC-G12.jpg",
-  "CTC-ID": "assets/samples/CTC-ID.jpg",
-  "Birth-Certificate": "assets/samples/Birth-Certificate.jpg",
-  "Applicant-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
-  "Parent-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
-  "ID-Picture": "assets/samples/ID-Picture.jpg",
-};
+// // Define sample image paths (Ensure images exist in the "samples" folder)
+// const sampleImages = {
+//   "CTC-G11": "assets/samples/CTC-G11.jpg",
+//   "CTC-G12": "assets/samples/CTC-G12.jpg",
+//   "CTC-ID": "assets/samples/CTC-ID.jpg",
+//   "Birth-Certificate": "assets/samples/Birth-Certificate.jpg",
+//   "Applicant-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+//   "Parent-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+//   "ID-Picture": "assets/samples/ID-Picture.jpg",
+// };
 
-// Function to open the sample image in a modal - Checklist
-function openSampleImage(documentType) {
-  if (sampleImages[documentType]) {
-    // Create modal elements
-    const modal = document.createElement("div");
-    modal.style.position = "fixed";
-    modal.style.top = "0";
-    modal.style.left = "0";
-    modal.style.width = "100%";
-    modal.style.height = "100%";
-    modal.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    modal.style.display = "flex";
-    modal.style.justifyContent = "center";
-    modal.style.alignItems = "center";
-    modal.style.zIndex = "1000";
+// // Function to open the sample image in a modal - Checklist
+// function openSampleImage(documentType) {
+//   if (sampleImages[documentType]) {
+//     // Create modal elements
+//     const modal = document.createElement("div");
+//     modal.style.position = "fixed";
+//     modal.style.top = "0";
+//     modal.style.left = "0";
+//     modal.style.width = "100%";
+//     modal.style.height = "100%";
+//     modal.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+//     modal.style.display = "flex";
+//     modal.style.justifyContent = "center";
+//     modal.style.alignItems = "center";
+//     modal.style.zIndex = "1000";
 
-    const modalContent = document.createElement("div");
-    modalContent.style.backgroundColor = "white";
-    modalContent.style.padding = "10px";
-    modalContent.style.borderRadius = "8px";
-    modalContent.style.maxWidth = "70%";
-    modalContent.style.maxHeight = "70%";
-    modalContent.style.overflow = "auto";
-    modalContent.style.position = "relative";
+//     const modalContent = document.createElement("div");
+//     modalContent.style.backgroundColor = "white";
+//     modalContent.style.padding = "10px";
+//     modalContent.style.borderRadius = "8px";
+//     modalContent.style.maxWidth = "70%";
+//     modalContent.style.maxHeight = "70%";
+//     modalContent.style.overflow = "auto";
+//     modalContent.style.position = "relative";
 
-    const img = document.createElement("img");
-    img.src = sampleImages[documentType];
-    img.alt = `Sample ${documentType}`;
-    img.style.maxWidth = "90%";
-    img.style.maxHeight = "90%";
-    img.style.display = "block";
-    img.style.margin = "0 auto";
+//     const img = document.createElement("img");
+//     img.src = sampleImages[documentType];
+//     img.alt = `Sample ${documentType}`;
+//     img.style.maxWidth = "90%";
+//     img.style.maxHeight = "90%";
+//     img.style.display = "block";
+//     img.style.margin = "0 auto";
 
-    const closeButton = document.createElement("button");
-    closeButton.textContent = "X";
-    closeButton.style.position = "fixed";
-    closeButton.style.top = "10px";
-    closeButton.style.right = "10px";
-    closeButton.style.background = "transparent";
-    closeButton.style.color = "white";
-    closeButton.style.border = "none";
-    closeButton.style.fontSize = "20px";
-    closeButton.style.cursor = "pointer";
-    closeButton.style.zIndex = "1001";
+//     const closeButton = document.createElement("button");
+//     closeButton.textContent = "X";
+//     closeButton.style.position = "fixed";
+//     closeButton.style.top = "10px";
+//     closeButton.style.right = "10px";
+//     closeButton.style.background = "transparent";
+//     closeButton.style.color = "white";
+//     closeButton.style.border = "none";
+//     closeButton.style.fontSize = "20px";
+//     closeButton.style.cursor = "pointer";
+//     closeButton.style.zIndex = "1001";
 
-    closeButton.addEventListener("click", () => {
-      document.body.removeChild(modal);
-    });
+//     closeButton.addEventListener("click", () => {
+//       document.body.removeChild(modal);
+//     });
 
-    // Append elements to modal content
-    modalContent.appendChild(img);
+//     // Append elements to modal content
+//     modalContent.appendChild(img);
 
-    // Append modal content to modal
-    modal.appendChild(modalContent);
-    modal.appendChild(closeButton);
+//     // Append modal content to modal
+//     modal.appendChild(modalContent);
+//     modal.appendChild(closeButton);
 
-    // Append modal to body
-    document.body.appendChild(modal);
-  } else {
-    alert("Sample image not available.");
-  }
-}
+//     // Append modal to body
+//     document.body.appendChild(modal);
+//   } else {
+//     alert("Sample image not available.");
+//   }
+// }
 
 //Add eventlistener dun sa mga tinanggal ko yung onClick
 document.addEventListener("DOMContentLoaded", function () {
