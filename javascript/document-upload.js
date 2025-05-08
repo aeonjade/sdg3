@@ -132,8 +132,8 @@ document.querySelectorAll(".file-input").forEach((input) => {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.text())
-        .then(() => {
+        .then((response) => response.json()) // Change to json() to parse the response
+        .then((data) => {
           // Create preview element if it doesn't exist
           let preview = document.getElementById("preview-" + id);
           if (!preview) {
@@ -156,6 +156,17 @@ document.querySelectorAll(".file-input").forEach((input) => {
           preview.querySelector(".file-name").textContent = file.name;
           preview.classList.remove("hidden");
 
+          // Store file path from server response
+          const filePath = data.filePath;
+
+          // Set up view handler to open document from server
+          const viewText = preview.querySelector(".view-text");
+          if (viewText) {
+            viewText.onclick = () => {
+              window.open(`documents/${data.filename}`, '_blank');
+            };
+          }
+
           // Hide upload button
           if (uploadBtn) {
             uploadBtn.classList.add("hidden");
@@ -170,8 +181,7 @@ document.querySelectorAll(".file-input").forEach((input) => {
           // Store file for preview/download
           uploadedFiles[id] = file;
 
-          // Set up view and download handlers
-          const viewText = preview.querySelector(".view-text");
+          // Set up download handlers
           const downloadIcon = preview.querySelector(
             ".document-requirements-icon"
           );
@@ -397,3 +407,54 @@ function showPopup() {
   document.getElementById("confirmationPopup").style.display = "none";
   document.getElementById("successPopup").style.display = "flex";
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle upload buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('upload-btn')) {
+            const id = e.target.dataset.id;
+            triggerUpload(id);
+        }
+    });
+
+    // Handle remove buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-text')) {
+            const id = e.target.dataset.id;
+            removeFile(id);
+        }
+    });
+
+    // Handle view buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('view-text')) {
+            const preview = e.target.closest('.file-preview');
+            const id = preview.id.replace('preview-', '');
+            const file = uploadedFiles[id];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                window.open(url, '_blank');
+                URL.revokeObjectURL(url);
+            }
+        }
+    });
+
+    // Handle download buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('document-requirements-icon')) {
+            const preview = e.target.closest('.file-preview');
+            const id = preview.id.replace('preview-', '');
+            const file = uploadedFiles[id];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = file.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+        }
+    });
+});
