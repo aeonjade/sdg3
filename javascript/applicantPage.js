@@ -186,6 +186,8 @@ function removeFile(id) {
 
                 // Add event listeners to new preview
                 attachPreviewListeners(preview, rawId);
+                // Check if all files are uploaded
+                checkAllFilesUploaded();
               }
             })
             .catch((error) => {
@@ -195,10 +197,7 @@ function removeFile(id) {
                 "Error uploading file. Please try again.";
               errorMessage.classList.remove("hidden");
             });
-          // Check if all files are uploaded
-          checkAllFilesUploaded();
         });
-
         // Reset checklist icon
         const statusIcon = document.getElementById(`status-${rawId}`);
         if (statusIcon) {
