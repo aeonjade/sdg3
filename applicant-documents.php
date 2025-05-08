@@ -40,22 +40,22 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
 
         <form action="admin-documents.php" method="POST">
           <!-- Checklist -->
-          <div class="checklist-box">
+          <div id="checklist-box" class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-[25px] py-[20px] mt-0 mr-0 mb-[15px] ml-[15px] rounded-[8px] border-[1px] border-[solid] border-[black] text-[14px] w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden">
             <!-- .checklist-header-->
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center gap-x-5">
               <!-- main div.inner-box .checklist-header h4-->
               <h4 class="pb-0 text-lg font-bold">Requirements</h4>
-              <img src="assets/chevron-up.png" alt="Toggle" class="chevron-icon">
+              <img id="chevron-icon" src="assets/chevron-up.png" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" onclick=toggleChecklist()>
             </div>
-            <ul class="checklist">
+            <ul id="checklist" class="list-none pl-0 pt-[5px] m-0">
               <?php
               $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
               $requirements = json_decode($requirementsSet, true);
               foreach ($requirements as $req) { ?>
-                <li id="item-<?= $req['documentType'] ?>">
-                  <a href="#anchor-<?= $req['documentType'] ?>"><?= str_replace("-", " ", $req['documentType'])  ?></a>
-                  <img src="assets/Info-Icon.png" class="icon info">
-                  <img src="assets/Check-Icon.png" class="icon check" style="display: none;">
+                <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $req['documentType'] ?>">
+                  <a class="no-underline text-[white] hover:underline" href="#anchor-<?= $req['documentType'] ?>"><?= str_replace("-", " ", $req['documentType'])  ?></a>
+                  <img src="assets/Info-Icon.png" class="w-[16px] h-[16px] ml-[35px]">
+                  <img src="assets/Check-Icon.png" class="w-[16px] h-[16px] ml-[35px]" style="display: none;">
                 </li>
               <?php
               }

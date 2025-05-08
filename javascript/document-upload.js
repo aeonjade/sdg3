@@ -69,7 +69,7 @@ function checkAllFilesUploaded() {
     submitBtn.classList.add("enabled");
   } else {
     submitBtn.classList.remove("enabled");
-  } 
+  }
 }
 
 const allowedFormats = {
@@ -88,17 +88,15 @@ function isValidFile(id, file) {
 }
 
 function toggleChecklist() {
-  const checklistBox = document.querySelector(".checklist-box");
-  const chevronIcon = document.querySelector(".chevron-icon");
+  const chevronIcon = document.getElementById("chevron-icon");
+  const checklist = document.getElementById("checklist");
 
-  checklistBox.classList.toggle("minimized");
+  // Toggle checklist stuff
+  checklist.classList.toggle("hidden");
+  checklist.classList.toggle("pointer-events-none");
 
   // Rotate the chevron icon
-  if (checklistBox.classList.contains("minimized")) {
-    chevronIcon.style.transform = "rotate(180deg)";
-  } else {
-    chevronIcon.style.transform = "rotate(0deg)";
-  }
+  chevronIcon.classList.toggle("rotate-180");
 }
 
 document.querySelectorAll(".file-input").forEach((input) => {
@@ -318,7 +316,7 @@ function openSampleImage(documentType) {
   }
 }
 
-//Add eventlistener dun sa mga tinanggal ko yung onClick 
+//Add eventlistener dun sa mga tinanggal ko yung onClick
 document.addEventListener("DOMContentLoaded", function () {
   // Requirement Links - Sample Image Viewer
   const requirementLinks = document.querySelectorAll(".checklist li a");
@@ -348,7 +346,9 @@ document.addEventListener("DOMContentLoaded", function () {
     noBtn.addEventListener("click", closeConfirm);
   }
 
-  const yesBtn = document.querySelector("#confirmationPopup button[type='submit']");
+  const yesBtn = document.querySelector(
+    "#confirmationPopup button[type='submit']"
+  );
   if (yesBtn) {
     yesBtn.addEventListener("click", showPopup);
   }
@@ -366,7 +366,7 @@ function submitForm() {
 
 function showConfirm() {
   document.getElementById("confirmationPopup").style.display = "flex";
-  document.querySelector(".inner-box")?.classList.add("overflow-hidden"); 
+  document.querySelector(".inner-box")?.classList.add("overflow-hidden");
   document.querySelector("main")?.classList.add("blur-background"); //pag wala yung ?, di gagana yung blur bg
 }
 
