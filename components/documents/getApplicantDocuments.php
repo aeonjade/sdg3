@@ -30,12 +30,12 @@ foreach ($requirements as $req) {
           id="button-<?= $req['documentType'] ?>">Upload</button>
       <?php } else { ?>
         <!-- Show file preview if document exists -->
-        <div id="preview-<?= $req['documentType'] ?>" class="file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]" id="preview-<?= $req['documentType'] ?>">
+        <div id="preview-<?= $req['documentType'] ?>" class="file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]">
           <span class="file-name font-bold underline break-all"><?= $doc['documentName'] ?></span>
           <div class="file-actions flex items-center gap-3">
-            <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download">
-            <span class="view-text text-[blue] cursor-pointer">View</span>
-            <span class="remove-text text-[red] cursor-pointer">Remove</span>
+            <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="<?= $doc['documentName'] ?>">
+            <span class="view-text text-[blue] cursor-pointer" data-filename="<?= $doc['documentName'] ?>">View</span>
+            <span class="remove-text text-[red] cursor-pointer" data-id="<?= $req['documentType'] ?>">Remove</span>
           </div>
         </div>
       <?php } ?>
