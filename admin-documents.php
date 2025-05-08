@@ -5,8 +5,10 @@ $applicantName = $_SESSION['applicantName'] ?? "Ms. Galve-Abad";
 $firstChoice = $_SESSION['firstChoice'] ?? "Bachelor of Science in Information Technology";
 $secondChoice = $_SESSION['secondChoice'] ?? "Bachelor of Science in Civil Engineering";
 $applicantType = $_SESSION['applicantType'] ?? "Bachelor-Program";
+$applicantID = $_SESSION['applicantID'] ?? 1;
 
-/*This shit is for JSON because if you don't include JSON file first, the admin page will have an error. Damn what an english speaking*/
+/*This shit is for JSON because if you don't include JSON file first, the admin page will have an error.
+Damn what an english speaking*/
 $requirementsSet = $applicantType == "Bachelor-Program"
   ? file_get_contents("json/bachelorApplicant.json")
   : file_get_contents("json/graduateApplicant.json");

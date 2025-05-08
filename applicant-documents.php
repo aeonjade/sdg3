@@ -1,4 +1,5 @@
 <?php
+// Check if document is already uploaded
 include("php/getDocuments.php");
 // Start session to store user data
 session_start();
