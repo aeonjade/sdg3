@@ -96,7 +96,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
     <?php include "components/navigation/footer.php" ?>
 
     <!-- Confirmation Popup -->
-    <div class="popup hidden fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
+    <div class="popup hidden flex fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex-col items-center flex-[1]" id="confirmationPopup">
       <img class="w-16 mb-3" src="assets/confirm.png" alt="Confirm">
       <h2 class="m-0 text-2xl text-white">Submit Documents</h2>
       <p class="text-sm text-white">Are you sure you want to submit?</p>

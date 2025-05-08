@@ -195,6 +195,8 @@ function removeFile(id) {
                 "Error uploading file. Please try again.";
               errorMessage.classList.remove("hidden");
             });
+          // Check if all files are uploaded
+          checkAllFilesUploaded();
         });
 
         // Reset checklist icon
@@ -202,6 +204,8 @@ function removeFile(id) {
         if (statusIcon) {
           statusIcon.src = "assets/Info-Icon.png";
         }
+        // Check if all files are uploaded
+        checkAllFilesUploaded();
       }
     })
     .catch((error) => {
@@ -238,6 +242,38 @@ function attachPreviewListeners(preview, id) {
     removeText.addEventListener("click", function () {
       removeFile(id);
     });
+  }
+}
+
+function checkAllFilesUploaded() {
+  const statusIcons = document.querySelectorAll('[id^="status-"]');
+  const submitBtn = document.querySelector(".submit-btn");
+  let allUploaded = true;
+
+  statusIcons.forEach((icon) => {
+    if (icon.src.includes("Info-Icon.png")) {
+      allUploaded = false;
+    }
+  });
+
+  if (allUploaded) {
+    submitBtn.classList.remove("cursor-not-allowed", "text-gray-500");
+    submitBtn.classList.add(
+      "bg-[#7213D0]",
+      "text-white",
+      "hover:bg-white",
+      "hover:text-black"
+    );
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.classList.add("cursor-not-allowed", "text-gray-500");
+    submitBtn.classList.remove(
+      "bg-[#7213D0]",
+      "text-white",
+      "hover:bg-white",
+      "hover:text-black"
+    );
+    submitBtn.disabled = true;
   }
 }
 
@@ -375,6 +411,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 link.click();
                 document.body.removeChild(link);
               });
+              // Check if all files are uploaded
+              checkAllFilesUploaded();
             }
           })
           .catch((error) => {
@@ -394,5 +432,39 @@ document.addEventListener("DOMContentLoaded", function () {
       const input = document.getElementById(`input-${id}`);
       if (input) input.click();
     });
+  });
+
+  const submitBtn = document.querySelector(".submit-btn");
+  const confirmationPopup = document.getElementById("confirmationPopup");
+  const successPopup = document.getElementById("successPopup");
+
+  // Initial check
+  checkAllFilesUploaded();
+
+  // Add submit button click handler
+  submitBtn.addEventListener("click", function () {
+    if (!this.disabled) {
+      confirmationPopup.classList.remove("hidden");
+    }
+  });
+
+  // Add confirmation popup handlers
+  const noBtn = confirmationPopup.querySelector(".no");
+  const yesBtn = confirmationPopup.querySelector('[type="submit"]');
+
+  noBtn.addEventListener("click", function () {
+    confirmationPopup.classList.add("hidden");
+  });
+
+  yesBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    confirmationPopup.classList.add("hidden");
+    successPopup.classList.remove("hidden");
+  });
+
+  // Add tracking button handler
+  const trackingBtn = successPopup.querySelector(".to-application-tracking");
+  trackingBtn.addEventListener("click", function () {
+    window.location.href = "application-tracking.php";
   });
 });
