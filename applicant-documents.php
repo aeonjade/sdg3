@@ -44,7 +44,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
             <div class="flex justify-between items-center gap-x-5">
               <!-- main div.inner-box .checklist-header h4-->
               <h4 class="pb-0 text-lg font-bold">Requirements</h4>
-              <img id="chevron-icon" src="assets/chevron-up.png" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" onclick=toggleChecklist()>
+              <img id="chevron-icon" src="assets/chevron-up.png" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]">
             </div>
             <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
               <?php
@@ -53,7 +53,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
               foreach ($requirements as $req) {
                 $docType = $req['documentType']; ?>
                 <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $docType ?>">
-                  <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>')"><?= str_replace("-", " ", $req['documentType'])  ?></a>
+                  <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;"><?= str_replace("-", " ", $docType) ?></a>
                   <img src="assets/Info-Icon.png" class="w-[16px] h-[16px] ml-[35px]">
                   <img src="assets/Check-Icon.png" class="w-[16px] h-[16px] ml-[35px]" style="display: none;">
                 </li>

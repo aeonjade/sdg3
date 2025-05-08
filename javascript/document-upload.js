@@ -87,18 +87,6 @@ function isValidFile(id, file) {
   return allowedFormats[id].includes("." + extension);
 }
 
-function toggleChecklist() {
-  const chevronIcon = document.getElementById("chevron-icon");
-  const checklist = document.getElementById("checklistContent");
-
-  // Toggle checklist stuff
-  checklist.classList.toggle("hidden");
-  checklist.classList.toggle("pointer-events-none");
-
-  // Rotate the chevron icon
-  chevronIcon.classList.toggle("rotate-180");
-}
-
 document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
     const id = this.id;
@@ -271,10 +259,10 @@ function openSampleImage(documentType) {
 
     const modalContent = document.createElement("div");
     modalContent.style.backgroundColor = "white";
-    modalContent.style.padding = "10px"; // reduce padding
+    modalContent.style.padding = "10px";
     modalContent.style.borderRadius = "8px";
-    modalContent.style.maxWidth = "70%"; // reduce max width
-    modalContent.style.maxHeight = "70%"; // reduce max height
+    modalContent.style.maxWidth = "70%";
+    modalContent.style.maxHeight = "70%";
     modalContent.style.overflow = "auto";
     modalContent.style.position = "relative";
 
@@ -289,8 +277,8 @@ function openSampleImage(documentType) {
     const closeButton = document.createElement("button");
     closeButton.textContent = "X";
     closeButton.style.position = "fixed";
-    closeButton.style.top = "10px"; // reduce top spacing
-    closeButton.style.right = "10px"; // reduce right spacing
+    closeButton.style.top = "10px";
+    closeButton.style.right = "10px";
     closeButton.style.background = "transparent";
     closeButton.style.color = "white";
     closeButton.style.border = "none";
@@ -320,9 +308,14 @@ function openSampleImage(documentType) {
 document.addEventListener("DOMContentLoaded", function () {
 
   // Toggle Checklist Icon
-  const chevronIcon = document.querySelector(".chevron-icon");
+  const chevronIcon = document.getElementById("chevron-icon");
+  const checklistContent = document.getElementById("checklistContent");
+
   if (chevronIcon) {
-    chevronIcon.addEventListener("click", toggleChecklist);
+    chevronIcon.addEventListener("click", () => {
+      checklistContent.classList.toggle("hidden");
+      chevronIcon.classList.toggle("rotate-180");
+    });
   }
 
   // Submit Button
