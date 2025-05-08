@@ -5,10 +5,10 @@ foreach ($requirements as $req) { ?>
     <!-- main div.inner-box h4 -->
     <h4 class="ml-0 text-xl font-semibold pb-3"><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>
     <?php foreach ($req['subtitles'] as $subtitle) { ?>
-      <h5 class="ml-5 text-sm text-gray-500">• <?= $subtitle ?></h5>
+      <h5 class="ml-5 text-sm text-gray-500 font-medium">• <?= $subtitle ?></h5>
     <?php } ?>
     <!-- main div.inner-box h5-->
-    <h5 class="ml-5 my-0 px-0 py-[3px] text-sm text-[red]">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
+    <h5 class="ml-5 text-sm text-[red] font-medium">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
 
     <!-- .upload-container -->
     <div class="upload-container mt-4 mx-6 mb-0">
