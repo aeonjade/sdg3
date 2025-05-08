@@ -3,6 +3,10 @@ $filesDir = 'documents/';
 $files = scandir($filesDir);
 $files = array_diff($files, array('.', '..'));
 
+// Check uploaded documents
+include("php/getDocuments.php");
+$documents = getDocuments('applicantID = ?', [$applicantID]);
+
 foreach ($files as $file) {
     $trimmedName = preg_replace('/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/', '', $file);
 

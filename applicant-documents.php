@@ -1,6 +1,4 @@
 <?php
-// Check if document is already uploaded
-include("php/getDocuments.php");
 // Start session to store user data
 session_start();
 
@@ -9,6 +7,10 @@ $applicantName = isset($_SESSION['applicantName']) ? $_SESSION['applicantName'] 
 $firstChoice = isset($_SESSION['firstChoice']) ? $_SESSION['firstChoice'] : "Bachelor of Science in Information Technology";
 $secondChoice = isset($_SESSION['secondChoice']) ? $_SESSION['secondChoice'] : "Bachelor of Science in Civil Engineering";
 $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] : "Bachelor-Program";
+
+// Check uploaded documents
+include("php/getDocuments.php");
+$documents = getDocuments('applicantID = ?', [$applicantID]);
 ?>
 
 <!DOCTYPE html>
