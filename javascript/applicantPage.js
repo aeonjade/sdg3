@@ -71,92 +71,98 @@ function isValidFile(id, file) {
 function removeFile(id) {
   const preview = document.getElementById("preview-" + id);
   const container = preview?.closest(".upload-container");
-  
+
   if (!container) {
     console.error("Upload container not found");
     return;
   }
 
   const applicantID = container.dataset.applicantId;
-  const rawId = id.replace('input-', ''); // Clean the ID
-  
+  const rawId = id.replace("input-", ""); // Clean the ID
+
   const formData = new FormData();
   formData.append("documentType", rawId);
   formData.append("applicantID", applicantID);
 
   fetch("php/removeDocument.php", {
     method: "POST",
-    body: formData
+    body: formData,
   })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      // Remove preview
-      preview.remove();
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Remove preview
+        preview.remove();
 
-      // Create new input and button
-      const input = document.createElement("input");
-      input.type = "file";
-      input.name = rawId;
-      input.id = "input-" + rawId;
-      input.className = "file-input hidden";
-      input.accept = allowedFormats[rawId]?.join(",") || "";
-      input.setAttribute("data-applicant-id", applicantID);
+        // Create new input and button
+        const input = document.createElement("input");
+        input.type = "file";
+        input.name = rawId;
+        input.id = "input-" + rawId;
+        input.className = "file-input hidden";
+        input.accept = allowedFormats[rawId]?.join(",") || "";
+        input.setAttribute("data-applicant-id", applicantID);
 
-      const button = document.createElement("button");
-      button.type = "button";
-      button.id = "button-" + rawId;
-      button.className = "upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]";
-      button.textContent = "Upload";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.id = "button-" + rawId;
+        button.className =
+          "upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]";
+        button.textContent = "Upload";
 
-      // Add elements to container
-      container.appendChild(input);
-      container.appendChild(button);
+        // Add elements to container
+        container.appendChild(input);
+        container.appendChild(button);
 
-      // Add event listeners
-      button.addEventListener("click", () => {
-        input.click();
-      });
+        // Add event listeners
+        button.addEventListener("click", () => {
+          input.click();
+        });
 
-      input.addEventListener("change", function() {
-        const file = this.files[0];
-        if (!file) return;
+        input.addEventListener("change", function () {
+          const file = this.files[0];
+          if (!file) return;
 
-        // Validate file format and size
-        if (!isValidFile(rawId, file)) {
-          const errorMessage = container.querySelector(".error-message");
-          errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[rawId].join(", ")}`;
-          errorMessage.classList.remove("hidden");
-          return;
-        }
+          // Validate file format and size
+          if (!isValidFile(rawId, file)) {
+            const errorMessage = container.querySelector(".error-message");
+            errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[
+              rawId
+            ].join(", ")}`;
+            errorMessage.classList.remove("hidden");
+            return;
+          }
 
-        if (file.size > MAX_FILE_SIZE) {
-          const errorMessage = container.querySelector(".error-message");
-          errorMessage.textContent = `File size exceeds limit of ${MAX_FILE_SIZE / 1024 / 1024}MB`;
-          errorMessage.classList.remove("hidden");
-          return;
-        }
+          if (file.size > MAX_FILE_SIZE) {
+            const errorMessage = container.querySelector(".error-message");
+            errorMessage.textContent = `File size exceeds limit of ${
+              MAX_FILE_SIZE / 1024 / 1024
+            }MB`;
+            errorMessage.classList.remove("hidden");
+            return;
+          }
 
-        // Create FormData
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("applicantID", applicantID);
-        formData.append("documentType", rawId);
-        formData.append("documentName", file.name);
+          // Create FormData
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("applicantID", applicantID);
+          formData.append("documentType", rawId);
+          formData.append("documentName", file.name);
 
-        // Upload file
-        fetch("php/uploadDocument.php", {
-          method: "POST",
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // Create new preview
-            const preview = document.createElement("div");
-            preview.id = `preview-${rawId}`;
-            preview.className = "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
-            preview.innerHTML = `
+          // Upload file
+          fetch("php/uploadDocument.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Create new preview
+                const preview = document.createElement("div");
+                preview.id = `preview-${rawId}`;
+                preview.className =
+                  "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
+                preview.innerHTML = `
               <span class="file-name font-bold underline break-all">${data.filename}</span>
               <div class="file-actions flex items-center gap-3">
                 <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${data.filename}">
@@ -165,41 +171,42 @@ function removeFile(id) {
               </div>
             `;
 
-            // Remove input and button
-            input.remove();
-            button.remove();
+                // Remove input and button
+                input.remove();
+                button.remove();
 
-            // Add preview
-            container.appendChild(preview);
+                // Add preview
+                container.appendChild(preview);
 
-            // Update status icon
-            const statusIcon = document.getElementById(`status-${rawId}`);
-            if (statusIcon) {
-              statusIcon.src = "assets/Check-Icon.png";
-            }
+                // Update status icon
+                const statusIcon = document.getElementById(`status-${rawId}`);
+                if (statusIcon) {
+                  statusIcon.src = "assets/Check-Icon.png";
+                }
 
-            // Add event listeners to new preview
-            attachPreviewListeners(preview, rawId);
-          }
-        })
-        .catch(error => {
-          console.error("Upload error:", error);
-          const errorMessage = container.querySelector(".error-message");
-          errorMessage.textContent = "Error uploading file. Please try again.";
-          errorMessage.classList.remove("hidden");
+                // Add event listeners to new preview
+                attachPreviewListeners(preview, rawId);
+              }
+            })
+            .catch((error) => {
+              console.error("Upload error:", error);
+              const errorMessage = container.querySelector(".error-message");
+              errorMessage.textContent =
+                "Error uploading file. Please try again.";
+              errorMessage.classList.remove("hidden");
+            });
         });
-      });
 
-      // Reset checklist icon
-      const statusIcon = document.getElementById(`status-${rawId}`);
-      if (statusIcon) {
-        statusIcon.src = "assets/Info-Icon.png";
+        // Reset checklist icon
+        const statusIcon = document.getElementById(`status-${rawId}`);
+        if (statusIcon) {
+          statusIcon.src = "assets/Info-Icon.png";
+        }
       }
-    }
-  })
-  .catch(error => {
-    console.error("Error removing file:", error);
-  });
+    })
+    .catch((error) => {
+      console.error("Error removing file:", error);
+    });
 }
 
 // Helper function to attach preview listeners
@@ -209,14 +216,14 @@ function attachPreviewListeners(preview, id) {
   const removeText = preview.querySelector(".remove-text");
 
   if (viewText) {
-    viewText.addEventListener("click", function() {
+    viewText.addEventListener("click", function () {
       const filename = this.dataset.filename;
       window.open(`documents/${filename}`, "_blank");
     });
   }
 
   if (downloadIcon) {
-    downloadIcon.addEventListener("click", function() {
+    downloadIcon.addEventListener("click", function () {
       const filename = this.dataset.filename;
       const link = document.createElement("a");
       link.href = `documents/${filename}`;
@@ -228,7 +235,7 @@ function attachPreviewListeners(preview, id) {
   }
 
   if (removeText) {
-    removeText.addEventListener("click", function() {
+    removeText.addEventListener("click", function () {
       removeFile(id);
     });
   }
@@ -239,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const applicantID = document.body.dataset.applicantId;
 
   // Add event listeners for existing document previews
-  document.querySelectorAll(".file-preview").forEach(preview => {
+  document.querySelectorAll(".file-preview").forEach((preview) => {
     const id = preview.id.replace("preview-", "");
     const viewText = preview.querySelector(".view-text");
     const downloadIcon = preview.querySelector(".document-requirements-icon");
@@ -248,14 +255,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Set up view handler
     if (viewText) {
-      viewText.addEventListener("click", function() {
+      viewText.addEventListener("click", function () {
         window.open(`documents/${filename}`, "_blank");
       });
     }
 
     // Set up download handler
     if (downloadIcon) {
-      downloadIcon.addEventListener("click", function() {
+      downloadIcon.addEventListener("click", function () {
         const link = document.createElement("a");
         link.href = `documents/${filename}`;
         link.download = filename;
@@ -267,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Set up remove handler
     if (removeText) {
-      removeText.addEventListener("click", function() {
+      removeText.addEventListener("click", function () {
         removeFile(id);
       });
     }
@@ -350,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               // Set up view handler
               const viewText = preview.querySelector(".view-text");
-              viewText.addEventListener("click", function() {
+              viewText.addEventListener("click", function () {
                 const filename = this.dataset.filename;
                 window.open(`documents/${filename}`, "_blank");
               });
@@ -359,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
               const downloadIcon = preview.querySelector(
                 ".document-requirements-icon"
               );
-              downloadIcon.addEventListener("click", function() {
+              downloadIcon.addEventListener("click", function () {
                 const filename = this.dataset.filename;
                 const link = document.createElement("a");
                 link.href = `documents/${filename}`;
