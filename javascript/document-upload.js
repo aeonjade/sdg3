@@ -9,14 +9,7 @@ function triggerUpload(id) {
 }
 
 function removeFile(id) {
-  const input = document.getElementById(id);
   const preview = document.getElementById("preview-" + id);
-
-  // Only proceed if we have valid elements
-  if (!input || !preview) {
-    console.error("Required elements not found");
-    return;
-  }
 
   const container = preview.closest(".upload-container");
   if (!container) {
@@ -34,9 +27,8 @@ function removeFile(id) {
   })
     .then((response) => response.text())
     .then(() => {
-      // Reset file input
-      input.value = "";
 
+      
       // Hide preview
       preview.remove(); // Remove instead of hiding
 
@@ -97,6 +89,7 @@ document.querySelectorAll(".file-input").forEach((input) => {
     const id = this.id;
     const file = this.files[0];
     const container = input.closest(".upload-container");
+    const applicantID = container.dataset.applicantId; // Get applicantID from data attribute
     const uploadBtn = container.querySelector(".upload-btn");
     const errorMessage = container.querySelector(".error-message");
 
@@ -123,7 +116,7 @@ document.querySelectorAll(".file-input").forEach((input) => {
       // Create FormData for upload
       let formData = new FormData();
       formData.append("file", file);
-      formData.append("applicantID", 1); // Replace with actual applicant ID
+      formData.append("applicantID", applicantID); // Replace with actual applicant ID
       formData.append("documentName", file.name);
       formData.append("documentType", id);
 
@@ -414,14 +407,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('upload-btn')) {
             const id = e.target.dataset.id;
             triggerUpload(id);
-        }
-    });
-
-    // Handle remove buttons
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-text')) {
-            const id = e.target.dataset.id;
-            removeFile(id);
         }
     });
 

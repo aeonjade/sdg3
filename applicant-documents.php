@@ -2,7 +2,7 @@
 // Start session to store user data
 session_start();
 
-$applicantID = isset($_SESSION['applicantID']) ? $_SESSION['applicantID'] : 001;
+$applicantID = isset($_SESSION['applicantID']) ? $_SESSION['applicantID'] : 1;
 $applicantName = isset($_SESSION['applicantName']) ? $_SESSION['applicantName'] : "Ms. Galve-Abad";
 $firstChoice = isset($_SESSION['firstChoice']) ? $_SESSION['firstChoice'] : "Bachelor of Science in Information Technology";
 $secondChoice = isset($_SESSION['secondChoice']) ? $_SESSION['secondChoice'] : "Bachelor of Science in Civil Engineering";
