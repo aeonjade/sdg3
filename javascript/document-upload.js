@@ -11,9 +11,18 @@ function triggerUpload(id) {
 function removeFile(id) {
   const input = document.getElementById(id);
   const preview = document.getElementById("preview-" + id);
-  const container = input.closest(".upload-container");
-  const uploadBtn = container.querySelector(".upload-btn");
-  const errorMessage = container.querySelector(".error-message");
+
+  // Only proceed if we have valid elements
+  if (!input || !preview) {
+    console.error("Required elements not found");
+    return;
+  }
+
+  const container = preview.closest(".upload-container");
+  if (!container) {
+    console.error("Upload container not found");
+    return;
+  }
 
   // Backend dynamic file remove
   const formData = new FormData();
@@ -22,40 +31,36 @@ function removeFile(id) {
   fetch("php/removeDocument.php", {
     method: "POST",
     body: formData,
-  }).then((response) => response.text());
+  })
+    .then((response) => response.text())
+    .then(() => {
+      // Reset file input
+      input.value = "";
 
-  // Reset file input
-  if (input) input.value = "";
+      // Hide preview
+      preview.remove(); // Remove instead of hiding
 
-  // Hide preview
-  if (preview) preview.classList.add("hidden");
+      // Show upload button
+      const uploadBtn = container.querySelector(".upload-btn");
+      if (uploadBtn) {
+        uploadBtn.classList.remove("hidden");
+      }
 
-  // Show upload button
-  if (uploadBtn) {
-    uploadBtn.style.display = "block";
-    uploadBtn.style.pointerEvents = "auto";
-    uploadBtn.style.height = "";
-  }
+      // Reset checklist icon
+      const statusIcon = document.getElementById(`status-${id}`);
+      if (statusIcon) {
+        statusIcon.src = "assets/Info-Icon.png";
+      }
 
-  // Clear error message
-  if (errorMessage) {
-    errorMessage.textContent = "";
-    errorMessage.classList.add("hidden");
-  }
+      // Clear from memory
+      delete uploadedFiles[id];
 
-  // Reset checklist icons
-  const checklistIcon = document.querySelector(`#item-${id} .info`);
-  const checkIcon = document.querySelector(`#item-${id} .check`);
-  if (checklistIcon && checkIcon) {
-    checklistIcon.style.display = "inline";
-    checkIcon.style.display = "none";
-  }
-
-  // Clear from memory / database
-  delete uploadedFiles[id];
-
-  // Re-check if form is valid
-  checkAllFilesUploaded();
+      // Re-check if all files are uploaded
+      checkAllFilesUploaded();
+    })
+    .catch((error) => {
+      console.error("Error removing file:", error);
+    });
 }
 
 function checkAllFilesUploaded() {
@@ -91,86 +96,115 @@ document.querySelectorAll(".file-input").forEach((input) => {
   input.addEventListener("change", function () {
     const id = this.id;
     const file = this.files[0];
-    const preview = document.getElementById("preview-" + id);
     const container = input.closest(".upload-container");
     const uploadBtn = container.querySelector(".upload-btn");
     const errorMessage = container.querySelector(".error-message");
 
     // Clear previous error
     errorMessage.textContent = "";
-    errorMessage.classList.remove("visible");
+    errorMessage.classList.add("hidden");
 
     if (file) {
+      // Validate file format and size
       if (!isValidFile(id, file)) {
         errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[
           id
         ].join(", ")}`;
-        errorMessage.style.display = "block";
+        errorMessage.classList.remove("hidden");
         return;
       } else if (file.size > MAX_FILE_SIZE) {
         errorMessage.textContent = `File size exceeds the limit of ${
           MAX_FILE_SIZE / 1024 / 1024
         } MB.`;
-        errorMessage.style.display = "block";
+        errorMessage.classList.remove("hidden");
         return;
       }
 
-      // fetch upload
+      // Create FormData for upload
       let formData = new FormData();
       formData.append("file", file);
-      formData.append("applicantID", 1);
+      formData.append("applicantID", 1); // Replace with actual applicant ID
       formData.append("documentName", file.name);
       formData.append("documentType", id);
 
+      // Upload file
       fetch("php/uploadDocument.php", {
         method: "POST",
         body: formData,
-      }).then((response) => response.text());
+      })
+        .then((response) => response.text())
+        .then(() => {
+          // Create preview element if it doesn't exist
+          let preview = document.getElementById("preview-" + id);
+          if (!preview) {
+            preview = document.createElement("div");
+            preview.id = "preview-" + id;
+            preview.className =
+              "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
+            preview.innerHTML = `
+            <span class="file-name font-bold underline break-all"></span>
+            <div class="file-actions flex items-center gap-3">
+              <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download">
+              <span class="view-text text-[blue] cursor-pointer">View</span>
+              <span class="remove-text text-[red] cursor-pointer" onclick="removeFile('${id}')">Remove</span>
+            </div>
+          `;
+            container.appendChild(preview);
+          }
 
-      // Show filename and preview
-      preview.querySelector(".file-name").textContent = file.name;
-      preview.classList.remove("hidden");
+          // Update preview
+          preview.querySelector(".file-name").textContent = file.name;
+          preview.classList.remove("hidden");
 
-      // Hide upload button using opacity
-      uploadBtn.style.display = "none";
-      uploadBtn.style.pointerEvents = "none";
-      uploadBtn.style.height = "0";
+          // Hide upload button
+          if (uploadBtn) {
+            uploadBtn.classList.add("hidden");
+          }
 
-      // Update checklist icons
-      const checklistIcon = document.querySelector(`#item-${id} .info`);
-      const checkIcon = document.querySelector(`#item-${id} .check`);
-      if (checklistIcon && checkIcon) {
-        checklistIcon.style.display = "none";
-        checkIcon.style.display = "inline";
-      }
+          // Update checklist icons
+          const statusIcon = document.getElementById(`status-${id}`);
+          if (statusIcon) {
+            statusIcon.src = "assets/Check-Icon.png";
+          }
 
-      // Save file for later use (view/download)
-      uploadedFiles[id] = file;
+          // Store file for preview/download
+          uploadedFiles[id] = file;
 
-      // Set up download
-      const downloadIcon = preview.querySelector(".document-requirements-icon");
-      downloadIcon.onclick = () => {
-        const fileToDownload = uploadedFiles[id];
-        const url = URL.createObjectURL(fileToDownload);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileToDownload.name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      };
+          // Set up view and download handlers
+          const viewText = preview.querySelector(".view-text");
+          const downloadIcon = preview.querySelector(
+            ".document-requirements-icon"
+          );
 
-      // Set up view
-      const viewText = preview.querySelector(".view-text");
-      viewText.onclick = () => {
-        const fileToView = uploadedFiles[id];
-        const url = URL.createObjectURL(fileToView);
-        window.open(url, "_blank");
-      };
+          if (viewText) {
+            viewText.onclick = () => {
+              const url = URL.createObjectURL(file);
+              window.open(url, "_blank");
+              URL.revokeObjectURL(url);
+            };
+          }
 
-      // Check if all files are uploaded
-      checkAllFilesUploaded();
+          if (downloadIcon) {
+            downloadIcon.onclick = () => {
+              const url = URL.createObjectURL(file);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = file.name;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+            };
+          }
+
+          // Check if all files are uploaded
+          checkAllFilesUploaded();
+        })
+        .catch((error) => {
+          console.error("Upload error:", error);
+          errorMessage.textContent = "Error uploading file. Please try again.";
+          errorMessage.classList.remove("hidden");
+        });
     }
   });
 });
@@ -306,7 +340,6 @@ function openSampleImage(documentType) {
 
 //Add eventlistener dun sa mga tinanggal ko yung onClick
 document.addEventListener("DOMContentLoaded", function () {
-
   // Toggle Checklist Icon
   const chevronIcon = document.getElementById("chevron-icon");
   const checklistContent = document.getElementById("checklistContent");

@@ -50,20 +50,19 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
               <?php
               $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
               $requirements = json_decode($requirementsSet, true);
-              foreach ($requirements as $req) {
-                $docType = $req['documentType']; ?>
-                <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $docType ?>">
-                  <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;"><?= str_replace("-", " ", $docType) ?></a>
+              foreach ($requirements as $req) { ?>
+                <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $req['documentType'] ?>">
+                  <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $req['documentType'] ?>'); return false;"><?= str_replace("-", " ", $req['documentType']) ?></a>
                   <?php
                   $hasDocument = false;
                   foreach ($documents as $doc) {
-                    if ($doc['documentType'] == $docType) {
+                    if ($doc['documentType'] == $req['documentType']) {
                       $hasDocument = true;
                       break;
                     }
                   }
                   ?>
-                  <img id="status-<?= $docType ?>" src="assets/<?= $hasDocument ? 'Check-Icon.png' : 'Info-Icon.png' ?>" class="w-[16px] h-[16px] ml-[35px]">
+                  <img id="status-<?= $req['documentType'] ?>" src="assets/<?= $hasDocument ? 'Check-Icon.png' : 'Info-Icon.png' ?>" class="w-[16px] h-[16px] ml-[35px]">
                 <?php
               }
                 ?>
