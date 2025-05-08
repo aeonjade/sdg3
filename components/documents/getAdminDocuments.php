@@ -16,8 +16,7 @@ foreach ($requirements as $req) {
     if ($fileUploaded) {
         $targetPath = $uploadDir . $fileName;
         move_uploaded_file($_FILES[$inputName]['tmp_name'], $targetPath);
-    }
-?>
+    } ?>
 
     <div class="mb-8 mx-10" id="anchor-<?= $docType ?>">
         <h4 class="m-0 text-xl font-medium pb-2"><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>

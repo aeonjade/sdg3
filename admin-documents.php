@@ -108,7 +108,7 @@ $requirements = json_decode($requirementsSet, true);
 
 
     </main>
-    <?php //include "components/navigation/footer.php" ?>
+    <?php include "components/navigation/footer.php" ?>
   </section>
 
   <script src="javascript/adminPage.js"></script>

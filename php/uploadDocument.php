@@ -25,6 +25,6 @@ if (!empty($_FILES['file']['name'])) {
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
         // Insert file details into database
         $sql = "INSERT INTO documents (applicantID, documentName, documentType) VALUES (?,?,?)";
-        $pdo->prepare($sql)->execute([$applicantID, $documentName, $documentType]);
+        $pdo->prepare($sql)->execute([$applicantID, $new_filename, $documentType]);
     }
 }

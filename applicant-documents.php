@@ -21,7 +21,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
-  <link rel="stylesheet" href="css/applicantPage.css">
+  <!-- <link rel="stylesheet" href="css/applicantPage.css"> -->
 </head>
 
 <body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
@@ -35,7 +35,7 @@ $applicantType = isset($_SESSION['applicantType']) ? $_SESSION['applicantType'] 
     <main class="flex flex-col h-full overflow-auto">
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
 
-        <form action="admin-documents.php" method="POST" enctype="multipart/form-data">
+        <form action="admin-documents.php" method="POST">
           <!-- Checklist -->
           <div class="checklist-box">
             <!-- .checklist-header-->
