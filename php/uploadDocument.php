@@ -11,8 +11,15 @@ if (!empty($_FILES['file']['name'])) {
         mkdir($target_dir, 0777, true);
     }
 
-    $file_name = basename($_FILES["file"]["name"]);
-    $target_file = $target_dir . $file_name;
+    // Get file extension
+    $file_extension = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+    
+    // Create unique filename using timestamp
+    $timestamp = date('Y-m-d_H-i-s');
+    $original_filename = pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME);
+    $new_filename = $original_filename . '_' . $timestamp . '.' . $file_extension;
+    
+    $target_file = $target_dir . $new_filename;
 
     // Move uploaded file to target directory
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
