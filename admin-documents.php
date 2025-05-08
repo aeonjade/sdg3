@@ -48,7 +48,7 @@ $requirements = json_decode($requirementsSet, true);
             <img id="chevron-icon" src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" />
           </div>
           <!-- .checklist -->
-          <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
+          <ul class="list-none pl-0 m-0 transition-opacity" id="checklistContent">
             <?php foreach ($requirements as $req) {
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
