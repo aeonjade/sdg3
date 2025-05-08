@@ -1,6 +1,6 @@
 <?php
 session_start();
- 
+
 $applicantName = $_SESSION['applicantName'] ?? "Ms. Galve-Abad";
 $firstChoice = $_SESSION['firstChoice'] ?? "Bachelor of Science in Information Technology";
 $secondChoice = $_SESSION['secondChoice'] ?? "Bachelor of Science in Civil Engineering";
@@ -15,7 +15,7 @@ $requirementsSet = $applicantType == "Bachelor-Program"
 
 $requirements = json_decode($requirementsSet, true);
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en" class="font-[Roboto] h-full flex flex-1 overflow-auto box-border">
 
@@ -27,7 +27,6 @@ $requirements = json_decode($requirementsSet, true);
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
-  <!--<link rel="stylesheet" href="css/adminPage.css">-->
 </head>
 
 <body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
@@ -39,14 +38,14 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/header.php" ?>
 
     <main class="flex flex-col h-full overflow-auto">
-      <!-- .checklist-box minimized -->  
-      <div id="checklist-box" class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
+      <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
+
         <!-- Checklist -->
-        <div class="sticky top-0 right-0 float-right bg-purple-700 text-white px-6 py-5 rounded-lg border-2 border-black text-sm w-max transition-all overflow-hidden" id="checklistBox">
+        <div id="checklist-box" class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-[25px] py-[20px] mt-0 mr-0 mb-[15px] ml-[15px] rounded-[8px] border-[1px] border-[solid] border-[black] text-[14px] w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden">
           <!-- .checklist header -->
-          <div class="flex justify-between items-center mb-3">
-            <h4 class="m-0 text-xl pb-3">Checklist</h4>
-            <img src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-4 h-4 filter brightness-0 invert cursor-pointer transform transition-transform duration-300"/>
+          <div class="flex justify-between items-center gap-x-5">
+            <h4 class="pb-0 text-lg font-bold">Checklist</h4>
+            <img id="chevron-icon" src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" />
           </div>
           <!-- .checklist -->
           <ul class="list-none pl-0 m-0 transition-opacity hidden" id="checklistContent">
@@ -54,8 +53,8 @@ $requirements = json_decode($requirementsSet, true);
               $docType = $req['documentType'];
               $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
             ?>
-              <li class="flex justify-between items-center my-2 whitespace-nowrap" id="item-<?= $docType ?>">
-                <a class="text-white no-underline hover:underline cursor-pointer" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;">• <?= str_replace("-", " ", $docType) ?></a>
+              <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $docType ?>">
+                <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;"><?= str_replace("-", " ", $docType) ?></a>
                 <?php if ($isUploaded): ?>
                   <!-- .icon check -->
                   <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
@@ -69,7 +68,7 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Applicant Info -->
-         <!-- .name-card -->
+        <!-- .name-card -->
         <div class="ml-5">
           <!-- applicant-name -->
           <h1 class="text-3xl font-bold my-4"><?= htmlspecialchars($applicantName); ?>'s Application</h1>
@@ -78,7 +77,7 @@ $requirements = json_decode($requirementsSet, true);
         </div>
 
         <!-- Document Set Title -->
-         <!-- set -->
+        <!-- set -->
         <h2 class="ml-5 text-xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
         <!-- Document Sections -->
@@ -95,7 +94,7 @@ $requirements = json_decode($requirementsSet, true);
             <button class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
           </div>
         </div>
-        
+
         <!-- Reject Message Pop-up -->
         <div id="rejectPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden">
           <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-300 w-[350px]">
@@ -107,7 +106,7 @@ $requirements = json_decode($requirementsSet, true);
             </div>
           </div>
         </div>
-
+      </div>
 
     </main>
     <?php include "components/navigation/footer.php" ?>

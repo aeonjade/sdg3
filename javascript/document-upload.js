@@ -89,7 +89,7 @@ function isValidFile(id, file) {
 
 function toggleChecklist() {
   const chevronIcon = document.getElementById("chevron-icon");
-  const checklist = document.getElementById("checklist");
+  const checklist = document.getElementById("checklistContent");
 
   // Toggle checklist stuff
   checklist.classList.toggle("hidden");
@@ -318,15 +318,6 @@ function openSampleImage(documentType) {
 
 //Add eventlistener dun sa mga tinanggal ko yung onClick
 document.addEventListener("DOMContentLoaded", function () {
-  // Requirement Links - Sample Image Viewer
-  const requirementLinks = document.querySelectorAll(".checklist li a");
-  requirementLinks.forEach((link) => {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-      const documentType = this.parentElement.id.replace("item-", "");
-      openSampleImage(documentType);
-    });
-  });
 
   // Toggle Checklist Icon
   const chevronIcon = document.querySelector(".chevron-icon");
