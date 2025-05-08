@@ -63,6 +63,39 @@ function openSampleImage(documentType) {
   }
 }
 
+function createConfirmationModal(title, message, onConfirm) {
+  const modal = document.createElement("div");
+  modal.className =
+    "popup fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex flex-col items-center flex-[1] z-50";
+
+  modal.innerHTML = `
+      <img class="w-16 mb-3" src="assets/confirm.png" alt="Confirm">
+      <h2 class="m-0 text-2xl text-white">${title}</h2>
+      <p class="text-sm text-white">${message}</p>
+      <div class="yes-no-buttons space-x-4 my-8 mx-8">
+        <button class="no bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 ml-2 hover:bg-[#0C5AAD]">No</button>
+        <button class="yes bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 flex-1 px-8 py-3 mr-4 hover:bg-[#0C5AAD]">Yes</button>
+      </div>
+    `;
+
+  const overlay = document.createElement("div");
+  overlay.className = "fixed inset-0 bg-black bg-opacity-50 z-40";
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(modal);
+
+  modal.querySelector(".no").addEventListener("click", () => {
+    document.body.removeChild(modal);
+    document.body.removeChild(overlay);
+  });
+
+  modal.querySelector(".yes").addEventListener("click", () => {
+    onConfirm();
+    document.body.removeChild(modal);
+    document.body.removeChild(overlay);
+  });
+}
+
 function isValidFile(id, file) {
   const extension = "." + file.name.split(".").pop().toLowerCase();
   return allowedFormats[id]?.includes(extension);
@@ -277,6 +310,40 @@ function checkAllFilesUploaded() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  const chevronIcon = document.getElementById("chevron-icon");
+  const checklistContent = document.getElementById("checklistContent");
+  const checklistBox = document.getElementById("checklist-box");
+
+  let isExpanded = true;
+
+  chevronIcon.addEventListener("click", () => {
+    isExpanded = !isExpanded;
+
+    if (!isExpanded) {
+      checklistContent.style.opacity = "0";
+      checklistContent.style.height = "0";
+      checklistContent.style.overflow = "hidden";
+      chevronIcon.style.transform = "rotate(180deg)";
+      checklistBox.style.padding = "20px 25px";
+    } else {
+      checklistContent.style.opacity = "1";
+      checklistContent.style.height = "auto";
+      checklistContent.style.overflow = "visible";
+      chevronIcon.style.transform = "rotate(0deg)";
+      checklistBox.style.padding = "20px 25px";
+    }
+  });
+
+  // Update your removeFile function to use the confirmation modal
+  const originalRemoveFile = window.removeFile;
+  window.removeFile = function (id) {
+    createConfirmationModal(
+      "Remove Document",
+      "Are you sure you want to remove this document?",
+      () => originalRemoveFile(id)
+    );
+  };
+
   // Get applicantID from data attribute in body tag
   const applicantID = document.body.dataset.applicantId;
 
