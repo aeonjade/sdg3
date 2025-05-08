@@ -26,7 +26,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
   </style>
 </head>
 
-<body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
+<body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100" data-applicant-id="<?= $applicantID ?>">
 
   <?php include "components/navigation/sidebar.php" ?>
 

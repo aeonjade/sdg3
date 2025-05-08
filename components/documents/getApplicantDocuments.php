@@ -19,7 +19,7 @@ foreach ($requirements as $req) {
     <h5 class="ml-5 text-sm text-[red] font-medium">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
 
     <!-- .upload-container -->
-    <div class="upload-container mt-4 mx-6 mb-0">
+    <div class="upload-container mt-4 mx-6 mb-0" data-applicant-id="<?= $applicantID ?>">
       <?php if (!$hasDocument) { ?>
         <!-- Show input and button if no document exists -->
         <input type="file" name="<?= $req['documentType'] ?>" id="input-<?= $req['documentType'] ?>"

@@ -1,3 +1,15 @@
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const uploadedFiles = {};
+const allowedFormats = {
+  "CTC-G11": [".pdf"],
+  "CTC-G12": [".pdf"],
+  "CTC-ID": [".pdf"],
+  "Birth-Certificate": [".pdf"],
+  "Applicant-Voter-Certificate": [".pdf"],
+  "Parent-Voter-Certificate": [".pdf"],
+  "ID-Picture": [".jpg", ".png"],
+};
+
 // Define sample image paths (Ensure images exist in the "samples" folder)
 const sampleImages = {
   "CTC-G11": "assets/samples/CTC-G11.jpg",
@@ -50,3 +62,127 @@ function openSampleImage(documentType) {
     alert("Sample image not available.");
   }
 }
+
+function isValidFile(id, file) {
+  const extension = "." + file.name.split(".").pop().toLowerCase();
+  return allowedFormats[id]?.includes(extension);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get applicantID from data attribute in body tag
+  const applicantID = document.body.dataset.applicantId;
+
+  document.querySelectorAll(".file-input").forEach((input) => {
+    input.addEventListener("change", function () {
+      const id = this.id.replace("input-", "");
+      const file = this.files[0];
+      const container = this.closest(".upload-container");
+      const errorMessage = container.querySelector(".error-message");
+      const uploadBtn = container.querySelector(".upload-btn");
+
+      // Clear previous error
+      errorMessage.textContent = "";
+      errorMessage.classList.add("hidden");
+
+      if (file) {
+        // Validate file format and size
+        if (!isValidFile(id, file)) {
+          errorMessage.textContent = `Invalid file format. Allowed formats: ${allowedFormats[
+            id
+          ].join(", ")}`;
+          errorMessage.classList.remove("hidden");
+          return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+          errorMessage.textContent = `File size exceeds limit of ${
+            MAX_FILE_SIZE / 1024 / 1024
+          }MB`;
+          errorMessage.classList.remove("hidden");
+          return;
+        }
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("applicantID", applicantID); // Use the applicantID from session
+        formData.append("documentType", id);
+        formData.append("documentName", file.name);
+
+        // Upload file
+        fetch("php/uploadDocument.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Create preview element
+              const preview = document.createElement("div");
+              preview.id = `preview-${id}`;
+              preview.className =
+                "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
+              preview.innerHTML = `
+              <span class="file-name font-bold underline break-all">${data.filename}</span>
+              <div class="file-actions flex items-center gap-3">
+                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download">
+                <span class="view-text text-[blue] cursor-pointer">View</span>
+                <span class="remove-text text-[red] cursor-pointer" onclick="removeFile('${id}')">Remove</span>
+              </div>
+            `;
+
+              // Hide upload button and input
+              uploadBtn.classList.add("hidden");
+              input.classList.add("hidden");
+
+              // Add preview to container
+              container.appendChild(preview);
+
+              // Update checklist icon
+              const statusIcon = document.getElementById(`status-${id}`);
+              if (statusIcon) {
+                statusIcon.src = "assets/Check-Icon.png";
+              }
+
+              // Store file reference
+              uploadedFiles[id] = file;
+
+              // Set up view handler
+              const viewText = preview.querySelector(".view-text");
+              viewText.onclick = () => {
+                window.open(`documents/${data.filename}`, "_blank");
+              };
+
+              // Set up download handler
+              const downloadIcon = preview.querySelector(
+                ".document-requirements-icon"
+              );
+              downloadIcon.onclick = () => {
+                const link = document.createElement("a");
+                link.href = `documents/${data.filename}`;
+                link.download = data.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              };
+            }
+          })
+          .catch((error) => {
+            console.error("Upload error:", error);
+            errorMessage.textContent =
+              "Error uploading file. Please try again.";
+            errorMessage.classList.remove("hidden");
+          });
+      }
+    });
+  });
+
+  // Add click handlers for upload buttons
+  document.querySelectorAll(".upload-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const id = this.id.replace("button-", "");
+      const input = document.getElementById(`input-${id}`);
+      if (input) input.click();
+    });
+  });
+});
