@@ -54,12 +54,19 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
                 $docType = $req['documentType']; ?>
                 <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $docType ?>">
                   <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;"><?= str_replace("-", " ", $docType) ?></a>
-                  <img src="assets/Info-Icon.png" class="w-[16px] h-[16px] ml-[35px]">
-                  <img src="assets/Check-Icon.png" class="w-[16px] h-[16px] ml-[35px]" style="display: none;">
-                </li>
-              <?php
+                  <?php
+                  $hasDocument = false;
+                  foreach ($documents as $doc) {
+                    if ($doc['documentType'] == $docType) {
+                      $hasDocument = true;
+                      break;
+                    }
+                  }
+                  ?>
+                  <img id="status-<?= $docType ?>" src="assets/<?= $hasDocument ? 'Check-Icon.png' : 'Info-Icon.png' ?>" class="w-[16px] h-[16px] ml-[35px]">
+                <?php
               }
-              ?>
+                ?>
             </ul>
           </div>
 

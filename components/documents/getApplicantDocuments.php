@@ -18,7 +18,7 @@ foreach ($requirements as $req) { ?>
       <button type="button" class="upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]" onclick="triggerUpload('<?= $req['documentType'] ?>')">Upload</button>
 
       <!-- .file-preview -->
-      <div class="file-preview hidden justify-between gap-4 border-3 border-[solid] border-[black] p-3 rounded-2xl mt-3 min-w-80 max-w-3xl" id="preview-<?= $req['documentType'] ?>">
+      <div class="file-preview flex hidden justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]" id="preview-<?= $req['documentType'] ?>">
         <!-- .file-preview .file-name -->
         <span class="file-name font-bold underline break-all"></span>
         <!-- .file-actions -->

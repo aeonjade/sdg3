@@ -45,7 +45,7 @@ $requirements = json_decode($requirementsSet, true);
           <!-- .checklist header -->
           <div class="flex justify-between items-center gap-x-5">
             <h4 class="pb-0 text-lg font-bold">Checklist</h4>
-            <img id="chevron-icon" src="assets/chevron-up.png" alt="Toggle" id="chevron-icon" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" />
+            <img id="chevron-icon" src="assets/chevron-up.png" alt="Toggle" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" />
           </div>
           <!-- .checklist -->
           <ul class="list-none pl-0 m-0 transition-opacity" id="checklistContent">
