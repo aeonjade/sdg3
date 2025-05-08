@@ -26,7 +26,8 @@ foreach ($requirements as $req) {
           class="file-input hidden"
           accept="<?= $req['requiredFormat'] ?>">
         <button type="button"
-          class="upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]">Upload</button>
+          class="upload-btn block bg-[#7213D0] border-2 border-[solid] border-[black] text-[white] rounded-xl text-base font-bold px-16 py-1 mx-0 my-4 hover:bg-[white] hover:text-[black] hover:cursor-pointer hover:[transition:0.3s]"
+          id="button-<?= $req['documentType'] ?>">Upload</button>
       <?php } else { ?>
         <!-- Show file preview if document exists -->
         <div id="preview-<?= $req['documentType'] ?>" class="file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]" id="preview-<?= $req['documentType'] ?>">

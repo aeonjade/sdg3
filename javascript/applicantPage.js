@@ -19,6 +19,7 @@ function openSampleImage(documentType) {
     // Create modal content
     modal.innerHTML = `
         <div class="relative w-full max-w-3xl">
+          <h2 class="m-0 text-2xl text-white mb-4">${documentType}</h2>
           <img 
             src="${sampleImages[documentType]}" 
             alt="Sample ${documentType}" 
