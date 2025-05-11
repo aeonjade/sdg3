@@ -23,8 +23,7 @@ foreach ($requirements as $req) {
             }
             break;
         }
-    }
-?>
+    } ?>
     <div class="mb-8 mx-10" id="anchor-<?= $docType ?>">
         <h4 class="m-0 text-xl font-medium pb-2"><?= $req['documentID'] ?>. <?= $req['documentName'] ?></h4>
         <h5 class="ml-5 text-gray-500 text-sm font-medium">• Must be uploaded in the following format: <?= $req['requiredFormat'] ?></h5>
