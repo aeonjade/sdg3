@@ -73,8 +73,12 @@ foreach ($requirements as $req) {
     </div>
 <?php } ?>
 
-<!-- Submit Button -->
-<div class="flex justify-end">
+<!-- Action Buttons -->
+<div class="flex justify-end gap-4 mx-10">
+    <button type="button" id="downloadAllBtn"
+        class="border-2 border-solid border-black rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 transition duration-300 bg-[#0C5AAD] text-white hover:bg-white hover:text-black">
+        Download All
+    </button>
     <button type="button" id="submitBtn"
         class="border-2 border-solid border-black rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 transition duration-300 cursor-not-allowed text-[gray]"
         disabled>

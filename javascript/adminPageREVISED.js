@@ -283,6 +283,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Add download all button handler
+  const downloadAllBtn = document.getElementById("downloadAllBtn");
+  if (downloadAllBtn) {
+    downloadAllBtn.addEventListener("click", downloadAllFiles);
+  }
+
   updateSubmitButton();
 });
 
@@ -354,4 +360,37 @@ function updateSubmitButton() {
       "hover:text-[black]"
     );
   }
+}
+
+// Add after updateSubmitButton function
+
+function downloadFile(url, filename) {
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+}
+
+function downloadAllFiles() {
+  const confirmed = confirm("Download all documents?");
+  if (!confirmed) return;
+
+  const documents = document.querySelectorAll(".document-container");
+  let delay = 0;
+
+  documents.forEach((container) => {
+    const fileLink = container.querySelector("a");
+    if (fileLink && fileLink.href) {
+      setTimeout(() => {
+        downloadFile(fileLink.href, fileLink.textContent);
+      }, delay);
+      delay += 500; // Add delay between downloads
+    }
+  });
 }
