@@ -32,10 +32,10 @@ foreach ($requirements as $req) {
 
         <div class="mt-4 mx-6 document-container">
             <?php if ($fileUploaded): ?>
-                <div class="flex items-center gap-4 mt-2">
-                    <!-- File preview -->
-                    <div class="flex flex-col w-full">
-                        <div class="flex justify-between items-center gap-4 border-2 border-black p-2 rounded-xl min-w-80 max-w-3xl flex-1">
+                <div class="flex items-center gap-2 mt-2">
+                    <!-- File preview container with max width -->
+                    <div class="flex flex-1 max-w-[800px]">
+                        <div class="flex justify-between items-center gap-2 border-2 border-black p-2 rounded-xl w-full">
                             <span class="font-bold underline break-all">
                                 <a href="<?= htmlspecialchars($targetPath) ?>" target="_blank"><?= htmlspecialchars($trimmedName) ?></a>
                             </span>
@@ -50,12 +50,12 @@ foreach ($requirements as $req) {
                         </div>
                     </div>
 
-                    <!-- Actions + icons -->
-                    <div class="flex items-center gap-2" id="actions-<?= $docType ?>" data-status="<?= strtolower($documentStatus) ?>">
+                    <!-- Actions + icons with fixed position -->
+                    <div class="flex items-center gap-2 ml-2" id="actions-<?= $docType ?>" data-status="<?= strtolower($documentStatus) ?>">
                         <?php if ($documentStatus === 'Pending'): ?>
-                            <span class="text-red-500 font-bold cursor-pointer reject-text"
+                            <span class="text-red-500 font-bold cursor-pointer whitespace-nowrap reject-text"
                                 onclick="showRejectPopup('<?= $docType ?>', '<?= htmlspecialchars($fileName) ?>')">Reject</span>
-                            <span class="text-green-500 font-bold cursor-pointer approve-text"
+                            <span class="text-green-500 font-bold cursor-pointer whitespace-nowrap approve-text"
                                 onclick="handleDecision('<?= $docType ?>', 'approve')">Approve</span>
                         <?php endif; ?>
 
