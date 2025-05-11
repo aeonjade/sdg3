@@ -227,7 +227,8 @@ function removeFile(id) {
                 // Update status icon
                 const statusIcon = document.getElementById(`status-${rawId}`);
                 if (statusIcon) {
-                  statusIcon.src = "assets/Check-Icon.png";
+                  statusIcon.src = "assets/Info-Icon.png";
+                  statusIcon.title = "Pending";
                 }
 
                 // Add event listeners to new preview
@@ -249,9 +250,10 @@ function removeFile(id) {
         const statusIcon = document.getElementById(`status-${rawId}`);
         if (statusIcon) {
           statusIcon.src = "assets/Info-Icon.png";
+          statusIcon.title = "Not Uploaded"; // Changed from just resetting the icon
         }
-        // Check if all files are uploaded
-        checkAllFilesUploaded();
+        // Ensure we check submit button state
+        setTimeout(checkAllFilesUploaded, 0); // Ensure this runs after DOM updates
       }
     })
     .catch((error) => {
@@ -291,27 +293,42 @@ function attachPreviewListeners(preview, id) {
   }
 }
 
+// Update checkAllFilesUploaded to be more strict
 function checkAllFilesUploaded() {
   const statusIcons = document.querySelectorAll('[id^="status-"]');
   const submitBtn = document.querySelector(".submit-btn");
   let allUploaded = true;
+  let hasRejected = false;
+  let hasNotUploaded = false;
+  let allApproved = true;
 
   statusIcons.forEach((icon) => {
-    if (icon.src.includes("Info-Icon.png")) {
-      allUploaded = false;
+    const status = icon.title;
+    switch (status) {
+      case "Not Uploaded":
+        hasNotUploaded = true;
+        allUploaded = false;
+        allApproved = false;
+        break;
+      case "Rejected":
+        hasRejected = true;
+        allUploaded = false;
+        allApproved = false;
+        break;
+      case "Pending":
+        allApproved = false;
+        break;
+      case "Approved":
+        // Keep track of approved status
+        break;
+      default:
+        allApproved = false;
+        break;
     }
   });
 
-  if (allUploaded) {
-    submitBtn.classList.remove("cursor-not-allowed", "text-gray-500");
-    submitBtn.classList.add(
-      "bg-[#7213D0]",
-      "text-white",
-      "hover:bg-white",
-      "hover:text-black"
-    );
-    submitBtn.disabled = false;
-  } else {
+  // Disable submit if all documents are approved OR if there are rejected/not uploaded documents
+  if (allApproved || hasNotUploaded || hasRejected) {
     submitBtn.classList.add("cursor-not-allowed", "text-gray-500");
     submitBtn.classList.remove(
       "bg-[#7213D0]",
@@ -320,6 +337,16 @@ function checkAllFilesUploaded() {
       "hover:text-black"
     );
     submitBtn.disabled = true;
+  } else {
+    // Enable only if documents are pending review
+    submitBtn.classList.remove("cursor-not-allowed", "text-gray-500");
+    submitBtn.classList.add(
+      "bg-[#7213D0]",
+      "text-white",
+      "hover:bg-white",
+      "hover:text-black"
+    );
+    submitBtn.disabled = false;
   }
 }
 
@@ -337,9 +364,6 @@ function updateDocumentStatus(documentType, status, rejectReason = "") {
         statusIcon.src = "assets/Wrong-Icon.png";
         statusIcon.title = "Rejected";
         break;
-      default:
-        statusIcon.src = "assets/Info-Icon.png";
-        statusIcon.title = "Pending";
     }
   }
 
@@ -533,7 +557,8 @@ document.addEventListener("DOMContentLoaded", function () {
               // Update checklist icon
               const statusIcon = document.getElementById(`status-${id}`);
               if (statusIcon) {
-                statusIcon.src = "assets/Check-Icon.png";
+                statusIcon.src = "assets/Info-Icon.png";
+                statusIcon.title = "Pending";
               }
 
               // Store file reference

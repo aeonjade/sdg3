@@ -58,12 +58,11 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
                 foreach ($documents as $doc) {
                   if ($doc['documentType'] == $req['documentType']) {
                     $hasDocument = true;
-                    $documentStatus = $doc['documentStatus'] ?? 'Pending';
+                    $documentStatus = $doc['documentStatus'];
                     break;
                   }
                 }
                 // Update the icon based on status
-                $statusIcon = 'Info-Icon.png';
                 if ($hasDocument) {
                   switch ($documentStatus) {
                     case 'Approved':
@@ -72,9 +71,15 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
                     case 'Rejected':
                       $statusIcon = 'Wrong-Icon.png';
                       break;
+                    case 'Pending':
+                      $statusIcon = 'Info-Icon.png';
+                      break;
                     default:
                       $statusIcon = 'Info-Icon.png';
                   }
+                } else {
+                  $statusIcon = 'Info-Icon.png';
+                  $documentStatus = 'Not Uploaded';
                 }
                 ?>
                 <img id="status-<?= $req['documentType'] ?>"
