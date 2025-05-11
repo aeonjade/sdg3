@@ -92,7 +92,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
 
         <!-- Document Set Title -->
         <!-- set -->
-        <h2 class="ml-5 text-xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
+        <h2 class="ml-5 text-2xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
         <!-- Document Sections -->
         <?php include "components/documents/getAdminDocuments.php" ?>
