@@ -196,7 +196,7 @@ function removeFile(id) {
                 preview.className =
                   "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
                 preview.innerHTML = `
-              <span class="file-name font-bold underline break-all">${data.filename}</span>
+              <span class="file-name font-bold underline break-all">${data.filename.replace(/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/, '')}</span>
               <div class="file-actions flex items-center gap-3">
                 <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${data.filename}">
                 <span class="view-text text-[blue] cursor-pointer" data-filename="${data.filename}">View</span>
@@ -433,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
               preview.className =
                 "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
               preview.innerHTML = `
-              <span class="file-name font-bold underline break-all">${data.filename}</span>
+              <span class="file-name font-bold underline break-all">${data.filename.replace(/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/, '')}</span>
               <div class="file-actions flex items-center gap-3">
                 <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${data.filename}">
                 <span class="view-text text-[blue] cursor-pointer" data-filename="${data.filename}">View</span>
