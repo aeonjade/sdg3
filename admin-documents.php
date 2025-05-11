@@ -14,6 +14,10 @@ $requirementsSet = $applicantType == "Bachelor-Program"
   : file_get_contents("json/graduateApplicant.json");
 
 $requirements = json_decode($requirementsSet, true);
+
+// Check uploaded documents
+include("php/getDocuments.php");
+$documents = getDocuments('applicantID = ?', [$applicantID]);
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +25,9 @@ $requirements = json_decode($requirementsSet, true);
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document Requirements</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
@@ -42,26 +46,36 @@ $requirements = json_decode($requirementsSet, true);
 
         <!-- Checklist -->
         <div id="checklist-box" class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-[25px] py-[20px] mt-0 mr-0 mb-[15px] ml-[15px] rounded-[8px] border-[1px] border-[solid] border-[black] text-[14px] w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden">
-          <!-- .checklist header -->
-          <div class="flex justify-between items-center gap-x-5">
+          <div class="flex justify-between items-center gap-x-5 cursor-pointer" id="checklist-header">
             <h4 class="pb-0 text-lg font-bold">Checklist</h4>
-            <img id="chevron-icon" src="assets/chevron-up.png" alt="Toggle" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]" />
+            <img id="chevron-icon"
+              src="assets/chevron-up.png"
+              alt="Toggle"
+              class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] transition-transform duration-300 hover:bg-[rgba(0,_0,_0,_0.3)]" />
           </div>
-          <!-- .checklist -->
-          <ul class="list-none pl-0 m-0 transition-opacity" id="checklistContent">
-            <?php foreach ($requirements as $req) {
+          <ul class="list-none pl-0 m-0 transition-all duration-300 max-h-[500px] opacity-100 overflow-hidden" id="checklistContent">
+            <?php
+            foreach ($requirements as $req) {
               $docType = $req['documentType'];
-              $isUploaded = isset($_FILES[$docType]) && $_FILES[$docType]['error'] === 0;
+              $isUploaded = false;
+
+              // Check if document exists in uploaded documents
+              foreach ($documents as $doc) {
+                if ($doc['documentType'] === $docType) {
+                  $isUploaded = true;
+                  break;
+                }
+              }
             ?>
               <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $docType ?>">
-                <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $docType ?>'); return false;"><?= str_replace("-", " ", $docType) ?></a>
-                <?php if ($isUploaded): ?>
-                  <!-- .icon check -->
-                  <img src="assets/Check-Icon.png" class="w-4 h-4 ml-8">
-                <?php else: ?>
-                  <!-- . icon wrong -->
-                  <img src="assets/Wrong-Icon.png" class="w-4 h-4 ml-8">
-                <?php endif; ?>
+                <a class="no-underline text-[white] hover:underline"
+                  href="#anchor-<?= $docType ?>"
+                  onclick="event.preventDefault(); document.getElementById('anchor-<?= $docType ?>').scrollIntoView({behavior: 'smooth'});">
+                  <?= str_replace("-", " ", $docType) ?>
+                </a>
+                <img src="assets/<?= $isUploaded ? 'Check-Icon.png' : 'Wrong-Icon.png' ?>"
+                  class="w-4 h-4 ml-8"
+                  alt="<?= $isUploaded ? 'Uploaded' : 'Not uploaded' ?>">
               </li>
             <?php } ?>
           </ul>

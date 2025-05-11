@@ -37,58 +37,55 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
     <main class="flex flex-col h-full overflow-auto">
       <div class="bg-white border border-solid border-black rounded-xl rounded-tr-none rounded-br-none m-3 px-6 py-5 overflow-auto">
 
-        <form action="admin-documents.php" method="POST">
-          <!-- Checklist -->
-          <div id="checklist-box" class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-[25px] py-[20px] mt-0 mr-0 mb-[15px] ml-[15px] rounded-[8px] border-[1px] border-[solid] border-[black] text-[14px] w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden">
-            <!-- .checklist-header-->
-            <div class="flex justify-between items-center gap-x-5">
-              <!-- main div.inner-box .checklist-header h4-->
-              <h4 class="pb-0 text-lg font-bold">Requirements</h4>
-              <img id="chevron-icon" src="assets/chevron-up.png" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]">
-            </div>
-            <ul class="list-none pl-0 m-0 transition-opacity" id="checklistContent">
-              <?php
-              $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
-              $requirements = json_decode($requirementsSet, true);
-              foreach ($requirements as $req) { ?>
-                <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $req['documentType'] ?>">
-                  <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $req['documentType'] ?>'); return false;"><?= str_replace("-", " ", $req['documentType']) ?></a>
-                  <?php
-                  $hasDocument = false;
-                  foreach ($documents as $doc) {
-                    if ($doc['documentType'] == $req['documentType']) {
-                      $hasDocument = true;
-                      break;
-                    }
-                  }
-                  ?>
-                  <img id="status-<?= $req['documentType'] ?>" src="assets/<?= $hasDocument ? 'Check-Icon.png' : 'Info-Icon.png' ?>" class="w-[16px] h-[16px] ml-[35px]">
+        <!-- Checklist -->
+        <div id="checklist-box" class="sticky top-0 right-0 float-right bg-[#7a20e0] text-[white] px-[25px] py-[20px] mt-0 mr-0 mb-[15px] ml-[15px] rounded-[8px] border-[1px] border-[solid] border-[black] text-[14px] w-max [transition:height_0.3s_ease,_padding_0.3s_ease] overflow-hidden">
+          <!-- .checklist-header-->
+          <div class="flex justify-between items-center gap-x-5 cursor-pointer" id="checklist-header">
+            <!-- main div.inner-box .checklist-header h4-->
+            <h4 class="pb-0 text-lg font-bold">Requirements</h4>
+            <img id="chevron-icon" src="assets/chevron-up.png" class="w-[18px] h-[18px] filter brightness-0 invert rounded-[5px] p-[2px] [transition:transform_0.3s_ease] cursor-pointer hover:[transition:0.3s] hover:bg-[rgba(0,_0,_0,_0.3)]">
+          </div>
+          <ul class="list-none pl-0 m-0 transition-all duration-300 max-h-[500px] opacity-100 overflow-hidden" id="checklistContent">
+            <?php
+            $requirementsSet = $applicantType == "Bachelor-Program" ? file_get_contents("json/bachelorApplicant.json") : file_get_contents("json/graduateApplicant.json");
+            $requirements = json_decode($requirementsSet, true);
+            foreach ($requirements as $req) { ?>
+              <li class="flex justify-between items-center mx-0 my-[6px] whitespace-nowrap" id="item-<?= $req['documentType'] ?>">
+                <a class="no-underline text-[white] hover:underline" href="#" onclick="openSampleImage('<?= $req['documentType'] ?>'); return false;"><?= str_replace("-", " ", $req['documentType']) ?></a>
                 <?php
-              }
+                $hasDocument = false;
+                foreach ($documents as $doc) {
+                  if ($doc['documentType'] == $req['documentType']) {
+                    $hasDocument = true;
+                    break;
+                  }
+                }
                 ?>
-            </ul>
-          </div>
+                <img id="status-<?= $req['documentType'] ?>" src="assets/<?= $hasDocument ? 'Check-Icon.png' : 'Info-Icon.png' ?>" class="w-[16px] h-[16px] ml-[35px]">
+              <?php
+            }
+              ?>
+          </ul>
+        </div>
 
-          <div class="ml-5">
-            <!-- .name-card h1.applicant-name-->
-            <h1 class="text-3xl font-extrabold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
-            <p class="my-2.5 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
-            <p class="my-2.5 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
-          </div>
+        <div class="ml-5">
+          <!-- .name-card h1.applicant-name-->
+          <h1 class="text-3xl font-extrabold mx-0 my-4">Welcome, <?= htmlspecialchars($applicantName); ?>!</h1>
+          <p class="my-2.5 text-base">First Choice: <?= htmlspecialchars($firstChoice); ?></p>
+          <p class="my-2.5 text-base">Second Choice: <?= htmlspecialchars($secondChoice); ?></p>
+        </div>
 
-          <h2 class="ml-5 text-2xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
+        <h2 class="ml-5 text-2xl font-semibold my-4"><?= str_replace("-", " ", $applicantType); ?> Requirements</h2>
 
-          <!-- The next php include is the documents part of the page -->
+        <!-- The next php include is the documents part of the page -->
 
-          <?php include "components/documents/getApplicantDocuments.php" ?>
+        <?php include "components/documents/getApplicantDocuments.php" ?>
 
-          <!-- .submit-wrapper-->
-          <div class="submit-wrapper flex justify-end">
-            <!-- .submit-btn-->
-            <button type="button" class="submit-btn cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled>Submit</>
-          </div>
-
-        </form>
+        <!-- .submit-wrapper-->
+        <div class="submit-wrapper flex justify-end">
+          <!-- .submit-btn-->
+          <button type="button" class="submit-btn cursor-not-allowed text-gray-500 border-2 border-[solid] border-[black] rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 [transition:0.3s]" disabled>Submit</>
+        </div>
 
       </div>
     </main>

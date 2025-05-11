@@ -1,23 +1,23 @@
 // Define sample image paths (Ensure images exist in the "samples" folder)
 const sampleImages = {
-    "CTC-G11": "assets/samples/CTC-G11.jpg",
-    "CTC-G12": "assets/samples/CTC-G12.jpg",
-    "CTC-ID": "assets/samples/CTC-ID.jpg",
-    "Birth-Certificate": "assets/samples/Birth-Certificate.jpg",
-    "Applicant-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
-    "Parent-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
-    "ID-Picture": "assets/samples/ID-Picture.jpg",
-  };
-  
-  function openSampleImage(documentType) {
-    if (sampleImages[documentType]) {
-      // Create modal elements
-      const modal = document.createElement("div");
-      modal.className =
-        "popup fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex flex-col items-center flex-[1] z-50";
-  
-      // Create modal content
-      modal.innerHTML = `
+  "CTC-G11": "assets/samples/CTC-G11.jpg",
+  "CTC-G12": "assets/samples/CTC-G12.jpg",
+  "CTC-ID": "assets/samples/CTC-ID.jpg",
+  "Birth-Certificate": "assets/samples/Birth-Certificate.jpg",
+  "Applicant-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+  "Parent-Voter-Certificate": "assets/samples/Parent-Voter-Certificate.jpg",
+  "ID-Picture": "assets/samples/ID-Picture.jpg",
+};
+
+function openSampleImage(documentType) {
+  if (sampleImages[documentType]) {
+    // Create modal elements
+    const modal = document.createElement("div");
+    modal.className =
+      "popup fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex flex-col items-center flex-[1] z-50";
+
+    // Create modal content
+    modal.innerHTML = `
           <div class="relative w-full max-w-3xl">
             <h2 class="m-0 text-2xl text-white mb-4">${documentType}</h2>
             <img 
@@ -31,23 +31,61 @@ const sampleImages = {
             </button>
           </div>
         `;
-  
-      // Add click handler to close button
-      const closeButton = modal.querySelector("button");
-      closeButton.addEventListener("click", () => {
-        document.body.removeChild(modal);
-        document.body.removeChild(overlay);
-      });
-  
-      // Add dark overlay
-      const overlay = document.createElement("div");
-      overlay.className = "fixed inset-0 bg-black bg-opacity-50 z-40";
-      document.body.appendChild(overlay);
-  
-      // Add modal to body
-      document.body.appendChild(modal);
+
+    // Add click handler to close button
+    const closeButton = modal.querySelector("button");
+    closeButton.addEventListener("click", () => {
+      document.body.removeChild(modal);
+      document.body.removeChild(overlay);
+    });
+
+    // Add dark overlay
+    const overlay = document.createElement("div");
+    overlay.className = "fixed inset-0 bg-black bg-opacity-50 z-40";
+    document.body.appendChild(overlay);
+
+    // Add modal to body
+    document.body.appendChild(modal);
+  } else {
+    alert("Sample image not available.");
+  }
+}
+
+// Checklist toggle functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const checklistHeader = document.getElementById("checklist-header");
+  const checklistContent = document.getElementById("checklistContent");
+  const chevronIcon = document.getElementById("chevron-icon");
+  let isOpen = true;
+
+  function toggleChecklist() {
+    isOpen = !isOpen;
+
+    // Toggle content
+    if (!isOpen) {
+      checklistContent.style.maxHeight = "0";
+      checklistContent.style.opacity = "0";
+      chevronIcon.style.transform = "rotate(180deg)";
     } else {
-      alert("Sample image not available.");
+      checklistContent.style.maxHeight = "500px";
+      checklistContent.style.opacity = "1";
+      chevronIcon.style.transform = "rotate(0deg)";
     }
   }
-  
+
+  // Add click event to header
+  checklistHeader.addEventListener("click", toggleChecklist);
+});
+
+// Add hover effect for better UX
+document
+  .getElementById("checklist-header")
+  .addEventListener("mouseenter", function () {
+    this.style.opacity = "0.9";
+  });
+
+document
+  .getElementById("checklist-header")
+  .addEventListener("mouseleave", function () {
+    this.style.opacity = "1";
+  });

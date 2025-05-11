@@ -196,10 +196,17 @@ function removeFile(id) {
                 preview.className =
                   "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
                 preview.innerHTML = `
-              <span class="file-name font-bold underline break-all">${data.filename.replace(/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/, '')}</span>
+              <span class="file-name font-bold underline break-all">${data.filename.replace(
+                /_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/,
+                ""
+              )}</span>
               <div class="file-actions flex items-center gap-3">
-                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${data.filename}">
-                <span class="view-text text-[blue] cursor-pointer" data-filename="${data.filename}">View</span>
+                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${
+                  data.filename
+                }">
+                <span class="view-text text-[blue] cursor-pointer" data-filename="${
+                  data.filename
+                }">View</span>
                 <span class="remove-text text-[red] cursor-pointer" data-id="${rawId}">Remove</span>
               </div>
             `;
@@ -310,28 +317,37 @@ function checkAllFilesUploaded() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const chevronIcon = document.getElementById("chevron-icon");
+  const checklistHeader = document.getElementById("checklist-header");
   const checklistContent = document.getElementById("checklistContent");
+  const chevronIcon = document.getElementById("chevron-icon");
   const checklistBox = document.getElementById("checklist-box");
+  let isOpen = true;
 
-  let isExpanded = true;
+  function toggleChecklist() {
+    isOpen = !isOpen;
 
-  chevronIcon.addEventListener("click", () => {
-    isExpanded = !isExpanded;
-
-    if (!isExpanded) {
+    // Toggle content
+    if (!isOpen) {
+      checklistContent.style.maxHeight = "0";
       checklistContent.style.opacity = "0";
-      checklistContent.style.height = "0";
-      checklistContent.style.overflow = "hidden";
       chevronIcon.style.transform = "rotate(180deg)";
-      checklistBox.style.padding = "20px 25px";
     } else {
+      checklistContent.style.maxHeight = "500px";
       checklistContent.style.opacity = "1";
-      checklistContent.style.height = "auto";
-      checklistContent.style.overflow = "visible";
       chevronIcon.style.transform = "rotate(0deg)";
-      checklistBox.style.padding = "20px 25px";
     }
+  }
+
+  // Add click event to header
+  checklistHeader.addEventListener("click", toggleChecklist);
+
+  // Add hover effects
+  checklistHeader.addEventListener("mouseenter", function () {
+    this.style.opacity = "0.9";
+  });
+
+  checklistHeader.addEventListener("mouseleave", function () {
+    this.style.opacity = "1";
   });
 
   // Update your removeFile function to use the confirmation modal
@@ -433,10 +449,17 @@ document.addEventListener("DOMContentLoaded", function () {
               preview.className =
                 "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
               preview.innerHTML = `
-              <span class="file-name font-bold underline break-all">${data.filename.replace(/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/, '')}</span>
+              <span class="file-name font-bold underline break-all">${data.filename.replace(
+                /_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/,
+                ""
+              )}</span>
               <div class="file-actions flex items-center gap-3">
-                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${data.filename}">
-                <span class="view-text text-[blue] cursor-pointer" data-filename="${data.filename}">View</span>
+                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${
+                  data.filename
+                }">
+                <span class="view-text text-[blue] cursor-pointer" data-filename="${
+                  data.filename
+                }">View</span>
                 <span class="remove-text text-[red] cursor-pointer" onclick="removeFile('${id}')">Remove</span>
               </div>
             `;

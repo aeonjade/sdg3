@@ -3,10 +3,6 @@ $filesDir = 'documents/';
 $files = scandir($filesDir);
 $files = array_diff($files, array('.', '..'));
 
-// Check uploaded documents
-include("php/getDocuments.php");
-$documents = getDocuments('applicantID = ?', [$applicantID]);
-
 foreach ($requirements as $req) {
     $docType = $req['documentType'];
     $fileUploaded = false;
