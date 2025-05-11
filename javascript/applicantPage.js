@@ -193,23 +193,29 @@ function removeFile(id) {
                 // Create new preview
                 const preview = document.createElement("div");
                 preview.id = `preview-${rawId}`;
-                preview.className =
-                  "file-preview flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]";
+                preview.className = "file-preview flex flex-col gap-2";
+
                 preview.innerHTML = `
-              <span class="file-name font-bold underline break-all">${data.filename.replace(
-                /_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/,
-                ""
-              )}</span>
-              <div class="file-actions flex items-center gap-3">
-                <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download" data-filename="${
-                  data.filename
-                }">
-                <span class="view-text text-[blue] cursor-pointer" data-filename="${
-                  data.filename
-                }">View</span>
-                <span class="remove-text text-[red] cursor-pointer" data-id="${rawId}">Remove</span>
-              </div>
-            `;
+  <div class="flex justify-between gap-[15px] border-[2px] border-[solid] border-[black] p-[10px] rounded-[15px] mt-[10px] min-w-[300px] max-w-[750px]">
+    <span class="file-name font-bold underline break-words max-w-full">
+      ${data.filename.replace(/_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/, "")}
+    </span>
+    <div class="flex items-center gap-3">
+      <img src="assets/Download-Icon.png" class="document-requirements-icon w-5 h-5 cursor-pointer" alt="Download" title="Download"
+        data-filename="${data.filename}">
+      <span class="view-text text-[blue] cursor-pointer" data-filename="${
+        data.filename
+      }">View</span>
+      ${
+        data.documentStatus !== "Approved"
+          ? `
+        <span class="remove-text text-[red] cursor-pointer" data-id="${rawId}">Remove</span>
+      `
+          : ""
+      }
+    </div>
+  </div>
+`;
 
                 // Remove input and button
                 input.remove();
@@ -228,7 +234,7 @@ function removeFile(id) {
                 attachPreviewListeners(preview, rawId);
                 // Check if all files are uploaded
                 checkAllFilesUploaded();
-                updateDocumentStatus(rawId, 'Pending');
+                updateDocumentStatus(rawId, "Pending");
               }
             })
             .catch((error) => {
@@ -318,52 +324,52 @@ function checkAllFilesUploaded() {
 }
 
 // Update the status update function
-function updateDocumentStatus(documentType, status, rejectReason = '') {
+function updateDocumentStatus(documentType, status, rejectReason = "") {
   // Update checklist icon
   const statusIcon = document.getElementById(`status-${documentType}`);
   if (statusIcon) {
-      switch (status) {
-          case 'Approved':
-              statusIcon.src = "assets/Check-Icon.png";
-              statusIcon.title = "Approved";
-              break;
-          case 'Rejected':
-              statusIcon.src = "assets/Wrong-Icon.png";
-              statusIcon.title = "Rejected";
-              break;
-          default:
-              statusIcon.src = "assets/Info-Icon.png";
-              statusIcon.title = "Pending";
-      }
+    switch (status) {
+      case "Approved":
+        statusIcon.src = "assets/Check-Icon.png";
+        statusIcon.title = "Approved";
+        break;
+      case "Rejected":
+        statusIcon.src = "assets/Wrong-Icon.png";
+        statusIcon.title = "Rejected";
+        break;
+      default:
+        statusIcon.src = "assets/Info-Icon.png";
+        statusIcon.title = "Pending";
+    }
   }
 
   // Update preview container
   const preview = document.getElementById(`preview-${documentType}`);
   if (preview) {
-      // Remove existing status messages
-      const existingStatus = preview.querySelector('p');
-      if (existingStatus) {
-          existingStatus.remove();
-      }
+    // Remove existing status messages
+    const existingStatus = preview.querySelector("p");
+    if (existingStatus) {
+      existingStatus.remove();
+    }
 
-      // Add new status message
-      const statusMessage = document.createElement('p');
-      if (status === 'Rejected') {
-          statusMessage.className = 'text-[red] font-medium ml-2';
-          statusMessage.textContent = `Reason for rejection: ${rejectReason}`;
-          
-          // Re-enable remove button if it exists
-          const removeBtn = preview.querySelector('.remove-text');
-          if (removeBtn) removeBtn.classList.remove('hidden');
-      } else if (status === 'Approved') {
-          statusMessage.className = 'text-[green] font-medium ml-2';
-          statusMessage.textContent = 'Status: Approved';
-          
-          // Hide remove button when approved
-          const removeBtn = preview.querySelector('.remove-text');
-          if (removeBtn) removeBtn.classList.add('hidden');
-      }
-      preview.appendChild(statusMessage);
+    // Add new status message
+    const statusMessage = document.createElement("p");
+    if (status === "Rejected") {
+      statusMessage.className = "text-[red] font-medium ml-2";
+      statusMessage.textContent = `Reason for rejection: ${rejectReason}`;
+
+      // Re-enable remove button if it exists
+      const removeBtn = preview.querySelector(".remove-text");
+      if (removeBtn) removeBtn.classList.remove("hidden");
+    } else if (status === "Approved") {
+      statusMessage.className = "text-[green] font-medium ml-2";
+      statusMessage.textContent = "Status: Approved";
+
+      // Hide remove button when approved
+      const removeBtn = preview.querySelector(".remove-text");
+      if (removeBtn) removeBtn.classList.add("hidden");
+    }
+    preview.appendChild(statusMessage);
   }
 }
 
@@ -553,7 +559,7 @@ document.addEventListener("DOMContentLoaded", function () {
               });
               // Check if all files are uploaded
               checkAllFilesUploaded();
-              updateDocumentStatus(id, 'Pending');
+              updateDocumentStatus(id, "Pending");
             }
           })
           .catch((error) => {
