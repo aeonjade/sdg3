@@ -426,11 +426,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const viewText = preview.querySelector(".view-text");
     const downloadIcon = preview.querySelector(".document-requirements-icon");
     const removeText = preview.querySelector(".remove-text");
-    const filename = preview.querySelector(".file-name").textContent;
 
     // Set up view handler
     if (viewText) {
       viewText.addEventListener("click", function () {
+        const filename = this.dataset.filename;
         window.open(`documents/${filename}`, "_blank");
       });
     }
@@ -438,6 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set up download handler
     if (downloadIcon) {
       downloadIcon.addEventListener("click", function () {
+        const filename = this.dataset.filename;
         const link = document.createElement("a");
         link.href = `documents/${filename}`;
         link.download = filename;
