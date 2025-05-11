@@ -36,7 +36,7 @@ foreach ($requirements as $req) {
                     <!-- File preview container with max width -->
                     <div class="flex flex-1 max-w-[800px]">
                         <div class="flex justify-between items-center gap-2 border-2 border-black p-2 rounded-xl w-full">
-                            <span class="font-bold underline break-all">
+                            <span class="font-bold underline truncate">
                                 <a href="<?= htmlspecialchars($targetPath) ?>" target="_blank"><?= htmlspecialchars($trimmedName) ?></a>
                             </span>
                             <div class="flex items-center gap-2">
@@ -51,7 +51,7 @@ foreach ($requirements as $req) {
                     </div>
 
                     <!-- Actions + icons with fixed position -->
-                    <div class="flex items-center gap-2 ml-2" id="actions-<?= $docType ?>" data-status="<?= strtolower($documentStatus) ?>">
+                    <div class="flex items-center gap-2 ml-2 shrink-0" id="actions-<?= $docType ?>" data-status="<?= strtolower($documentStatus) ?>">
                         <?php if ($documentStatus === 'Pending'): ?>
                             <span class="text-red-500 font-bold cursor-pointer whitespace-nowrap reject-text"
                                 onclick="showRejectPopup('<?= $docType ?>', '<?= htmlspecialchars($fileName) ?>')">Reject</span>
@@ -59,8 +59,14 @@ foreach ($requirements as $req) {
                                 onclick="handleDecision('<?= $docType ?>', 'approve')">Approve</span>
                         <?php endif; ?>
 
-                        <img src="assets/Wrong-Icon.png" class="reject-icon <?= $documentStatus === 'Rejected' ? '' : 'hidden' ?> w-5 h-5" id="reject-icon-<?= $docType ?>" alt="Rejected">
-                        <img src="assets/Check-Icon.png" class="approve-icon <?= $documentStatus === 'Approved' ? '' : 'hidden' ?> w-5 h-5" id="approve-icon-<?= $docType ?>" alt="Approved">
+                        <img src="assets/Wrong-Icon.png"
+                            class="reject-icon w-5 h-5 shrink-0 <?= $documentStatus === 'Rejected' ? '' : 'hidden' ?>"
+                            id="reject-icon-<?= $docType ?>"
+                            alt="Rejected">
+                        <img src="assets/Check-Icon.png"
+                            class="approve-icon w-5 h-5 shrink-0 <?= $documentStatus === 'Approved' ? '' : 'hidden' ?>"
+                            id="approve-icon-<?= $docType ?>"
+                            alt="Approved">
                     </div>
                 </div>
                 <?php if ($documentStatus === 'Rejected' && !empty($rejectReason)): ?>
