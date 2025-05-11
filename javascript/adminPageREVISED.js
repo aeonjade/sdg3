@@ -94,6 +94,13 @@ function handleDecision(documentType, decision) {
         approveText.classList.add("hidden");
         actionsDiv.dataset.status = "approved";
 
+        // Remove any existing reject message
+        const rejectMessage =
+          actionsDiv.parentElement.querySelector(".text-[red]");
+        if (rejectMessage) {
+          rejectMessage.remove();
+        }
+
         // Update checklist icon
         const checklistItem = document.getElementById(`item-${documentType}`);
         if (checklistItem) {
@@ -167,21 +174,45 @@ document.addEventListener("DOMContentLoaded", function () {
         const rejectText = actionsDiv.querySelector(".reject-text");
         const approveText = actionsDiv.querySelector(".approve-text");
 
+        // Remove any existing reject message first
+        const existingMessage = actionsDiv.parentElement.querySelector(".text-[red]");
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+
         rejectIcon.classList.remove("hidden");
         approveIcon.classList.add("hidden");
         rejectText.classList.add("hidden");
         approveText.classList.add("hidden");
         actionsDiv.dataset.status = "rejected";
 
+        // Add reject message
+        const messageElement = document.createElement("p");
+        messageElement.className = "text-[red] font-medium mt-4 ml-2";
+        messageElement.textContent = "Reason for rejection: " + rejectMessage;
+
+        // Get the document container and append the message
+        const documentContainer = actionsDiv.closest('.document-container');
+        if (documentContainer) {
+            documentContainer.appendChild(messageElement);
+        }
+
         // Update checklist icon
         const checklistItem = document.getElementById(`item-${currentDocType}`);
         if (checklistItem) {
-          const statusIcon = checklistItem.querySelector("img");
-          statusIcon.src = "assets/Wrong-Icon.png";
+            const statusIcon = checklistItem.querySelector("img");
+            statusIcon.src = "assets/Wrong-Icon.png";
         }
 
         // Hide popup
+        const rejectPopup = document.getElementById("rejectPopup");
         rejectPopup.classList.add("hidden");
+
+        // Add overlay removal
+        const overlay = document.querySelector(".bg-black.bg-opacity-50");
+        if (overlay) {
+            overlay.remove();
+        }
       })
       .catch((error) => console.error("Error:", error));
   });
@@ -189,6 +220,8 @@ document.addEventListener("DOMContentLoaded", function () {
   cancelRejectBtn.addEventListener("click", function () {
     rejectPopup.classList.add("hidden");
   });
+
+  updateChecklistStatus();
 });
 
 // Add hover effect for better UX
@@ -203,3 +236,22 @@ document
   .addEventListener("mouseleave", function () {
     this.style.opacity = "1";
   });
+
+// Add a function to update all checklist items based on document status
+function updateChecklistStatus() {
+  const actionDivs = document.querySelectorAll("[id^='actions-']");
+  actionDivs.forEach((div) => {
+    const documentType = div.id.replace("actions-", "");
+    const status = div.dataset.status;
+    const checklistItem = document.getElementById(`item-${documentType}`);
+
+    if (checklistItem) {
+      const statusIcon = checklistItem.querySelector("img");
+      if (status === "approved") {
+        statusIcon.src = "assets/Check-Icon.png";
+      } else if (status === "rejected") {
+        statusIcon.src = "assets/Wrong-Icon.png";
+      }
+    }
+  });
+}
