@@ -73,9 +73,24 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
                   onclick="event.preventDefault(); document.getElementById('anchor-<?= $docType ?>').scrollIntoView({behavior: 'smooth'});">
                   <?= str_replace("-", " ", $docType) ?>
                 </a>
-                <img src="assets/<?= $isUploaded ? 'Check-Icon.png' : 'Wrong-Icon.png' ?>"
+                <img src="assets/
+                <?php
+                if (!$isUploaded) {
+                  echo 'Wrong-Icon.png';
+                } else {
+                  $status = 'Pending';
+                  foreach ($documents as $doc) {
+                    if ($doc['documentType'] === $docType) {
+                      $status = $doc['documentStatus'];
+                      break;
+                    }
+                  }
+                  if ($status === 'Approved') echo 'Check-Icon.png';
+                  else if ($status === 'Rejected') echo 'Wrong-Icon.png';
+                  else echo 'Info-Icon.png';
+                } ?>"
                   class="w-4 h-4 ml-8"
-                  alt="<?= $isUploaded ? 'Uploaded' : 'Not uploaded' ?>">
+                  alt="<?= $isUploaded ? $status : 'Not uploaded' ?>">
               </li>
             <?php } ?>
           </ul>
@@ -115,8 +130,8 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
             <h2 class="text-lg font-medium mb-2">Reject Message</h2>
             <textarea id="rejectMessageInput" rows="4" class="w-full p-2 border rounded resize-none"></textarea>
             <div class="flex justify-end gap-2 mt-3">
-              <button id="saveRejectBtn" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
               <button id="cancelRejectBtn" class="border px-4 py-1 rounded">Cancel</button>
+              <button id="saveRejectBtn" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Save</button>
             </div>
           </div>
         </div>

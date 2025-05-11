@@ -65,8 +65,48 @@ function showRejectPopup(documentType, fileName) {
   rejectPopup.classList.remove("hidden");
 }
 
-// Function to handle document decisions (approve/reject)
-function handleDecision(documentType, decision) {
+// Add this function at the top level of your file
+function showConfirmDialog(title, message, onConfirm) {
+  const modal = document.createElement("div");
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center";
+  modal.innerHTML = `
+        <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] p-8 rounded-3xl shadow-xl text-center relative z-10 w-[90%] max-w-md">
+            <h2 class="text-2xl font-bold text-white mb-4">${title}</h2>
+            <p class="text-white mb-8">${message}</p>
+            <div class="flex justify-center gap-4">
+                <button class="cancel-btn bg-[rgb(145,_29,_52)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Cancel</button>
+                <button class="confirm-btn bg-[rgb(45,_174,_40)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Confirm</button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(modal);
+
+  return new Promise((resolve) => {
+    modal.querySelector(".confirm-btn").addEventListener("click", () => {
+      document.body.removeChild(modal);
+      resolve(true);
+    });
+
+    modal.querySelector(".cancel-btn").addEventListener("click", () => {
+      document.body.removeChild(modal);
+      resolve(false);
+    });
+  });
+}
+
+// Modify the handleDecision function
+async function handleDecision(documentType, decision) {
+  if (decision === "approve") {
+    const confirmed = await showConfirmDialog(
+      "Confirm Approval",
+      "Are you sure you want to approve this document?"
+    );
+
+    if (!confirmed) return;
+  }
+
   const actionsDiv = document.getElementById(`actions-${documentType}`);
   const rejectIcon = document.getElementById(`reject-icon-${documentType}`);
   const approveIcon = document.getElementById(`approve-icon-${documentType}`);
@@ -107,6 +147,8 @@ function handleDecision(documentType, decision) {
           const statusIcon = checklistItem.querySelector("img");
           statusIcon.src = "assets/Check-Icon.png";
         }
+
+        updateSubmitButton();
       })
       .catch((error) => console.error("Error:", error));
   }
@@ -175,9 +217,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const approveText = actionsDiv.querySelector(".approve-text");
 
         // Remove any existing reject message first
-        const existingMessage = actionsDiv.parentElement.querySelector(".text-[red]");
+        const existingMessage =
+          actionsDiv.parentElement.querySelector(".text-[red]");
         if (existingMessage) {
-            existingMessage.remove();
+          existingMessage.remove();
         }
 
         rejectIcon.classList.remove("hidden");
@@ -192,16 +235,16 @@ document.addEventListener("DOMContentLoaded", function () {
         messageElement.textContent = "Reason for rejection: " + rejectMessage;
 
         // Get the document container and append the message
-        const documentContainer = actionsDiv.closest('.document-container');
+        const documentContainer = actionsDiv.closest(".document-container");
         if (documentContainer) {
-            documentContainer.appendChild(messageElement);
+          documentContainer.appendChild(messageElement);
         }
 
         // Update checklist icon
         const checklistItem = document.getElementById(`item-${currentDocType}`);
         if (checklistItem) {
-            const statusIcon = checklistItem.querySelector("img");
-            statusIcon.src = "assets/Wrong-Icon.png";
+          const statusIcon = checklistItem.querySelector("img");
+          statusIcon.src = "assets/Wrong-Icon.png";
         }
 
         // Hide popup
@@ -211,8 +254,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add overlay removal
         const overlay = document.querySelector(".bg-black.bg-opacity-50");
         if (overlay) {
-            overlay.remove();
+          overlay.remove();
         }
+
+        updateSubmitButton();
       })
       .catch((error) => console.error("Error:", error));
   });
@@ -222,6 +267,23 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   updateChecklistStatus();
+
+  // Add submit button handler
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.addEventListener("click", async function () {
+    if (!this.disabled) {
+      const confirmed = await showConfirmDialog(
+        "Confirm Submission",
+        "Are you sure you want to submit? This action cannot be undone."
+      );
+
+      if (confirmed) {
+        window.location.href = "application-tracking.php";
+      }
+    }
+  });
+
+  updateSubmitButton();
 });
 
 // Add hover effect for better UX
@@ -251,7 +313,45 @@ function updateChecklistStatus() {
         statusIcon.src = "assets/Check-Icon.png";
       } else if (status === "rejected") {
         statusIcon.src = "assets/Wrong-Icon.png";
+      } else if (status === "pending") {
+        statusIcon.src = "assets/Info-Icon.png";
       }
     }
   });
+}
+
+function updateSubmitButton() {
+  const submitBtn = document.getElementById("submitBtn");
+  const actionDivs = document.querySelectorAll("[id^='actions-']");
+  let hasPendingDocuments = false;
+
+  actionDivs.forEach((div) => {
+    if (div.dataset.status === "pending") {
+      hasPendingDocuments = true;
+    }
+  });
+
+  if (!hasPendingDocuments) {
+    // Enable button and update styling
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("cursor-not-allowed", "text-[gray]");
+    submitBtn.classList.add(
+      "cursor-pointer",
+      "text-[white]",
+      "bg-[#7213D0]",
+      "hover:bg-[white]",
+      "hover:text-[black]"
+    );
+  } else {
+    // Disable button and reset styling
+    submitBtn.disabled = true;
+    submitBtn.classList.add("cursor-not-allowed", "text-[gray]");
+    submitBtn.classList.remove(
+      "cursor-pointer",
+      "text-[white]",
+      "bg-[#7213D0]",
+      "hover:bg-[white]",
+      "hover:text-[black]"
+    );
+  }
 }

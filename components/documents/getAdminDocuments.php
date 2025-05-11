@@ -76,7 +76,7 @@ foreach ($requirements as $req) {
 <!-- Submit Button -->
 <div class="flex justify-end">
     <button type="button" id="submitBtn"
-        class="text-[gray] cursor-not-allowed border-2 border-solid border-black rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 transition duration-300"
+        class="border-2 border-solid border-black rounded-xl text-base font-bold px-7 py-3 mx-0 my-8 transition duration-300 cursor-not-allowed text-[gray]"
         disabled>
         Submit
     </button>
