@@ -141,7 +141,7 @@ $documents = getDocuments('applicantID = ?', [$applicantID]);
     <?php include "components/navigation/footer.php" ?>
   </section>
 
-  <script src="javascript/adminPageREVISED.js"></script>
+  <script src="javascript/adminPage.js"></script>
 </body>
 
 </html>

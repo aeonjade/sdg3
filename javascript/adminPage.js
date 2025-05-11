@@ -1,319 +1,4 @@
-const uploadedFiles = {};
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-const allowedFormats = {
-  "CTC-G11": [".pdf"],
-  "CTC-G12": [".pdf"],
-  "CTC-ID": [".pdf"],
-  "Birth-Certificate": [".pdf"],
-  "Applicant-Voter-Certificate": [".pdf"],
-  "Parent-Voter-Certificate": [".pdf"],
-  "ID-Picture": [".jpg", ".png"],
-};
-
-function triggerUpload(id) {
-  document.getElementById(id).click();
-}
-
-function removeFile(id) {
-  const input = document.getElementById(id);
-  const preview = document.getElementById("preview-" + id);
-  const container = input.closest(".upload-container");
-  const uploadBtn = container.querySelector(".upload-btn");
-  const errorMessage = container.querySelector(".error-message");
-
-  input.value = "";
-  preview.classList.add("hidden");
-
-  if (uploadBtn) uploadBtn.style.display = "block";
-  if (errorMessage) errorMessage.classList.add("hidden");
-
-  const checklistIcon = document.querySelector(`#item-${id} .info`);
-  const checkIcon = document.querySelector(`#item-${id} .check`);
-  if (checklistIcon && checkIcon) {
-    checklistIcon.style.display = "inline";
-    checkIcon.style.display = "none";
-  }
-
-  delete uploadedFiles[id];
-  checkAllFilesUploaded();
-}
-
-function checkAllFilesUploaded() {
-  const checkIcons = document.querySelectorAll(".check");
-  const submitBtn = document.querySelector(".submit-btn");
-
-  const allUploaded = Array.from(checkIcons).every(
-    (icon) => icon.style.display === "inline"
-  );
-  if (submitBtn) submitBtn.disabled = !allUploaded;
-}
-
-function isValidFile(id, file) {
-  const extension = file.name.split(".").pop().toLowerCase();
-  return allowedFormats[id]?.includes("." + extension);
-}
-
-document.querySelectorAll(".file-input").forEach((input) => {
-  input.addEventListener("change", function () {
-    const id = this.id;
-    const file = this.files[0];
-    const preview = document.getElementById("preview-" + id);
-    const container = input.closest(".upload-container");
-    const uploadBtn = container.querySelector(".upload-btn");
-    const errorMessage = container.querySelector(".error-message");
-
-    if (errorMessage) {
-      errorMessage.textContent = "";
-      errorMessage.classList.remove("visible");
-    }
-
-    if (!file) return;
-
-    if (!isValidFile(id, file)) {
-      if (errorMessage) {
-        errorMessage.textContent = `Invalid format. Allowed: ${allowedFormats[
-          id
-        ].join(", ")}`;
-        errorMessage.style.display = "block";
-      }
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      if (errorMessage) {
-        errorMessage.textContent = `File size exceeds ${
-          MAX_FILE_SIZE / 1024 / 1024
-        } MB.`;
-        errorMessage.style.display = "block";
-      }
-      return;
-    }
-
-    // Display filename
-    preview.querySelector(".file-name").textContent = file.name;
-    preview.classList.remove("hidden");
-    if (uploadBtn) uploadBtn.style.display = "none";
-
-    // Checklist icon update
-    const checklistIcon = document.querySelector(`#item-${id} .info`);
-    const checkIcon = document.querySelector(`#item-${id} .check`);
-    if (checklistIcon && checkIcon) {
-      checklistIcon.style.display = "none";
-      checkIcon.style.display = "inline";
-    }
-
-    // Save file
-    uploadedFiles[id] = file;
-
-    // Download icon
-    const downloadIcon = preview.querySelector(".document-requirements-icon");
-    if (downloadIcon) {
-      downloadIcon.onclick = () => {
-        const url = URL.createObjectURL(file);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = file.name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      };
-    }
-
-    // View text
-    const viewText = preview.querySelector(".view-text");
-    if (viewText) {
-      viewText.onclick = () => {
-        const url = URL.createObjectURL(file);
-        window.open(url, "_blank");
-      };
-    }
-
-    checkAllFilesUploaded();
-  });
-});
-
-/*Pasted from admin-documents php */
-document.addEventListener("DOMContentLoaded", () => {
-  let namefile;
-  let currentRejectId = null;
-
-  window.showRejectPopup = function (id, filename) {
-    namefile = filename;
-    currentRejectId = id;
-
-    const popup = document.getElementById("rejectPopup");
-    if (popup) {
-      popup.classList.remove("hidden");
-    }
-  };
-
-  window.cancelReject = function () {
-    const popup = document.getElementById("rejectPopup");
-    if (popup) {
-      popup.classList.add("hidden");
-    }
-  };
-
-  window.saveRejectMessage = function () {
-    const message = document.getElementById("rejectMessageInput").value;
-
-    const formData = new FormData();
-    formData.append("fileName", namefile);
-    formData.append("rejectReason", message);
-
-    fetch("php/updateRejectMessage.php", {
-      method: "POST",
-      body: formData,
-    }).then((res) => res.text());
-
-    cancelReject();
-
-    const approveText = document.querySelector(
-      `#actions-${currentRejectId} .approve-text`
-    );
-    const rejectText = document.querySelector(
-      `#actions-${currentRejectId} .reject-text`
-    );
-    const rejectIcon = document.getElementById(
-      `reject-icon-${currentRejectId}`
-    );
-    const approveIcon = document.getElementById(
-      `approve-icon-${currentRejectId}`
-    );
-    const actionsDiv = document.getElementById(`actions-${currentRejectId}`);
-
-    if (approveText) approveText.style.display = "none";
-    if (rejectText) rejectText.style.display = "none";
-
-    if (rejectIcon) rejectIcon.classList.remove("hidden");
-    if (approveIcon) approveIcon.classList.add("hidden");
-
-    if (actionsDiv) actionsDiv.setAttribute("data-status", "rejected");
-
-    checkAllReviewed();
-  };
-
-  // Event listeners for the Save and Cancel buttons
-  const saveRejectBtn = document.getElementById("saveRejectBtn");
-  if (saveRejectBtn) {
-    saveRejectBtn.addEventListener("click", saveRejectMessage);
-  }
-
-  const cancelRejectBtn = document.getElementById("cancelRejectBtn");
-  if (cancelRejectBtn) {
-    cancelRejectBtn.addEventListener("click", cancelReject);
-  }
-
-  window.downloadSampleFile = function (filePath) {
-    const link = document.createElement("a");
-    link.href = filePath;
-    link.download = filePath.split("/").pop();
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  window.handleDecision = function (id, action) {
-    const approveText = document.querySelector(`#actions-${id} .approve-text`);
-    const rejectText = document.querySelector(`#actions-${id} .reject-text`);
-    const approveIcon = document.getElementById(`approve-icon-${id}`);
-    const rejectIcon = document.getElementById(`reject-icon-${id}`);
-    const actionsDiv = document.getElementById(`actions-${id}`);
-
-    if (approveText) approveText.style.display = "none";
-    if (rejectText) rejectText.style.display = "none";
-
-    if (action === "approve") {
-      if (approveIcon) approveIcon.classList.remove("hidden");
-      if (rejectIcon) rejectIcon.classList.add("hidden");
-      if (actionsDiv) actionsDiv.setAttribute("data-status", "approved");
-    }
-    checkAllReviewed();
-  };
-
-  const submitBtn = document.getElementById("submitBtn");
-  const successPopup = document.getElementById("successPopup");
-
-  if (submitBtn && successPopup) {
-    submitBtn.addEventListener("click", () => {
-      if (!submitBtn.disabled) {
-        successPopup.classList.remove("hidden");
-      }
-    });
-  }
-});
-
-function checkAllReviewed() {
-  const allReviewed = Array.from(
-    document.querySelectorAll('[id^="actions-"]')
-  ).every((container) => {
-    const status = container.getAttribute("data-status");
-    return status === "approved" || status === "rejected";
-  });
-
-  const submitBtn = document.getElementById("submitBtn");
-  if (submitBtn) {
-    if (allReviewed) {
-      submitBtn.disabled = false;
-      submitBtn.classList.remove(
-        "bg-[#c7acee]",
-        "text-[#6c6c6c]",
-        "cursor-not-allowed"
-      );
-      submitBtn.classList.add(
-        "bg-[#6a11cb]",
-        "text-white",
-        "cursor-pointer",
-        "hover:bg-[#5a0eb5]"
-      );
-    } else {
-      submitBtn.disabled = true;
-      submitBtn.classList.add(
-        "bg-[#c7acee]",
-        "text-[#6c6c6c]",
-        "cursor-not-allowed"
-      );
-      submitBtn.classList.remove(
-        "bg-[#6a11cb]",
-        "text-white",
-        "cursor-pointer",
-        "hover:bg-[#5a0eb5]"
-      );
-    }
-  }
-}
-
-//All onclicks in admin-document
-document.addEventListener("DOMContentLoaded", () => {
-  const chevronIcon = document.getElementById("chevron-icon");
-  const checklistContent = document.getElementById("checklistContent");
-
-  if (chevronIcon) {
-    chevronIcon.addEventListener("click", () => {
-      checklistContent.classList.toggle("hidden");
-      chevronIcon.classList.toggle("rotate-180");
-    });
-  }
-
-  const reloadBtn = document.getElementById("reload-btn");
-  if (reloadBtn) {
-    reloadBtn.addEventListener("click", () => window.location.reload());
-  }
-
-  const saveReject = document.getElementById("save-reject");
-  if (saveReject) {
-    saveReject.addEventListener("click", saveRejectMessage);
-  }
-
-  const cancelRejectBtn = document.getElementById("cancel-reject");
-  if (cancelRejectBtn) {
-    cancelRejectBtn.addEventListener("click", cancelReject);
-  }
-});
-
-// Sample images mapping
+// Define sample image paths (Ensure images exist in the "samples" folder)
 const sampleImages = {
   "CTC-G11": "assets/samples/CTC-G11.jpg",
   "CTC-G12": "assets/samples/CTC-G12.jpg",
@@ -324,65 +9,388 @@ const sampleImages = {
   "ID-Picture": "assets/samples/ID-Picture.jpg",
 };
 
-// Function to open the sample image in a modal - checklist
 function openSampleImage(documentType) {
   if (sampleImages[documentType]) {
     // Create modal elements
     const modal = document.createElement("div");
-    modal.style.position = "fixed";
-    modal.style.top = "0";
-    modal.style.left = "0";
-    modal.style.width = "100%";
-    modal.style.height = "100%";
-    modal.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    modal.style.display = "flex";
-    modal.style.justifyContent = "center";
-    modal.style.alignItems = "center";
-    modal.style.zIndex = "1000";
+    modal.className =
+      "popup fixed top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] px-16 py-14 text-center rounded-3xl [box-shadow:0_0px_10px_rgba(0,_0,_0,_0.2)] flex flex-col items-center flex-[1] z-50";
 
-    const modalContent = document.createElement("div");
-    modalContent.style.backgroundColor = "white";
-    modalContent.style.padding = "10px";
-    modalContent.style.borderRadius = "8px";
-    modalContent.style.maxWidth = "70%";
-    modalContent.style.maxHeight = "70%";
-    modalContent.style.overflow = "auto";
-    modalContent.style.position = "relative";
+    // Create modal content
+    modal.innerHTML = `
+          <div class="relative w-full max-w-3xl">
+            <h2 class="m-0 text-2xl text-white mb-4">${documentType}</h2>
+            <img 
+              src="${sampleImages[documentType]}" 
+              alt="Sample ${documentType}" 
+              class="max-w-full max-h-[70vh] object-contain rounded-lg"
+            >
+            <button 
+              class="absolute -top-8 -right-8 bg-[rgb(145,_29,_52)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-xl text-base font-bold transition duration-300 px-4 py-2 hover:bg-[#0C5AAD]">
+              Close
+            </button>
+          </div>
+        `;
 
-    const img = document.createElement("img");
-    img.src = sampleImages[documentType];
-    img.alt = `Sample ${documentType}`;
-    img.style.maxWidth = "90%";
-    img.style.maxHeight = "90%";
-    img.style.display = "block";
-    img.style.margin = "0 auto";
-
-    const closeButton = document.createElement("button");
-    closeButton.textContent = "X";
-    closeButton.style.position = "fixed";
-    closeButton.style.top = "10px";
-    closeButton.style.right = "10px";
-    closeButton.style.background = "transparent";
-    closeButton.style.color = "white";
-    closeButton.style.border = "none";
-    closeButton.style.fontSize = "20px";
-    closeButton.style.cursor = "pointer";
-    closeButton.style.zIndex = "1001";
-
+    // Add click handler to close button
+    const closeButton = modal.querySelector("button");
     closeButton.addEventListener("click", () => {
       document.body.removeChild(modal);
+      document.body.removeChild(overlay);
     });
 
-    // Append elements to modal content
-    modalContent.appendChild(img);
+    // Add dark overlay
+    const overlay = document.createElement("div");
+    overlay.className = "fixed inset-0 bg-black bg-opacity-50 z-40";
+    document.body.appendChild(overlay);
 
-    // Append modal content to modal
-    modal.appendChild(modalContent);
-    modal.appendChild(closeButton);
-
-    // Append modal to body
+    // Add modal to body
     document.body.appendChild(modal);
   } else {
     alert("Sample image not available.");
   }
+}
+
+// Global variables for reject popup
+let currentDocType = "";
+let currentFileName = "";
+
+// Function to show reject popup
+function showRejectPopup(documentType, fileName) {
+  currentDocType = documentType;
+  currentFileName = fileName;
+  const rejectPopup = document.getElementById("rejectPopup");
+  const rejectMessageInput = document.getElementById("rejectMessageInput");
+  rejectMessageInput.value = ""; // Clear previous message
+  rejectPopup.classList.remove("hidden");
+}
+
+// Add this function at the top level of your file
+function showConfirmDialog(title, message, onConfirm) {
+  const modal = document.createElement("div");
+  modal.className = "fixed inset-0 z-50 flex items-center justify-center";
+  modal.innerHTML = `
+        <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="bg-[linear-gradient(to_bottom,_#b57ee4,_#a56ee0)] p-8 rounded-3xl shadow-xl text-center relative z-10 w-[90%] max-w-md">
+            <h2 class="text-2xl font-bold text-white mb-4">${title}</h2>
+            <p class="text-white mb-8">${message}</p>
+            <div class="flex justify-center gap-4">
+                <button class="cancel-btn bg-[rgb(145,_29,_52)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Cancel</button>
+                <button class="confirm-btn bg-[rgb(45,_174,_40)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Confirm</button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(modal);
+
+  return new Promise((resolve) => {
+    modal.querySelector(".confirm-btn").addEventListener("click", () => {
+      document.body.removeChild(modal);
+      resolve(true);
+    });
+
+    modal.querySelector(".cancel-btn").addEventListener("click", () => {
+      document.body.removeChild(modal);
+      resolve(false);
+    });
+  });
+}
+
+// Modify the handleDecision function
+async function handleDecision(documentType, decision) {
+  if (decision === "approve") {
+    const confirmed = await showConfirmDialog(
+      "Confirm Approval",
+      "Are you sure you want to approve this document?"
+    );
+
+    if (!confirmed) return;
+  }
+
+  const actionsDiv = document.getElementById(`actions-${documentType}`);
+  const rejectIcon = document.getElementById(`reject-icon-${documentType}`);
+  const approveIcon = document.getElementById(`approve-icon-${documentType}`);
+  const rejectText = actionsDiv.querySelector(".reject-text");
+  const approveText = actionsDiv.querySelector(".approve-text");
+
+  // Get applicantID from the URL or data attribute
+  const applicantID = document.body.dataset.applicantId || 1;
+
+  if (decision === "approve") {
+    // Send approval to server
+    fetch("php/approveDocument.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `documentType=${documentType}&applicantID=${applicantID}`,
+    })
+      .then((response) => response.text())
+      .then(() => {
+        // Update UI
+        rejectIcon.classList.add("hidden");
+        approveIcon.classList.remove("hidden");
+        rejectText.classList.add("hidden");
+        approveText.classList.add("hidden");
+        actionsDiv.dataset.status = "approved";
+
+        // Remove any existing reject message
+        const rejectMessage =
+          actionsDiv.parentElement.querySelector(".text-[red]");
+        if (rejectMessage) {
+          rejectMessage.remove();
+        }
+
+        // Update checklist icon
+        const checklistItem = document.getElementById(`item-${documentType}`);
+        if (checklistItem) {
+          const statusIcon = checklistItem.querySelector("img");
+          statusIcon.src = "assets/Check-Icon.png";
+        }
+
+        updateSubmitButton();
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+}
+
+// Checklist toggle functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const checklistHeader = document.getElementById("checklist-header");
+  const checklistContent = document.getElementById("checklistContent");
+  const chevronIcon = document.getElementById("chevron-icon");
+  let isOpen = true;
+
+  function toggleChecklist() {
+    isOpen = !isOpen;
+
+    // Toggle content
+    if (!isOpen) {
+      checklistContent.style.maxHeight = "0";
+      checklistContent.style.opacity = "0";
+      chevronIcon.style.transform = "rotate(180deg)";
+    } else {
+      checklistContent.style.maxHeight = "500px";
+      checklistContent.style.opacity = "1";
+      chevronIcon.style.transform = "rotate(0deg)";
+    }
+  }
+
+  // Add click event to header
+  checklistHeader.addEventListener("click", toggleChecklist);
+
+  // Add reject popup event listeners
+  const saveRejectBtn = document.getElementById("saveRejectBtn");
+  const cancelRejectBtn = document.getElementById("cancelRejectBtn");
+  const rejectPopup = document.getElementById("rejectPopup");
+
+  saveRejectBtn.addEventListener("click", function () {
+    const rejectMessage = document.getElementById("rejectMessageInput").value;
+    const applicantID = document.body.dataset.applicantId || 1;
+
+    if (rejectMessage.trim() === "") {
+      alert("Please enter a reason for rejection");
+      return;
+    }
+
+    // Send reject message to server
+    fetch("php/updateRejectMessage.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `documentType=${currentDocType}&rejectReason=${encodeURIComponent(
+        rejectMessage
+      )}&applicantID=${applicantID}`,
+    })
+      .then((response) => response.text())
+      .then(() => {
+        // Update UI
+        const actionsDiv = document.getElementById(`actions-${currentDocType}`);
+        const rejectIcon = document.getElementById(
+          `reject-icon-${currentDocType}`
+        );
+        const approveIcon = document.getElementById(
+          `approve-icon-${currentDocType}`
+        );
+        const rejectText = actionsDiv.querySelector(".reject-text");
+        const approveText = actionsDiv.querySelector(".approve-text");
+
+        // Remove any existing reject message first
+        const existingMessage =
+          actionsDiv.parentElement.querySelector(".text-[red]");
+        if (existingMessage) {
+          existingMessage.remove();
+        }
+
+        rejectIcon.classList.remove("hidden");
+        approveIcon.classList.add("hidden");
+        rejectText.classList.add("hidden");
+        approveText.classList.add("hidden");
+        actionsDiv.dataset.status = "rejected";
+
+        // Add reject message
+        const messageElement = document.createElement("p");
+        messageElement.className = "text-[red] font-medium mt-4 ml-2";
+        messageElement.textContent = "Reason for rejection: " + rejectMessage;
+
+        // Get the document container and append the message
+        const documentContainer = actionsDiv.closest(".document-container");
+        if (documentContainer) {
+          documentContainer.appendChild(messageElement);
+        }
+
+        // Update checklist icon
+        const checklistItem = document.getElementById(`item-${currentDocType}`);
+        if (checklistItem) {
+          const statusIcon = checklistItem.querySelector("img");
+          statusIcon.src = "assets/Wrong-Icon.png";
+        }
+
+        // Hide popup
+        const rejectPopup = document.getElementById("rejectPopup");
+        rejectPopup.classList.add("hidden");
+
+        // Add overlay removal
+        const overlay = document.querySelector(".bg-black.bg-opacity-50");
+        if (overlay) {
+          overlay.remove();
+        }
+
+        updateSubmitButton();
+      })
+      .catch((error) => console.error("Error:", error));
+  });
+
+  cancelRejectBtn.addEventListener("click", function () {
+    rejectPopup.classList.add("hidden");
+  });
+
+  updateChecklistStatus();
+
+  // Add submit button handler
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.addEventListener("click", async function () {
+    if (!this.disabled) {
+      const confirmed = await showConfirmDialog(
+        "Confirm Submission",
+        "Are you sure you want to submit? This action cannot be undone."
+      );
+
+      if (confirmed) {
+        window.location.href = "application-tracking.php";
+      }
+    }
+  });
+
+  // Add download all button handler
+  const downloadAllBtn = document.getElementById("downloadAllBtn");
+  if (downloadAllBtn) {
+    downloadAllBtn.addEventListener("click", downloadAllFiles);
+  }
+
+  updateSubmitButton();
+});
+
+// Add hover effect for better UX
+document
+  .getElementById("checklist-header")
+  .addEventListener("mouseenter", function () {
+    this.style.opacity = "0.9";
+  });
+
+document
+  .getElementById("checklist-header")
+  .addEventListener("mouseleave", function () {
+    this.style.opacity = "1";
+  });
+
+// Add a function to update all checklist items based on document status
+function updateChecklistStatus() {
+  const actionDivs = document.querySelectorAll("[id^='actions-']");
+  actionDivs.forEach((div) => {
+    const documentType = div.id.replace("actions-", "");
+    const status = div.dataset.status;
+    const checklistItem = document.getElementById(`item-${documentType}`);
+
+    if (checklistItem) {
+      const statusIcon = checklistItem.querySelector("img");
+      if (status === "approved") {
+        statusIcon.src = "assets/Check-Icon.png";
+      } else if (status === "rejected") {
+        statusIcon.src = "assets/Wrong-Icon.png";
+      } else if (status === "pending") {
+        statusIcon.src = "assets/Info-Icon.png";
+      }
+    }
+  });
+}
+
+function updateSubmitButton() {
+  const submitBtn = document.getElementById("submitBtn");
+  const actionDivs = document.querySelectorAll("[id^='actions-']");
+  let hasPendingDocuments = false;
+
+  actionDivs.forEach((div) => {
+    if (div.dataset.status === "pending") {
+      hasPendingDocuments = true;
+    }
+  });
+
+  if (!hasPendingDocuments) {
+    // Enable button and update styling
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("cursor-not-allowed", "text-[gray]");
+    submitBtn.classList.add(
+      "cursor-pointer",
+      "text-[white]",
+      "bg-[#7213D0]",
+      "hover:bg-[white]",
+      "hover:text-[black]"
+    );
+  } else {
+    // Disable button and reset styling
+    submitBtn.disabled = true;
+    submitBtn.classList.add("cursor-not-allowed", "text-[gray]");
+    submitBtn.classList.remove(
+      "cursor-pointer",
+      "text-[white]",
+      "bg-[#7213D0]",
+      "hover:bg-[white]",
+      "hover:text-[black]"
+    );
+  }
+}
+
+// Add after updateSubmitButton function
+
+function downloadFile(url, filename) {
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+}
+
+function downloadAllFiles() {
+  const confirmed = confirm("Download all documents?");
+  if (!confirmed) return;
+
+  const documents = document.querySelectorAll(".document-container");
+  let delay = 0;
+
+  documents.forEach((container) => {
+    const fileLink = container.querySelector("a");
+    if (fileLink && fileLink.href) {
+      setTimeout(() => {
+        downloadFile(fileLink.href, fileLink.textContent);
+      }, delay);
+      delay += 500; // Add delay between downloads
+    }
+  });
 }
