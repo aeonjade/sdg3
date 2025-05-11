@@ -51,6 +51,60 @@ function openSampleImage(documentType) {
   }
 }
 
+// Global variables for reject popup
+let currentDocType = "";
+let currentFileName = "";
+
+// Function to show reject popup
+function showRejectPopup(documentType, fileName) {
+  currentDocType = documentType;
+  currentFileName = fileName;
+  const rejectPopup = document.getElementById("rejectPopup");
+  const rejectMessageInput = document.getElementById("rejectMessageInput");
+  rejectMessageInput.value = ""; // Clear previous message
+  rejectPopup.classList.remove("hidden");
+}
+
+// Function to handle document decisions (approve/reject)
+function handleDecision(documentType, decision) {
+  const actionsDiv = document.getElementById(`actions-${documentType}`);
+  const rejectIcon = document.getElementById(`reject-icon-${documentType}`);
+  const approveIcon = document.getElementById(`approve-icon-${documentType}`);
+  const rejectText = actionsDiv.querySelector(".reject-text");
+  const approveText = actionsDiv.querySelector(".approve-text");
+
+  // Get applicantID from the URL or data attribute
+  const applicantID = document.body.dataset.applicantId || 1;
+
+  if (decision === "approve") {
+    // Send approval to server
+    fetch("php/approveDocument.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `documentType=${documentType}&applicantID=${applicantID}`,
+    })
+      .then((response) => response.text())
+      .then(() => {
+        // Update UI
+        rejectIcon.classList.add("hidden");
+        approveIcon.classList.remove("hidden");
+        rejectText.classList.add("hidden");
+        approveText.classList.add("hidden");
+        actionsDiv.dataset.status = "approved";
+
+        // Update checklist icon
+        const checklistItem = document.getElementById(`item-${documentType}`);
+        if (checklistItem) {
+          const statusIcon = checklistItem.querySelector("img");
+          statusIcon.src = "assets/Check-Icon.png";
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+}
+
 // Checklist toggle functionality
 document.addEventListener("DOMContentLoaded", function () {
   const checklistHeader = document.getElementById("checklist-header");
@@ -75,6 +129,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add click event to header
   checklistHeader.addEventListener("click", toggleChecklist);
+
+  // Add reject popup event listeners
+  const saveRejectBtn = document.getElementById("saveRejectBtn");
+  const cancelRejectBtn = document.getElementById("cancelRejectBtn");
+  const rejectPopup = document.getElementById("rejectPopup");
+
+  saveRejectBtn.addEventListener("click", function () {
+    const rejectMessage = document.getElementById("rejectMessageInput").value;
+    const applicantID = document.body.dataset.applicantId || 1;
+
+    if (rejectMessage.trim() === "") {
+      alert("Please enter a reason for rejection");
+      return;
+    }
+
+    // Send reject message to server
+    fetch("php/updateRejectMessage.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `documentType=${currentDocType}&rejectReason=${encodeURIComponent(
+        rejectMessage
+      )}&applicantID=${applicantID}`,
+    })
+      .then((response) => response.text())
+      .then(() => {
+        // Update UI
+        const actionsDiv = document.getElementById(`actions-${currentDocType}`);
+        const rejectIcon = document.getElementById(
+          `reject-icon-${currentDocType}`
+        );
+        const approveIcon = document.getElementById(
+          `approve-icon-${currentDocType}`
+        );
+        const rejectText = actionsDiv.querySelector(".reject-text");
+        const approveText = actionsDiv.querySelector(".approve-text");
+
+        rejectIcon.classList.remove("hidden");
+        approveIcon.classList.add("hidden");
+        rejectText.classList.add("hidden");
+        approveText.classList.add("hidden");
+        actionsDiv.dataset.status = "rejected";
+
+        // Update checklist icon
+        const checklistItem = document.getElementById(`item-${currentDocType}`);
+        if (checklistItem) {
+          const statusIcon = checklistItem.querySelector("img");
+          statusIcon.src = "assets/Wrong-Icon.png";
+        }
+
+        // Hide popup
+        rejectPopup.classList.add("hidden");
+      })
+      .catch((error) => console.error("Error:", error));
+  });
+
+  cancelRejectBtn.addEventListener("click", function () {
+    rejectPopup.classList.add("hidden");
+  });
 });
 
 // Add hover effect for better UX
