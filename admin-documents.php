@@ -112,7 +112,7 @@ $requirements = json_decode($requirementsSet, true);
     <?php include "components/navigation/footer.php" ?>
   </section>
 
-  <script src="javascript/adminPage.js"></script>
+  <script src="javascript/adminPageREVISED.js"></script>
 </body>
 
 </html>
