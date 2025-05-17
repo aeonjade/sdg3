@@ -639,6 +639,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add tracking button handler
   const trackingBtn = successPopup.querySelector(".to-application-tracking");
   trackingBtn.addEventListener("click", function () {
-    window.location.href = "application-tracking.php";
+    // Create FormData
+    const formData = new FormData();
+    formData.append("applicantID", applicantID);
+
+    // Upload file
+    fetch("php/submitDocuments.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          window.location.href = "application-tracking.php";
+        }
+      });
   });
 });
+
+function toApplicationTracking() {
+  window.location.href = "application-tracking.php";
+}

@@ -51,7 +51,7 @@ if ($requirementsStatus == 'pending' || $requirementsStatus == 'incomplete') {
           <div class="flex flex-col gap-y-6 items-center">
             <h1 class="text-5xl font-bold">Success!</h1>
             <p>Please wait for further instructions from the registrar.</p>
-            <button class="font-semibold bg-[rgb(45,_174,_40)] border-[black] text-[white] cursor-pointer border-spacing-1 border-[solid] rounded-2xl px-6 py-2 w-full">Proceed to Application Tracking</button>
+            <button class="font-semibold bg-[rgb(45,_174,_40)] border-[black] text-[white] hover:bg-[#0C5AAD] transition duration-300 cursor-pointer border-spacing-1 border-[solid] rounded-2xl px-6 py-2 w-full" onclick="toApplicationTracking()">Proceed to Application Tracking</button>
           </div>
         </div>
       <?php

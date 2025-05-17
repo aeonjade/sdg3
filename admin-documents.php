@@ -17,7 +17,7 @@ $requirements = json_decode($requirementsSet, true);
 
 // Check uploaded documents
 include("php/getDocuments.php");
-$documents = getApplicants('applicantID = ?', [$applicantID]);
+$documents = getDocuments('applicantID = ?', [$applicantID]);
 ?>
 
 <!DOCTYPE html>
@@ -118,9 +118,8 @@ $documents = getApplicants('applicantID = ?', [$applicantID]);
         <div id="successPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
           <div class="bg-gradient-to-b from-purple-500 to-purple-700 p-8 rounded-2xl text-center shadow-xl text-white w-[90%] max-w-md">
             <img class="w-12 h-12 mx-auto mb-4" src="assets/check-icon.png" alt="Success Icon">
-            <h2 class="text-2xl font-bold mb-2">Success</h2>
-            <p class="text-sm mb-6">Please wait for further instructions from the registrar</p>
-            <button class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Document Upload</button>
+            <h2 class="text-2xl font-bold mb-2">Success!</h2>
+            <button class="bg-green-500 px-6 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition">Back to Applicants List</button>
           </div>
         </div>
 
