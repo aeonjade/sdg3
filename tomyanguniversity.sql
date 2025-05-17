@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 05:06 AM
+-- Generation Time: May 17, 2025 at 09:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `tomyanguniversity`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `applicants`
+--
+
+CREATE TABLE `applicants` (
+  `applicantID` int(11) NOT NULL,
+  `applicantName` varchar(50) NOT NULL,
+  `firstChoice` enum('Bachelor of Science in Information Technology','Bachelor of Science in Civil Engineering','Bachelor of Science in Electrical Engineering') NOT NULL,
+  `secondChoice` enum('Bachelor of Science in Information Technology','Bachelor of Science in Civil Engineering','Bachelor of Science in Electrical Engineering') NOT NULL,
+  `applicantType` enum('Bachelor-Program','Graduate-Program') NOT NULL DEFAULT 'Bachelor-Program',
+  `documentStatus` enum('pending','submitted','accomplished','incomplete') NOT NULL DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `applicants`
+--
+
+INSERT INTO `applicants` (`applicantID`, `applicantName`, `firstChoice`, `secondChoice`, `applicantType`, `documentStatus`) VALUES
+(1, 'Mrs. Galve-Abad', 'Bachelor of Science in Information Technology', 'Bachelor of Science in Civil Engineering', 'Bachelor-Program', 'pending'),
+(2, 'Mr. Ubana', 'Bachelor of Science in Civil Engineering', 'Bachelor of Science in Electrical Engineering', 'Graduate-Program', 'pending'),
+(3, 'Mr. Octubre', 'Bachelor of Science in Electrical Engineering', 'Bachelor of Science in Information Technology', 'Bachelor-Program', 'pending');
 
 -- --------------------------------------------------------
 
@@ -42,6 +66,12 @@ CREATE TABLE `documents` (
 --
 
 --
+-- Indexes for table `applicants`
+--
+ALTER TABLE `applicants`
+  ADD PRIMARY KEY (`applicantID`);
+
+--
 -- Indexes for table `documents`
 --
 ALTER TABLE `documents`
@@ -52,10 +82,16 @@ ALTER TABLE `documents`
 --
 
 --
+-- AUTO_INCREMENT for table `applicants`
+--
+ALTER TABLE `applicants`
+  MODIFY `applicantID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `documentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `documentID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

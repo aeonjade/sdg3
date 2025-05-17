@@ -17,7 +17,7 @@ $requirements = json_decode($requirementsSet, true);
 
 // Check uploaded documents
 include("php/getDocuments.php");
-$documents = getDocuments('applicantID = ?', [$applicantID]);
+$documents = getApplicants('applicantID = ?', [$applicantID]);
 ?>
 
 <!DOCTYPE html>
