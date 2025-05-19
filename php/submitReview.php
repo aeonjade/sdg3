@@ -6,17 +6,10 @@ try {
     $applicantID = $_POST['applicantID'];
 
     $hasRejected = false;
-    $stmt = $pdo->prepare("SELECT * FROM documents WHERE applicantID = ? AND status = 'rejected'");
+    $stmt = $pdo->prepare("SELECT * FROM documents WHERE applicantID = ? AND documentStatus = 'rejected'");
     $stmt->execute([$applicantID]);
     $documents = $stmt->fetchAll();
-    if ($documents) {
-        foreach ($documents as $doc) {
-            if ($doc['status'] === 'rejected') {
-                $hasRejected = true;
-                break;
-            }
-        }
-    }
+    $hasRejected = count($documents) > 0;
 
     $reqStatus = $hasRejected ? 'incomplete' : 'accomplished';
 

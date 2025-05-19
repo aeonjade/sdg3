@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 01:16 AM
+-- Generation Time: May 19, 2025 at 08:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,7 @@ CREATE TABLE `applicants` (
 --
 
 INSERT INTO `applicants` (`applicantID`, `applicantName`, `firstChoice`, `secondChoice`, `applicantType`, `requirementsStatus`) VALUES
-(1, 'Mrs. Galve-Abad', 'Bachelor of Science in Information Technology', 'Bachelor of Science in Civil Engineering', 'Bachelor-Program', 'submitted'),
+(1, 'Mrs. Galve-Abad', 'Bachelor of Science in Information Technology', 'Bachelor of Science in Civil Engineering', 'Bachelor-Program', 'pending'),
 (2, 'Mr. Ubana', 'Bachelor of Science in Civil Engineering', 'Bachelor of Science in Electrical Engineering', 'Graduate-Program', 'pending'),
 (3, 'Mr. Octubre', 'Bachelor of Science in Electrical Engineering', 'Bachelor of Science in Information Technology', 'Bachelor-Program', 'pending');
 

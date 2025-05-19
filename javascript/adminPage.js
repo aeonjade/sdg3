@@ -76,7 +76,7 @@ function showConfirmDialog(title, message, onConfirm) {
             <p class="text-white mb-8">${message}</p>
             <div class="flex justify-center gap-4">
                 <button class="cancel-btn bg-[rgb(145,_29,_52)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Cancel</button>
-                <button class="confirm-btn bg-[rgb(45,_174,_40)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition">Confirm</button>
+                <button class="confirm-btn bg-[rgb(45,_174,_40)] px-6 py-2 rounded-xl text-white font-bold hover:bg-[#0C5AAD] transition type="submit">Confirm</button>
             </div>
         </div>
     `;
