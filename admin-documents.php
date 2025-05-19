@@ -12,8 +12,6 @@ $secondChoice = $_SESSION['secondChoice'] = $applicant['secondChoice'];
 $applicantType = $_SESSION['applicantType'] = $applicant['applicantType'];
 $requirementsStatus = $_SESSION['requirementsStatus'] = $applicant['requirementsStatus'];
 
-
-
 if ($requirementsStatus == 'submitted') {
   /*This shit is for JSON because if you don't include JSON file first, the admin page will have an error.
 Damn what an english speaking*/
@@ -27,7 +25,6 @@ Damn what an english speaking*/
   include("php/getDocuments.php");
   $documents = getDocuments('applicantID = ?', [$applicantID]);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +40,7 @@ Damn what an english speaking*/
   </style>
 </head>
 
-<body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100">
+<body class="font-[Roboto] h-full flex flex-1 overflow-auto box-border bg-gray-100" data-applicant-id="<?= $applicantID ?>">
 
   <?php include("components/navigation/sidebar.php") ?>
 

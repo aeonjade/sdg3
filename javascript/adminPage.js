@@ -161,6 +161,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const chevronIcon = document.getElementById("chevron-icon");
   let isOpen = true;
 
+  // Get applicantID from data attribute in body tag
+  const applicantID = document.body.dataset.applicantId;
+
   function toggleChecklist() {
     isOpen = !isOpen;
 
@@ -278,7 +281,21 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       if (confirmed) {
-        window.location.href = "application-tracking.php";
+        // Create FormData
+        const formData = new FormData();
+        formData.append("applicantID", applicantID);
+
+        // Upload file
+        fetch("php/submitReview.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "application-tracking.php";
+            }
+          });
       }
     }
   });
