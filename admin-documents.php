@@ -1,9 +1,15 @@
 <?php
 session_start();
 
+// Get applicantID from GET parameter
+$applicantID = isset($_GET['applicantID']) ? intval($_GET['applicantID']) : 0;
+if ($applicantID <= 0) {
+  die("Invalid applicant ID.");
+}
+
 // Get applicant details
 include("php/getApplicants.php");
-$applicant = getApplicants('applicantID = ?', [1])[0];
+$applicant = getApplicants('applicantID = ?', [$applicantID])[0];
 
 $applicantID = $_SESSION['applicantID'] = $applicant['applicantID'];
 $applicantName = $_SESSION['applicantName'] = $applicant['applicantName'];

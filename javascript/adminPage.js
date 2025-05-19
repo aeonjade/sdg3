@@ -293,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              window.location.href = "application-tracking.php";
+              window.location.href = "admin-applicant-list.php";
             }
           });
       }
@@ -410,4 +410,8 @@ function downloadAllFiles() {
       delay += 500; // Add delay between downloads
     }
   });
+}
+
+function toApplicantList() {
+  window.location.href = "admin-applicant-list.php";
 }
